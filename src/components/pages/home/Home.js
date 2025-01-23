@@ -9,6 +9,7 @@ import FAQSection from './FAQ/FAQSection'
 import Header from '../../common/header/Header'
 import Footer from '../../common/footer/Footer'
 import BlogSection from './BlogSection/BlogSection'
+import Testimonials from './Testimonals/Testimonials'
 
 const Home = () => {
   return (
@@ -19,6 +20,7 @@ const Home = () => {
         <BrowseCategories/>
         <JobGrid/>
         <BlogSection/>
+        <Testimonials/>
         <JobExploreSec/>
         <ServicesSection/>
         <FAQSection/>

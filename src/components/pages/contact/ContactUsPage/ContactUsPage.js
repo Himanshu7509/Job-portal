@@ -25,7 +25,7 @@ const ContactUsPage = () => {
             <div className="space-y-4">
               {/* Address */}
               <div className="flex items-start">
-                <div className="bg-green-100 p-2 rounded-md text-4xl">
+                <div className="bg-pink-100 p-2 rounded-md text-4xl">
                   <FaMapLocationDot/>
                 </div>
                 <div className="ml-4">
@@ -38,7 +38,7 @@ const ContactUsPage = () => {
 
               {/* Phone */}
               <div className="flex items-start">
-                <div className="bg-green-100 p-2 rounded-md text-4xl">
+                <div className="bg-pink-100 p-2 rounded-md text-4xl">
                   <FaPhoneFlip/>
                 </div>
                 <div className="ml-4">
@@ -49,7 +49,7 @@ const ContactUsPage = () => {
 
               {/* Email */}
               <div className="flex items-start">
-                <div className="bg-green-100 p-2 rounded-md text-4xl">
+                <div className="bg-pink-100 p-2 rounded-md text-4xl">
                   <IoIosMailUnread/>
                 </div>
                 <div className="ml-4">
@@ -73,7 +73,7 @@ const ContactUsPage = () => {
               {/* Name */}
               <div className="mb-4">
                 <label htmlFor="name" className="block text-gray-600 mb-2">
-                  Name
+                  Full Name:
                 </label>
                 <input
                   type="text"
@@ -86,7 +86,7 @@ const ContactUsPage = () => {
               {/* Email */}
               <div className="mb-4">
                 <label htmlFor="email" className="block text-gray-600 mb-2">
-                  Email
+                  Email:
                 </label>
                 <input
                   type="email"
