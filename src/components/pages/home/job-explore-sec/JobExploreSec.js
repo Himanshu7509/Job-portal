@@ -17,7 +17,7 @@ const JobExploreSec = () => {
         {/* Right Section: Text Content */}
         <div>
           <p className="text-sm text-gray-500 uppercase mb-2">Discover</p>
-          <h1 className="text-3xl font-bold mb-4">
+          <h1 className="text-3xl font-bold mb-4 bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">
             Find Your Dream Job Effortlessly Today
           </h1>
           <p className="text-gray-600 mb-6">
@@ -40,10 +40,10 @@ const JobExploreSec = () => {
             </div>
           </div>
           <div className="flex space-x-4">
-            <button className="bg-black text-white px-6 py-2 rounded-md">
+            <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-2 rounded-md">
               Search
             </button>
-            <button className="text-black px-6 py-2 border rounded-md">
+            <button className="px-6 py-2 border rounded-md bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">
               Learn More →
             </button>
           </div>

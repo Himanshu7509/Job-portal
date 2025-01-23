@@ -97,7 +97,7 @@ const JobSection = () => {
         {/* Section Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">
               Featured Job Listings
             </h2>
             <p className="text-gray-600 mt-2">
@@ -175,8 +175,8 @@ const JobSection = () => {
 
                 {/* Apply Button */}
                 <div className="mt-4">
-                  <button className="w-full text-center bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition">
-                    Apply Now &rarr;
+                  <button className="w-full bg-gradient-to-r from-pink-500 to-blue-500 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition">
+                    Try Now &rarr;
                   </button>
                 </div>
               </div>

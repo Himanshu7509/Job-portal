@@ -31,7 +31,7 @@ const ServicesSection = () => {
   return (
     <div className="bg-gray-50 py-10 px-5">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold mb-4">Services we offer</h2>
+        <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">Services we offer</h2>
         <p className="text-gray-600 mb-10">
           Mostly services we offer to our customers...
         </p>

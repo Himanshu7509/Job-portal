@@ -66,7 +66,7 @@ const Footer = () => {
 
       <div className="max-w-7xl mx-auto px-4 mt-8 flex flex-col md:flex-row justify-between items-center text-sm border-t border-gray-300 pt-4">
         <p className="mb-4 md:mb-0 text-center md:text-left">
-          &copy; Freeio. 2022 CreativeLayers. All rights reserved.
+          &copy; Job-Quick. 2024. All rights reserved.
         </p>
         <div className="flex space-x-4">
           <a href="#" className="hover:underline">

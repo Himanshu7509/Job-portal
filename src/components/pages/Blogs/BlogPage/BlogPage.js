@@ -56,7 +56,7 @@ const blogPosts = [
 const BlogPage = () => {
     return (
       <div className="bg-gray-50 min-h-screen p-6">
-        <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text mb-8 text-center">
           Blogs
         </h1>
         <div className="max-w-6xl mx-auto">
@@ -81,7 +81,7 @@ const BlogPage = () => {
                   <span className="mr-2">•</span>
                   <span>{post.date}</span>
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text mb-4">
                   {post.title}
                 </h2>
                 <p className="text-gray-600 mb-4">{post.description}</p>

@@ -74,7 +74,7 @@ const CategoryCard = ({ title, services, description, icon }) => (
 
 const BrowseCategories = () => (
   <div className="max-w-7xl mx-auto p-6 md:p-12 lg:p-10">
-    <h1 className="text-4xl font-bold mb-4">Browse talent by category</h1>
+    <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">Browse talent by category</h1>
     <p className="text-gray-600 mb-8">Get some inspirations from differnet skills</p>
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 cursor-pointer">
       {categories.map((category, index) => (

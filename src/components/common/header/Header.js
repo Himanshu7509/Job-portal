@@ -13,7 +13,9 @@ const Header = () => {
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
         <div className="flex items-center space-x-2">
           <Link to="/">
-            <span className="text-black text-2xl font-bold">Job Quick</span>
+            <span className="text-black text-2xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">
+              Job Quick
+            </span>
           </Link>
         </div>
 
@@ -21,33 +23,11 @@ const Header = () => {
           className={`hidden lg:flex items-center space-x-6 transition-all duration-300`}
         >
           <div className="relative">
-            <button
-              className="flex items-center space-x-2 text-gray-700 hover:text-black"
-              onClick={() => setShowCategories(!showCategories)}
-            >
-              <span>
-                <BiSolidCategory />
-              </span>
-              <span>Categories</span>
-            </button>
-            {showCategories && (
-              <div className="absolute top-full left-0 mt-2 bg-white shadow-md rounded-md w-48">
-                <ul className="py-2 px-4">
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Development & IT
-                  </li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Digital Marketing
-                  </li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Finance & Accounting
-                  </li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Design & Creative
-                  </li>
-                </ul>
-              </div>
-            )}
+            <Link to="/alljobs">
+              <button className="flex items-center space-x-2 text-gray-700 hover:text-black">
+                Jobs
+              </button>
+            </Link>
           </div>
 
           <div className="relative">
@@ -63,12 +43,11 @@ const Header = () => {
                   <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                     Resume Builder
                   </li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Resume Checker
-                  </li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    ATS Score
-                  </li>
+                  <Link to="/atschk">
+                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                      Resume Checker
+                    </li>
+                  </Link>
                 </ul>
               </div>
             )}
@@ -91,11 +70,11 @@ const Header = () => {
         </div>
 
         <div className="hidden lg:flex items-center space-x-4">
-          <button className="border border-black text-black px-4 py-2 rounded hover:bg-green-800 hover:text-white">
+          <button className="border border-black text-black bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text px-4 py-2 rounded hover:bg-green-800">
             Log In
           </button>
-          <button className="bg-green-800 text-white px-4 py-2 rounded hover:bg-green-800">
-            Sign In
+          <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded hover:bg-green-800">
+            Sign Up
           </button>
         </div>
       </div>
@@ -104,23 +83,11 @@ const Header = () => {
         <div className="lg:hidden bg-white shadow-md">
           <ul className="flex flex-col space-y-4 py-4 px-6">
             <li>
-              <button
-                className="flex items-center space-x-2 text-gray-700 hover:text-black"
-                onClick={() => setShowCategories(!showCategories)}
-              >
-                <BiSolidCategory />
-                <span>Categories</span>
-              </button>
-              {showCategories && (
-                <ul className="mt-2 bg-gray-100 rounded-md">
-                  <li className="px-4 py-2 hover:bg-gray-200">
-                    Development & IT
-                  </li>
-                  <li className="px-4 py-2 hover:bg-gray-200">Marketing</li>
-                  <li className="px-4 py-2 hover:bg-gray-200">Sales</li>
-                  <li className="px-4 py-2 hover:bg-gray-200">Design</li>
-                </ul>
-              )}
+              <Link to="/alljobs">
+                <button className="flex items-center space-x-2 text-gray-700 hover:text-black">
+                  Jobs
+                </button>
+              </Link>
             </li>
 
             <li>
@@ -135,10 +102,11 @@ const Header = () => {
                   <li className="px-4 py-2 hover:bg-gray-200">
                     Resume Builder
                   </li>
-                  <li className="px-4 py-2 hover:bg-gray-200">
-                    Resume Checker
-                  </li>
-                  <li className="px-4 py-2 hover:bg-gray-200">ATS Score</li>
+                  <Link to="/atschk">
+                    <li className="px-4 py-2 hover:bg-gray-200">
+                      Resume Checker
+                    </li>
+                  </Link>
                 </ul>
               )}
             </li>

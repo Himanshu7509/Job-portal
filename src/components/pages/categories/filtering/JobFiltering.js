@@ -194,14 +194,14 @@ const JobListingPage = () => {
             </div>
           </div> */}
 
-          <button className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600">
+          <button className="w-full bg-gradient-to-r from-pink-500 to-blue-500 text-white py-2 rounded-md">
             Search
           </button>
         </div>
 
         {/* Job Listings */}
         <div className="lg:col-span-3">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Job Listings</h2>
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text mb-4">Job Listings</h2>
           <div className="space-y-4">
             {filteredJobs.map((job) => (
               <div

@@ -40,7 +40,7 @@ const FAQSection = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Left Section */}
         <div>
-          <h1 className="text-3xl font-bold mb-4">FAQs</h1>
+          <h1 className="text-3xl font-bold mb-4 bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">FAQs</h1>
           <p className="text-gray-600 mb-6">
             Find answers to your questions about job searching and using Job Quick effectively.
           </p>
@@ -58,7 +58,7 @@ const FAQSection = () => {
             >
               <div
                 onClick={() => toggleFAQ(index)}
-                className="cursor-pointer flex justify-between items-center px-4 py-3 bg-gray-50"
+                className="cursor-pointer flex justify-between items-center px-4 py-3 bg-pink-50"
               >
                 <h3 className="text-lg font-medium">{faq.question}</h3>
                 <span className="text-gray-500">

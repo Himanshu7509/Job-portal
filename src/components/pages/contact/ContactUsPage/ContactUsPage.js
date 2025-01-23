@@ -7,7 +7,7 @@ const ContactUsPage = () => {
   return (
     <div className="bg-gray-50 min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-green-800 mb-6">Contact us</h1>
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text mb-6">Contact us</h1>
         <p className="text-gray-600 text-lg mb-10">
           We'd love to talk about how we can help you.
         </p>
@@ -15,7 +15,7 @@ const ContactUsPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Contact Information */}
           <div className="p-6 rounded-lg">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text mb-4">
               Keep In Touch With Us.
             </h2>
             <p className="text-gray-600 mb-6">
@@ -62,7 +62,7 @@ const ContactUsPage = () => {
 
           {/* Contact Form */}
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text mb-4">
               Tell us about yourself
             </h2>
             <p className="text-gray-600 mb-6">
@@ -112,7 +112,7 @@ const ContactUsPage = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
+                className="bg-gradient-to-r from-pink-500 to-blue-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
               >
                 Send Message &rarr;
               </button>
