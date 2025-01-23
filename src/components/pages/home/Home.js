@@ -8,6 +8,7 @@ import JobGrid from './jobGrid/JobGrid'
 import FAQSection from './FAQ/FAQSection'
 import Header from '../../common/header/Header'
 import Footer from '../../common/footer/Footer'
+import BlogSection from './BlogSection/BlogSection'
 
 const Home = () => {
   return (
@@ -17,6 +18,7 @@ const Home = () => {
         <JobSection/>
         <BrowseCategories/>
         <JobGrid/>
+        <BlogSection/>
         <JobExploreSec/>
         <ServicesSection/>
         <FAQSection/>

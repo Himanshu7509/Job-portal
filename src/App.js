@@ -4,6 +4,10 @@ import Signup from './components/auth/Signup'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login from './components/auth/Login'
 import Home from './components/pages/home/Home'
+import ATS_Checker from './components/pages/AI-Tools/ATS/ATS_Checker'
+import Blog from './components/pages/Blogs/Blog'
+import Categories from './components/pages/categories/Categories'
+import Contact from './components/pages/contact/Contact'
 
 
 const App = () => {
@@ -14,6 +18,10 @@ const App = () => {
           <Route path='/signup' element={<Signup/>}/>
           <Route path='/login' element={<Login/>}/>
           <Route path='/' element={<Home/>}/>
+          <Route path='/blog' element={<Blog/>}/>
+          <Route path='/categories' element={<Categories/>}/>
+          <Route path='/atschk' element={<ATS_Checker/>}/>
+          <Route path='/contact' element={<Contact/>}/>
         </Routes>
       </BrowserRouter>
     </div>
@@ -21,12 +29,3 @@ const App = () => {
 }
 
 export default App
-
-
-// https://demoapus1.com/freeio/wp-content/uploads/2022/10/team5-150x150.jpg
-
-// https://demoapus1.com/freeio/wp-content/uploads/2022/09/bg-video-150pngx150.
-
-// https://demoapus1.com/freeio/wp-content/uploads/2022/10/team2-150x150.jpg
-
-// https://demoapus1.com/freeio/wp-content/uploads/2022/10/9-150x150.jpg
