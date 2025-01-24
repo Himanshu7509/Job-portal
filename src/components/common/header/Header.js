@@ -1,12 +1,23 @@
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaUserTie } from "react-icons/fa6";
 
 const Header = () => {
   const [showAI, setShowAI] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check login status on mount
+    const token = localStorage.getItem("jwtToken"); // Assuming login stores a token
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -18,6 +29,12 @@ const Header = () => {
     document.addEventListener("click", handleOutsideClick);
     return () => document.removeEventListener("click", handleOutsideClick);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("jwtToken"); // Remove token on logout
+    setIsLoggedIn(false);
+    navigate("/"); // Redirect to home
+  };
 
   return (
     <>
@@ -99,44 +116,58 @@ const Header = () => {
           </div>
 
           <div className="hidden lg:flex items-center space-x-4">
-            <Link to="/job-hosting">
-              <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer">
-                Job Hosting
-              </button>
-            </Link>
-            <div className="relative dropdown">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setUserDropdown(!userDropdown);
-                }}
-                className="flex items-center space-x-2 border border-black text-black px-4 py-2 rounded cursor-pointer"
-              >
-                <FaUserTie className="text-lg" />
-                <span>User</span>
-              </button>
-              {userDropdown && (
-                <div className="absolute top-full right-0 mt-2 bg-white shadow-md rounded-md w-48">
-                  <ul className="py-2 px-4">
-                    <Link to="/profile">
-                      <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                        User Profile
-                      </li>
-                    </Link>
-                    <Link to="/login">
-                      <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                        Log In
-                      </li>
-                    </Link>
-                    <Link to="/signup">
-                      <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                        Sign Up
-                      </li>
-                    </Link>
-                  </ul>
+            {isLoggedIn ? (
+              <>
+                <Link to="/job-hosting">
+                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer">
+                    Job Hosting
+                  </button>
+                </Link>
+                <div className="relative dropdown">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setUserDropdown(!userDropdown);
+                    }}
+                    className="flex items-center space-x-2 border border-black text-black px-4 py-2 rounded cursor-pointer"
+                  >
+                    <FaUserTie className="text-lg" />
+                    <span>User</span>
+                  </button>
+                  {userDropdown && (
+                    <div className="absolute top-full right-0 mt-2 bg-white shadow-md rounded-md w-48">
+                      <ul className="py-2 px-4">
+                        <Link to="/profile">
+                          <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                            User Profile
+                          </li>
+                        </Link>
+                        
+                        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                        <button onClick={handleLogout}>LogOut </button>
+                        </li>
+                       
+                        
+
+                      </ul>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              </>
+            ) : (
+              <>
+                <Link to="/login">
+                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer">
+                    Login
+                  </button>
+                </Link>
+                <Link to="/signup">
+                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer">
+                    SignUp
+                  </button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
 
@@ -205,8 +236,9 @@ const Header = () => {
                   </button>
                 </Link>
               </li>
-
-              <li>
+                {isLoggedIn ? (
+                  <>
+                    <li>
                 <Link to="/job-hosting">
                   <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer">
                     Job Hosting
@@ -233,20 +265,32 @@ const Header = () => {
                           User Profile
                         </li>
                       </Link>
-                      <Link to="/login">
+                    
                         <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                          Log In
+                          <button onClick={handleLogout}>Logout</button> 
                         </li>
-                      </Link>
-                      <Link to="/signup">
-                        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                          Sign Up
-                        </li>
-                      </Link>
+                      
+                     
                     </ul>
                   </div>
                 )}
               </li>
+                  </>
+                ):(
+                  <>
+                    <Link to="/login">
+                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer">
+                    Login
+                  </button>
+                </Link>
+                <Link to="/signup">
+                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer">
+                    SignUp
+                  </button>
+                </Link>
+                  </>
+                )}
+              
             </ul>
           </div>
         )}
