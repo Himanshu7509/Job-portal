@@ -7,7 +7,7 @@ const Signup = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  const signupApi = "https://jobquick-api.onrender.com/user/signup";
+  const signupApi = "https://jobquick.onrender.com/user/signup";
 
   const handleSignup = (e) => {
     e.preventDefault();

@@ -7,6 +7,8 @@ import Blog from './components/pages/Blogs/Blog'
 import Categories from './components/pages/categories/Categories'
 import Contact from './components/pages/contact/Contact'
 import ATS from './components/pages/AI-Tools/ATS/ATS'
+import ResumePage from './components/pages/AI-Tools/Resume-Builder/ResumePage'
+import Salaries from './components/pages/Salaries/Salaries'
 
 
 const App = () => {
@@ -18,7 +20,9 @@ const App = () => {
           <Route path='/login' element={<Login/>}/>
           <Route path='/' element={<Home/>}/>
           <Route path='/blog' element={<Blog/>}/>
+          <Route path='/salary' element={<Salaries/>}/>
           <Route path='/alljobs' element={<Categories/>}/>
+          <Route path='/resbuild' element={<ResumePage/>}/>
           <Route path='/atschk' element={<ATS/>}/>
           <Route path='/contact' element={<Contact/>}/>
         </Routes>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -6,7 +7,8 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  const loginApi = "https://jobquick-api.onrender.com/user/login";
+  const navigate = useNavigate();
+  const loginApi = "https://jobquick.onrender.com/user/login";
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -15,8 +17,8 @@ const Login = () => {
 
     const person = {
       email: email,
-      password:password
-    }
+      password: password,
+    };
     
     fetch(loginApi, {
       method: "POST",
@@ -33,12 +35,19 @@ const Login = () => {
       })
       .then((data) => {
         console.log("Login Response:", data);
-        setSuccess("login successful!");
-        setError(null);
+
+        if (data.token) {
+          localStorage.setItem("jwtToken", data.token); // Store the token in local storage
+          setSuccess("Login successful!");
+          setError(null);
+          navigate("/"); // Navigate to the home page
+        } else {
+          throw new Error("Token not received");
+        }
       })
       .catch((error) => {
-        console.error("login Error:", error);
-        setError("login failed. Please try again.");
+        console.error("Login Error:", error);
+        setError("Login failed. Please try again.");
         setSuccess(null);
       });
   };
@@ -90,6 +99,9 @@ const Login = () => {
           >
             Login
           </button>
+         
+          <p className="text-sm text-gray-400 mt-3">If you don't have an account. <Link to='/signup'><span className="text-black cursor-pointer font-semibold">Create Account</span></Link> </p>
+          
           {error && (
             <div className="text-red-500 text-sm">{error}</div>
           )}
@@ -98,7 +110,6 @@ const Login = () => {
           )}
         </form>
       </div>
-     
     </div>
   );
 };
