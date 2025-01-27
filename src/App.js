@@ -9,7 +9,9 @@ import Contact from './components/pages/contact/Contact'
 import ATS from './components/pages/AI-Tools/ATS/ATS'
 import ResumePage from './components/pages/AI-Tools/Resume-Builder/ResumePage'
 import Salaries from './components/pages/Salaries/Salaries'
-import UserDetails from './components/pages/users/UserDetails'
+import UserDetails from './components/pages/users/userDetail/UserDetails'
+import NotFound from './components/pages/notFound/NotFound'
+import JobPosting from './components/pages/job-host/job-post/JobPosting'
 
 
 const App = () => {
@@ -26,7 +28,9 @@ const App = () => {
           <Route path='/resbuild' element={<ResumePage/>}/>
           <Route path='/atschk' element={<ATS/>}/>
           <Route path='/user' element={<UserDetails/>}/>
+          <Route path='/jobpost' element={<JobPosting/>}/>
           <Route path='/contact' element={<Contact/>}/>
+          <Route path='/*' element={<NotFound/>}/>
         </Routes>
       </BrowserRouter>
     </div>

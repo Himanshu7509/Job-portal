@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-50 text-black py-8">
+    <footer className="bg-gradient-to-r from-pink-50 to-blue-50 text-black py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
         <div>
           <Link to={"/"}>
@@ -24,25 +24,20 @@ const Footer = () => {
 
           <div className="space-y-2">
             <Link
-              to="/jobs"
+              to="/alljobs"
               className="block text-sm hover:text-blue-500 transition"
             >
               Jobs
             </Link>
+            
             <Link
-              to="/"
-              className="block text-sm hover:text-blue-500 transition"
-            >
-              AI Tools
-            </Link>
-            <Link
-              to="/"
+              to="/blog"
               className="block text-sm hover:text-blue-500 transition"
             >
               Blogs
             </Link>
             <Link
-              to="/"
+              to="/contact"
               className="block text-sm hover:text-blue-500 transition"
             >
               Contact
@@ -53,12 +48,7 @@ const Footer = () => {
             >
               Job Hosting
             </Link>
-            <Link
-              to="/"
-              className="block text-sm hover:text-blue-500 transition"
-            >
-              User
-            </Link>
+           
           </div>
         </div>
 

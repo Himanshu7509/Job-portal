@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUserTie } from "react-icons/fa6";
+import Cookies from "js-cookie";
 
 const Header = () => {
   const [showAI, setShowAI] = useState(false);
@@ -13,8 +14,9 @@ const Header = () => {
 
   useEffect(() => {
     // Check login status on mount
-    const token = localStorage.getItem("jwtToken"); // Assuming login stores a token
-    if (token) {
+    const token = Cookies.get("jwtToken"); // Assuming login stores a token
+    const userId = Cookies.get("userId");
+    if (token && userId) {
       setIsLoggedIn(true);
     }
   }, []);
@@ -31,14 +33,15 @@ const Header = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("jwtToken"); // Remove token on logout
+    Cookies.remove("jwtToken");
+    Cookies.remove("userId");
     setIsLoggedIn(false);
-    navigate("/"); // Redirect to home
+    navigate("/");
   };
 
   return (
     <>
-      <header className="bg-white shadow-md sticky top-0 z-10">
+      <header className="shadow-md bg-transparent backdrop-blur-md sticky top-0 z-10">
         <div className="container mx-auto flex items-center justify-between py-4 px-6">
           <div className="flex items-center space-x-2">
             <Link to="/">
@@ -137,7 +140,7 @@ const Header = () => {
                   {userDropdown && (
                     <div className="absolute top-full right-0 mt-2 bg-white shadow-md rounded-md w-48">
                       <ul className="py-2 px-4">
-                        <Link to="/profile">
+                        <Link to="/user">
                           <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                             User Profile
                           </li>
@@ -157,12 +160,12 @@ const Header = () => {
             ) : (
               <>
                 <Link to="/login">
-                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer">
+                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-pink-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
                     Login
                   </button>
                 </Link>
                 <Link to="/signup">
-                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer">
+                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
                     SignUp
                   </button>
                 </Link>
@@ -237,10 +240,10 @@ const Header = () => {
                 </Link>
               </li>
                 {isLoggedIn ? (
-                  <>
+                  <div className="flex">
                     <li>
                 <Link to="/job-hosting">
-                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer">
+                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer mr-3">
                     Job Hosting
                   </button>
                 </Link>
@@ -275,20 +278,20 @@ const Header = () => {
                   </div>
                 )}
               </li>
-                  </>
+                  </div>
                 ):(
-                  <>
+                  <div className="flex">
                     <Link to="/login">
-                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer">
+                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-pink-500 hover:font-semibold px-4 py-2 rounded cursor-pointer mr-3">
                     Login
                   </button>
                 </Link>
                 <Link to="/signup">
-                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer">
+                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
                     SignUp
                   </button>
                 </Link>
-                  </>
+                  </div>
                 )}
               
             </ul>

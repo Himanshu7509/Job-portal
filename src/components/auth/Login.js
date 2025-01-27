@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,18 +10,18 @@ const Login = () => {
   
 
   const navigate = useNavigate();
-  const loginApi = "https://jobquick.onrender.com/user/login";
+  const loginApi = "https://jobquick.onrender.com/hostuser/login";
 
   const handleLogin = async (e) => {
     e.preventDefault();
     console.log("Email:", email);
     console.log("Password:", password);
-
+  
     const person = {
       email: email,
       password: password,
     };
-    
+  
     fetch(loginApi, {
       method: "POST",
       headers: {
@@ -36,14 +37,17 @@ const Login = () => {
       })
       .then((data) => {
         console.log("Login Response:", data);
-
-        if (data.token) {
-          localStorage.setItem("jwtToken", data.token); // Store the token in local storage
+  
+        if (data.token && data._id) {
+    
+          Cookies.set("jwtToken", data.token, { expires: 1 }); 
+          Cookies.set("userId", data._id, { expires: 1 });
+  
           setSuccess("Login successful!");
           setError(null);
-          navigate("/"); // Navigate to the home page
+          navigate("/");
         } else {
-          throw new Error("Token not received");
+          throw new Error("Token or ID not received");
         }
       })
       .catch((error) => {
@@ -54,17 +58,14 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded shadow-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800">
-          Login
-        </h2>
-        <form onSubmit={handleLogin} className="space-y-4">
+    <div className="flex flex-col-reverse lg:flex-row items-center justify-around min-h-screen p-5 md:p-10 bg-gray-100">
+
+      <div className="w-full max-w-lg bg-white p-6 md:p-10 rounded-lg shadow-lg">
+        <h2 className="text-2xl md:text-3xl font-bold text-center bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">Welcome to Job Quick</h2>
+        <p className="mt-2 text-center text-gray-600">Login to your account</p>
+        <form onSubmit={handleLogin} className="mt-6 space-y-5">
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email Address
             </label>
             <input
@@ -73,15 +74,13 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 mt-1 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400"
+              placeholder="Enter your email"
             />
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
             </label>
             <input
@@ -90,26 +89,34 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 mt-1 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400"
+              placeholder="Enter your password"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="w-full px-4 py-3 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 shadow-lg transition duration-300"
           >
             Login
           </button>
-         
-          <p className="text-sm text-gray-400 mt-3">If you don't have an account. <Link to='/signup'><span className="text-black cursor-pointer font-semibold">Create Account</span></Link> </p>
-          
-          {error && (
-            <div className="text-red-500 text-sm">{error}</div>
-          )}
-          {success && (
-            <div className="text-green-500 text-sm">{success}</div>
-          )}
+          {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
+          {success && <div className="text-green-500 text-sm mt-2">{success}</div>}
         </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-gray-600">
+            Don’t have an account? <Link to="/signup" className="text-indigo-500 hover:underline">Sign Up</Link>
+          </p>
+        </div>
+      </div>
+
+      <div className="w-full max-w-md lg:max-w-lg mb-8 lg:mb-0 flex justify-center">
+        <img
+          src="https://epaylater.in/assets/images/help.svg"
+          alt="Login Illustration"
+          className="w-full h-auto rounded-lg"
+        />
       </div>
     </div>
   );

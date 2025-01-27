@@ -62,7 +62,7 @@ const categories = [
 const CategoryCard = ({ title, services, description, icon }) => (
   <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 ease-in-out">
     <div className="flex items-center space-x-4 mb-4">
-      <div className="text-4xl">{icon}</div>
+      <div className="text-4xl text-purple-500">{icon}</div>
       <div>
         <h3 className="text-lg font-semibold">{title}</h3>
         <p className="text-sm text-gray-500">{services} Services</p>

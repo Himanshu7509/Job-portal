@@ -3,238 +3,370 @@
 //https://demoapus1.com/freeio/wp-content/uploads/2022/10/employer5.jpg
 
 import React, { useState } from "react";
+import { Search } from "lucide-react";
+import { BriefcaseBusiness } from "lucide-react";
+import { MapPin } from "lucide-react";
+import { Clock } from "lucide-react";
+import { Wallet } from "lucide-react";
 
 const jobListings = [
   {
-    id: 1,
-    title: "Senior/ Staff Nurse",
-    company: "Upwork",
-    salary: "$90 - $100 / week",
-    category: "Business",
-    type: "Full Time",
-    location: "New York",
-    experience: "Senior Level",
-    industry: "Healthcare",
-    logo: "https://demoapus1.com/freeio/wp-content/uploads/2022/10/employer2.jpg", 
+    title: "Forward Security Director",
+    company: "Bauch, Schuppe and Schulist Co",
+    category: " Hotels & Tourism",
+    type: "Full time",
+    salary: "$40000-$42000",
+    location: "New-York, USA",
+    postedTime: "10 min ago",
+    logo: "https://demoapus1.com/freeio/wp-content/uploads/2022/10/employer2.jpg",
   },
   {
-    id: 2,
-    title: "Executive, HR Operations",
-    company: "NetTrue",
-    salary: "$220 - $250 / week",
-    category: "Developers",
-    type: "Temporary",
-    location: "New York",
-    experience: "Mid Level",
-    industry: "Management",
-    logo: "https://demoapus1.com/freeio/wp-content/uploads/2022/10/employer6.jpg", 
+    title: "Regional Creative Facilitator",
+    company: "Wilson - Becker Co",
+    category: "Media",
+    type: "Part time",
+    salary: "$28000-$32000",
+    location: "Los-Angeles, USA",
+    postedTime: "12 min ago",
+    logo: "https://demoapus1.com/freeio/wp-content/uploads/2022/10/employer6.jpg",
   },
   {
-    id: 3,
-    title: "Restaurant Team Member",
-    company: "DesignBlue",
-    salary: "$30 - $60 / day",
-    category: "Business",
-    type: "Part Time",
-    location: "New York",
-    experience: "Entry Level",
-    industry: "Hospitality",
-    logo: "https://demoapus1.com/freeio/wp-content/uploads/2022/10/employer5.jpg", 
+    title: "Internal Integration Planner",
+    company: "Mraz, Quigley and Feest Inc.",
+    category: "Construction",
+    type: "Full time",
+    salary: "$48000-$50000",
+    location: "Texas, USA",
+    postedTime: "15 min ago",
+    logo: "https://demoapus1.com/freeio/wp-content/uploads/2022/10/employer2.jpg",
   },
-  // Add more jobs as needed
+  {
+    title: "District Intranet Director",
+    company: "VonRueden - Weber Co",
+    category: "Commerce",
+    type: "Full time",
+    salary: "$42000-$48000",
+    location: "Florida, USA",
+    postedTime: "24 min ago",
+    logo: "https://demoapus1.com/freeio/wp-content/uploads/2022/10/employer6.jpg",
+  },
+  {
+    title: "Corporate Tactics Facilitator",
+    company: "Cormier, Turner and Fahey Inc",
+    category: "Commerce",
+    type: "Full time",
+    salary: "$38000-$40000",
+    location: "Boston, USA",
+    postedTime: "26 min ago",
+    logo: "https://demoapus1.com/freeio/wp-content/uploads/2022/10/employer5.jpg",
+  },
+  {
+    title: "Forward Accounts Consultant",
+    company: "Miller Group",
+    category: "Financial services",
+    type: "Full time",
+    salary: "$45000-$48000",
+    location: "Boston, USA",
+    postedTime: "30 min ago",
+    logo: "https://demoapus1.com/freeio/wp-content/uploads/2022/10/employer5.jpg",
+  },
+  
 ];
-
 const JobListingPage = () => {
-  const [filter, setFilter] = useState({
-    category: "",
-    salaryType: "",
-    priceRange: [0, 450],
-    type: "",
-    location: "",
-    experience: "",
-    industry: "",
-  });
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilter({ ...filter, [name]: value });
-  };
-
-  const filteredJobs = jobListings.filter((job) => {
-    // Apply filtering logic here (example: category, type, etc.)
-    return true; // Replace with actual filtering logic
-  });
 
   return (
-    <div className="bg-gray-50 min-h-screen p-6">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Sidebar Filters */}
-        <div className="bg-white p-6 rounded-lg shadow-md lg:col-span-1">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Filters</h2>
+    <div className="min-h-screen bg-white">
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <div className="flex flex-col space-y-8">
+            {/* Main Section with Filters and Jobs */}
+            <div className="flex gap-6">
+              {/* Left Sidebar */}
+              <div className="w-64 flex-shrink-0">
+                <div className="bg-gray-50   rounded-lg p-4">
+                  {/* Search */}
+                  <div className="mb-6">
+                    <h2 className="text-lg font-semibold mb-3">
+                      Search by Job Title
+                    </h2>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder="Job title or company"
+                        className="w-full p-2 pr-8 border rounded-md text-sm"
+                      />
+                      <Search className="absolute right-2 top-2.5 h-4 w-4 text-gray-400" />
+                    </div>
+                  </div>
 
-          {/* Categories */}
-          <div className="mb-6">
-            <label htmlFor="category" className="text-gray-600 block mb-2">
-              Categories
-            </label>
-            <select
-              name="category"
-              id="category"
-              className="w-full border-gray-300 rounded-md shadow-sm py-2 pl-10 text-sm text-gray-700"
-              value={filter.category}
-              onChange={handleFilterChange}
-            >
-              <option value="">All Categories</option>
-              <option value="Business">Business</option>
-              <option value="Developers">Developers</option>
-              <option value="Marketing">Marketing</option>
-            </select>
-          </div>
+                  {/* Location */}
+                  <div className="mb-6">
+                    <h2 className="text-lg font-semibold mb-3">Location</h2>
+                    <select className="w-full p-2 border rounded-md text-sm text-gray-500">
+                      <option>Choose city</option>
+                      <option>Nagpur</option>
+                      <option>Banglore</option>
+                      <option> Pune</option>
+                      <option>Noida </option>
+                    </select>
+                  </div>
 
-          {/* Salary Type */}
-          <div className="mb-6">
-            <label htmlFor="salaryType" className="text-gray-600 block mb-2">
-              Salary Type
-            </label>
-            <select
-              name="salaryType"
-              id="salaryType"
-              className="w-full border-gray-300 rounded-md shadow-sm py-2 pl-10 text-sm text-gray-700"
-              value={filter.salaryType}
-              onChange={handleFilterChange}
-            >
-              <option value="">Any</option>
-              <option value="Hourly">Hourly</option>
-              <option value="Daily">Daily</option>
-              <option value="Weekly">Weekly</option>
-              <option value="Monthly">Monthly</option>
-            </select>
-          </div>
+                  {/* Category */}
+                  <div className="mb-6">
+                    <h2 className="text-lg font-semibold mb-3">Category</h2>
 
-          {/* Experience */}
-          <div className="mb-6">
-            <label htmlFor="experience" className="text-gray-600 block mb-2">
-              Experience
-            </label>
-            <select
-              name="experience"
-              id="experience"
-              className="w-full border-gray-300 rounded-md shadow-sm py-2 pl-10 text-sm text-gray-700"
-              value={filter.experience}
-              onChange={handleFilterChange}
-            >
-              <option value="">Any</option>
-              <option value="Entry Level">Entry Level</option>
-              <option value="Mid Level">Mid Level</option>
-              <option value="Senior Level">Senior Level</option>
-            </select>
-          </div>
+                    {[
+                      "Commerce",
+                      "Telecomunications",
+                      "Hotels & Tourism",
+                      "Education",
+                      "Financial Services",
+                    ].map((category) => (
+                      <div
+                        key={category}
+                        className="flex justify-between items-center mb-2"
+                      >
+                        <label className="flex items-center text-sm">
+                          <input type="checkbox" className="mr-2" />
+                          {category}
+                        </label>
+                       
+                      </div>
+                    ))}
+            
+                  </div>
 
-          {/* Type */}
-          <div className="mb-6">
-            <label htmlFor="type" className="text-gray-600 block mb-2">
-              Type
-            </label>
-            <select
-              name="type"
-              id="type"
-              className="w-full border-gray-300 rounded-md shadow-sm py-2 pl-10 text-sm text-gray-700"
-              value={filter.type}
-              onChange={handleFilterChange}
-            >
-              <option value="">Any</option>
-              <option value="Full Time">Full Time</option>
-              <option value="Part Time">Part Time</option>
-              <option value="Internship">Internship</option>
-              <option value="Temporary">Temporary</option>
-            </select>
-          </div>
+                  {/* Job Type */}
+                  <div className="mb-6">
+                    <h2 className="text-lg font-semibold mb-3">Job Type</h2>
+                    {[
+                      "Full Time",
+                      "Part Time",
+                      "Freelance",
+                      "Seasonal",
+                      "Fixed-Price",
+                    ].map((type) => (
+                      <div
+                        key={type}
+                        className="flex justify-between items-center mb-2"
+                      >
+                        <label className="flex items-center text-sm">
+                          <input type="checkbox" className="mr-2" />
+                          {type}
+                        </label>
+                       
+                      </div>
+                    ))}
+                  </div>
 
-          {/* Industry */}
-          <div className="mb-6">
-            <label htmlFor="industry" className="text-gray-600 block mb-2">
-              Industry
-            </label>
-            <select
-              name="industry"
-              id="industry"
-              className="w-full border-gray-300 rounded-md shadow-sm py-2 pl-10 text-sm text-gray-700"
-              value={filter.industry}
-              onChange={handleFilterChange}
-            >
-              <option value="">Any</option>
-              <option value="Healthcare">Healthcare</option>
-              <option value="Management">Management</option>
-              <option value="Accounting">Accounting</option>
-              <option value="Hospitality">Hospitality</option>
-            </select>
-          </div>
+                  {/* Experience Level */}
+                  <div className="mb-6">
+                    <h2 className="text-lg font-semibold mb-3">
+                      Experience Level
+                    </h2>
+                    {["No-experience", "Fresher", "Intermediate", "Expert"].map(
+                      (level) => (
+                        <div
+                          key={level}
+                          className="flex justify-between items-center mb-2"
+                        >
+                          <label className="flex items-center text-sm">
+                            <input type="checkbox" className="mr-2" />
+                            {level}
+                          </label>
+                         
+                        </div>
+                      )
+                    )}
+                  </div>
 
-          {/* Price Range */}
-          {/* <div className="mb-6">
-            <label htmlFor="priceRange" className="text-gray-600 block mb-2">
-              Price Range
-            </label>
-            <input
-              type="range"
-              min={0}
-              max={450}
-              className="w-full"
-              value={filter.priceRange[1]}
-              onChange={(e) =>
-                setFilter({
-                  ...filter,
-                  priceRange: [0, parseInt(e.target.value)],
-                })
-              }
-            />
-            <div className="flex justify-between text-sm text-gray-500">
-              <span>$0</span>
-              <span>${filter.priceRange[1]}</span>
-            </div>
-          </div> */}
+                  {/* Date Posted */}
+                  <div className="mb-6">
+                    <h2 className="text-lg font-semibold mb-3">Date Posted</h2>
+                    {[
+                      "All",
+                      "Last Hour",
+                      "Last 24 Hours",
+                      "Last 7 Days",
+                      "Last 30 Days",
+                    ].map((date) => (
+                      <div
+                        key={date}
+                        className="flex justify-between items-center mb-2"
+                      >
+                        <label className="flex items-center text-sm">
+                          <input type="checkbox" className="mr-2" />
+                          {date}
+                        </label>
+                       
+                      </div>
+                    ))}
+                  </div>
 
-          <button className="w-full bg-gradient-to-r from-pink-500 to-blue-500 text-white py-2 rounded-md">
-            Search
-          </button>
-        </div>
+                  {/* Salary Range */}
+                  <div className="mb-6">
+                    <h2 className="text-lg font-semibold mb-3">Salary</h2>
+                    <div className="mb-4">
+                      <div className="h-1 bg-teal-600 rounded-full"></div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-lg">Salary: $0 - $9999</span>
+                      <button className="bg-blue-500 text-white px-4 py-1 rounded-md text-sm">
+                        Apply
+                      </button>
+                    </div>
+                  </div>
 
-        {/* Job Listings */}
-        <div className="lg:col-span-3">
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text mb-4">Job Listings</h2>
-          <div className="space-y-4">
-            {filteredJobs.map((job) => (
-              <div
-                key={job.id}
-                className="flex items-center justify-between bg-white p-4 rounded-lg shadow-md"
-              >
-                <div className="flex items-center space-x-4">
-                  <img
-                    src={job.logo}
-                    alt={job.company}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-800">
-                      {job.title}
-                    </h3>
-                    <p className="text-sm text-gray-500">
-                      {job.company} - {job.location}
-                    </p>
-                    <p className="text-sm text-gray-500">{job.salary}</p>
+                  {/* Tags */}
+                  <div className="mb-6">
+                    <h2 className="text-lg font-semibold mb-3">Tags</h2>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        "engineering",
+                        "design",
+                        "office",
+                        "marketing",
+                        "management",
+                        "soft",
+                        "construction",
+                      ].map((tag) => (
+                        <span
+                          key={tag}
+                          className="bg-slate-100 px-3 py-1 rounded-full text-sm"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm text-gray-500">{job.category}</p>
-                  <p className="text-sm text-gray-500">{job.type}</p>
-                  <p className="text-sm text-gray-500">{job.experience}</p>
+
+  
+              </div>
+
+              {/* Main Content - Job Listings */}
+              <div className="flex-1">
+                {/* Header */}
+                <div className="flex justify-between items-center mb-6">
+                  <span className="text-gray-500 text-sm">
+                    Showing 6-6 of 10 results
+                  </span>
+                  <select className="border rounded-md p-2 text-sm">
+                    <option>Sort by latest</option>
+                  </select>
+                </div>
+
+                {/* Job Cards */}
+                <div className="space-y-4">
+                  {jobListings.map((job, index) => (
+                    <div
+                      key={index}
+                      className="border rounded-lg p-4 flex justify-between items-start hover:shadow-md transition-shadow"
+                    >
+                      <div className="flex gap-4">
+                        <img
+                          src={job.logo}
+                          alt={`${job.company} logo`}
+                          className="w-12 h-12 rounded-lg"
+                        />
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-semibold text-sm">
+                              {job.title}
+                            </h3>
+                            <span className="text-gray-400 text-xs">
+                              {job.postedTime}
+                            </span>
+                          </div>
+                          <p className="text-gray-500 text-sm mb-2">
+                            {job.company}
+                          </p>
+                          <div className="flex gap-4 text-sm text-gray-600">
+                            <span className="flex items-center gap-1">
+                              <BriefcaseBusiness className="w-4 h-4 text-teal-500 mr-1" />
+                              {job.category}
+                            </span>
+
+                            <span className="flex items-center gap-1">
+                              {" "}
+                              <Clock className="w-4 h-4 text-teal-600 mr-1" />
+                              {job.type}
+                            </span>
+
+                            <span className="flex items-center gap-1">
+                              <Wallet className="w-4 h-4 text-teal-600 mr-1" />
+                              {job.salary}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <MapPin className="w-4 h-4 text-teal-600 mr-1" />
+                              {job.location}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <button className="bg-teal-600 text-white px-4 py-2 rounded-md text-sm hover:bg-teal-700 transition-colors">
+                        Job Details
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                <div className="flex justify-between items-center mt-6">
+                  <div className="flex gap-2">
+                    <button className="w-8 h-8 bg-teal-600 text-white rounded-md text-sm">
+                      1
+                    </button>
+                    <button className="w-8 h-8 border rounded-md text-sm">
+                      2
+                    </button>
+                  </div>
+                  <button className="flex items-center gap-2 text-sm">
+                    Next
+                    <span>→</span>
+                  </button>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Top Companies Section */}
+            <div className="mt-16 bg-slate-50 py-16">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold mb-4">Top Company</h2>
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                  At eu lobortis pretium tincidunt amet lacus et senean
+                  aliqueat. Blandit a massa elementum
+                </p>
+              </div>
+
+              <div className="grid grid-cols-4 gap-6">
+                {["Instagram", "Tesla", "McDonald's", "Apple"].map(
+                  (company, index) => (
+                    <div
+                      key={company}
+                      className="bg-white p-6 rounded-lg text-center"
+                    >
+                      <img
+                        src="/assets/image1.png"
+                        alt={`${company} logo`}
+                        className="w-12 h-12 mx-auto mb-4"
+                      />
+                      <h3 className="font-semibold mb-3">{company}</h3>
+                      <p className="text-gray-600 text-sm mb-4">
+                        Et velit mauris aliquam est diam. Leo sagittis
+                        consectetur diam morbi erat
+                      </p>
+                      <button className="bg-slate-50 text-teal-600 px-4 py-2 rounded-full text-sm">
+                        {[8, 18, 12, 9][index]} open jobs
+                      </button>
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

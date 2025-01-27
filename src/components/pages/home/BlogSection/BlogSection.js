@@ -50,7 +50,7 @@ const BlogSection = () => {
               />
               <div className="p-4">
                 <p className="text-sm text-gray-500">{blog.date}</p>
-                <h3 className="text-lg font-semibold text-gray-800 mt-1">
+                <h3 className="text-lg font-semibold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent mt-1">
                   {blog.title}
                 </h3>
                 <p className="text-gray-600 text-sm mt-2">{blog.description}</p>
