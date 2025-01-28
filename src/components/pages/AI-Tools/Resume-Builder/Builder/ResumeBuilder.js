@@ -490,7 +490,6 @@ const ResumeBuilder = () => {
               </div>
             )}
           </div>
-          <img src="https://media.istockphoto.com/id/1328278554/vector/soft-skills-in-business-concept-tiny-female-character-working-on-laptop-at-huge-human-head.jpg?s=612x612&w=0&k=20&c=8G9163GDR47jl2028_aN57RM4q31YQM_KO40ljOis6o=" className="lg:w-1/2 xl:w-1/2 md:w-1/2 sm:w-full xs:w-full" />
         </div>
 
         <button

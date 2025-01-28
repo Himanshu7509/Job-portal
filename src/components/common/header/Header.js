@@ -123,7 +123,7 @@ const Header = () => {
               <>
                 <Link to="/job-hosting">
                   <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer">
-                    Job Hosting
+                    Job Hoster
                   </button>
                 </Link>
                 <div className="relative dropdown">
@@ -145,13 +145,10 @@ const Header = () => {
                             User Profile
                           </li>
                         </Link>
-                        
-                        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                        <button onClick={handleLogout}>LogOut </button>
-                        </li>
-                       
-                        
 
+                        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                          <button onClick={handleLogout}>LogOut </button>
+                        </li>
                       </ul>
                     </div>
                   )}
@@ -159,14 +156,14 @@ const Header = () => {
               </>
             ) : (
               <>
+                <Link to="/">
+                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
+                    Job Hoster
+                  </button>
+                </Link>
                 <Link to="/login">
                   <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-pink-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
                     Login
-                  </button>
-                </Link>
-                <Link to="/signup">
-                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
-                    SignUp
                   </button>
                 </Link>
               </>
@@ -239,61 +236,58 @@ const Header = () => {
                   </button>
                 </Link>
               </li>
-                {isLoggedIn ? (
-                  <div className="flex">
-                    <li>
-                <Link to="/job-hosting">
-                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer mr-3">
-                    Job Hosting
+              {isLoggedIn ? (
+                <div className="flex">
+                  <li>
+                    <Link to="/job-hosting">
+                      <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer mr-3">
+                        Job Hoster
+                      </button>
+                    </Link>
+                  </li>
+
+                  <li className="relative dropdown">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setUserDropdown(!userDropdown);
+                      }}
+                      className="flex items-center space-x-2 border border-black text-black px-4 py-2 rounded cursor-pointer"
+                    >
+                      <FaUserTie className="text-lg" />
+                      <span>User</span>
+                    </button>
+                    {userDropdown && (
+                      <div className="mt-2 bg-white shadow-md rounded-md">
+                        <ul className="py-2 px-4">
+                          <Link to="/profile">
+                            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                              User Profile
+                            </li>
+                          </Link>
+
+                          <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                            <button onClick={handleLogout}>Logout</button>
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+                  </li>
+                </div>
+              ) : (
+                <div className="flex">
+                  <Link to="/">
+                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
+                    Job Hoster
                   </button>
                 </Link>
-              </li>
-
-              <li className="relative dropdown">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setUserDropdown(!userDropdown);
-                  }}
-                  className="flex items-center space-x-2 border border-black text-black px-4 py-2 rounded cursor-pointer"
-                >
-                  <FaUserTie className="text-lg" />
-                  <span>User</span>
-                </button>
-                {userDropdown && (
-                  <div className="mt-2 bg-white shadow-md rounded-md">
-                    <ul className="py-2 px-4">
-                      <Link to="/profile">
-                        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                          User Profile
-                        </li>
-                      </Link>
-                    
-                        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                          <button onClick={handleLogout}>Logout</button> 
-                        </li>
-                      
-                     
-                    </ul>
-                  </div>
-                )}
-              </li>
-                  </div>
-                ):(
-                  <div className="flex">
-                    <Link to="/login">
-                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-pink-500 hover:font-semibold px-4 py-2 rounded cursor-pointer mr-3">
+                <Link to="/login">
+                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-pink-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
                     Login
                   </button>
                 </Link>
-                <Link to="/signup">
-                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
-                    SignUp
-                  </button>
-                </Link>
-                  </div>
-                )}
-              
+                </div>
+              )}
             </ul>
           </div>
         )}

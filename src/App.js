@@ -12,6 +12,8 @@ import Salaries from './components/pages/Salaries/Salaries'
 import UserDetails from './components/pages/users/userDetail/UserDetails'
 import NotFound from './components/pages/notFound/NotFound'
 import JobPosting from './components/pages/job-host/job-post/JobPosting'
+import HosterDetail from './components/pages/job-host/hoster-detail/HosterDetail'
+import HosterProfile from './components/pages/job-host/hoster-detail/hoster-profile/HosterProfile'
 
 
 const App = () => {
@@ -29,6 +31,8 @@ const App = () => {
           <Route path='/atschk' element={<ATS/>}/>
           <Route path='/user' element={<UserDetails/>}/>
           <Route path='/jobpost' element={<JobPosting/>}/>
+          <Route path='/host-detail' element={<HosterDetail/>}/>
+          <Route path='/host-profile' element={<HosterProfile/>}/>
           <Route path='/contact' element={<Contact/>}/>
           <Route path='/*' element={<NotFound/>}/>
         </Routes>

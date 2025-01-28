@@ -10,7 +10,7 @@ const Signup = () => {
   const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
 
-  const signupApi = "https://jobquick.onrender.com/hostuser/signup";
+  const signupApi = "https://jobquick.onrender.com/seekuser/signup";
 
   const handleSignup = (e) => {
     e.preventDefault();
