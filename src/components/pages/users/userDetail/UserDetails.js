@@ -9,16 +9,30 @@ import Cookies from "js-cookie";
 
 const UserDetails = () => {
   const [step, setStep] = useState(1);
-  const [image, setimage] = useState(null);
+  const [profileImg, setprofileImg] = useState(null);
   const [fullName, setFullName] = useState("");
   const [city, setcity] = useState("");
-  const [workExperience, setworkExperience] = useState("");
+  const [workExperience, setworkExperience] = useState({
+    company: "",
+    position: "",
+    startDate: " ",
+    endDate: " ",
+  });
   const [address, setAddress] = useState("");
   const [pincode, setPincode] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [dateOfBirth, setdateOfBirth] = useState("");
+  const [skills, setskills] = useState([]);
+  const [education, seteducation] = useState({
+    degree: "",
+    institution: "",
+    Specialisation: " ",
+    startYear: " ",
+    endYear: " ",
+  });
 
   const SeekId = Cookies.get("userId");
   const SeekToken = Cookies.get("jwtToken");
@@ -27,11 +41,6 @@ const UserDetails = () => {
 
   const handleSeekData = (e) => {
     e.preventDefault();
-    console.log("city:", city);
-    console.log("workExperience:", workExperience);
-    console.log("Address:", address);
-    console.log("PhoneNumber:", phoneNumber);
-    console.log("FullName:", fullName);
 
     const details = {
       city: city,
@@ -43,8 +52,15 @@ const UserDetails = () => {
       state: state,
       pincode: pincode,
       country: country,
-      image: image,
+      profileImg: profileImg,
+      dateOfBirth: dateOfBirth,
+      education: education,
+      skills: skills,
+      degree: education.degree,
+
     };
+
+    console.log(details);
 
     fetch(seekDetailApi, {
       method: "PUT",
@@ -61,7 +77,7 @@ const UserDetails = () => {
   const handleNext = () => {
     setStep(step + 1);
   };
-  
+
   const handlePrevious = () => {
     setStep(step - 1);
   };
@@ -121,12 +137,12 @@ const UserDetails = () => {
                   </h2>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Upload Profile Image
+                      Upload Profile profileImg
                     </label>
                     <input
                       type="file"
-                      accept="image/*"
-                      onChange={(e) => setimage(e.target.files)}
+                      accept="profileImg/*"
+                      onChange={(e) => setprofileImg(e.target.files)}
                       className="block w-full border border-gray-300 rounded-lg shadow-sm py-1 px-3 focus:ring-blue-500 focus:border-blue-500 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-gradient-to-r from-pink-500 to-blue-500 file:text-white hover:file:opacity-90"
                     />
                   </div>
@@ -148,39 +164,7 @@ const UserDetails = () => {
                     />
                   </div>
 
-                  <div className="space-y-4 sm:space-y-0 sm:flex sm:gap-4">
-                    <div className="flex-1">
-                      <label
-                        htmlFor="email"
-                        className="block text-sm font-medium text-gray-700 mb-2"
-                      >
-                        Email Address
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                        placeholder="Enter your email"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <label
-                        htmlFor="number"
-                        className="block text-sm font-medium text-gray-700 mb-2"
-                      >
-                        Phone Number
-                      </label>
-                      <input
-                        type="number"
-                        id="number"
-                        name="number"
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        placeholder="Enter your phone number"
-                        className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                      />
-                    </div>
-                  </div>
+                  
 
                   <div className="space-y-4 sm:space-y-0 sm:flex sm:gap-4">
                     <div className="flex-1">
@@ -213,6 +197,40 @@ const UserDetails = () => {
                         <option value="Female">Female</option>
                         <option value="Other">Other</option>
                       </select>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 sm:space-y-0 sm:flex sm:gap-4">
+                    <div className="flex-1">
+                      <label
+                        htmlFor="address"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        Address
+                      </label>
+                      <input
+                        type="text"
+                        id="address"
+                        name="address"
+                        className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        placeholder="Enter your address"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <label
+                        htmlFor="number"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        Phone Number
+                      </label>
+                      <input
+                        type="number"
+                        id="number"
+                        name="number"
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        placeholder="Enter your phone number"
+                        className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      />
                     </div>
                   </div>
 

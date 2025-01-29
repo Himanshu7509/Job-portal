@@ -14,6 +14,9 @@ import NotFound from './components/pages/notFound/NotFound'
 import JobPosting from './components/pages/job-host/job-post/JobPosting'
 import HosterDetail from './components/pages/job-host/hoster-detail/HosterDetail'
 import HosterProfile from './components/pages/job-host/hoster-detail/hoster-profile/HosterProfile'
+import HosterLogin from './components/auth/hoster-auth/HosterLogin'
+import HosterSignup from './components/auth/hoster-auth/HosterSignup'
+import HosterDashboard from './components/pages/job-host/hoster-dashboard/HosterDashboard'
 
 
 const App = () => {
@@ -23,6 +26,8 @@ const App = () => {
         <Routes>
           <Route path='/signup' element={<Signup/>}/>
           <Route path='/login' element={<Login/>}/>
+          <Route path='/host-login' element={<HosterLogin/>}/>
+          <Route path='/host-signup' element={<HosterSignup/>}/>
           <Route path='/' element={<Home/>}/>
           <Route path='/blog' element={<Blog/>}/>
           <Route path='/salary' element={<Salaries/>}/>
@@ -33,6 +38,7 @@ const App = () => {
           <Route path='/jobpost' element={<JobPosting/>}/>
           <Route path='/host-detail' element={<HosterDetail/>}/>
           <Route path='/host-profile' element={<HosterProfile/>}/>
+          <Route path='/host-dashboard' element={<HosterDashboard/>}/>
           <Route path='/contact' element={<Contact/>}/>
           <Route path='/*' element={<NotFound/>}/>
         </Routes>

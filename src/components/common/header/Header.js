@@ -121,7 +121,7 @@ const Header = () => {
           <div className="hidden lg:flex items-center space-x-4">
             {isLoggedIn ? (
               <>
-                <Link to="/job-hosting">
+                <Link to="/host-login">
                   <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer">
                     Job Hoster
                   </button>
@@ -156,7 +156,7 @@ const Header = () => {
               </>
             ) : (
               <>
-                <Link to="/">
+                <Link to="/host-login">
                   <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
                     Job Hoster
                   </button>
@@ -239,7 +239,7 @@ const Header = () => {
               {isLoggedIn ? (
                 <div className="flex">
                   <li>
-                    <Link to="/job-hosting">
+                    <Link to="/host-login">
                       <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer mr-3">
                         Job Hoster
                       </button>
@@ -276,7 +276,7 @@ const Header = () => {
                 </div>
               ) : (
                 <div className="flex">
-                  <Link to="/">
+                  <Link to="/host-login">
                   <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
                     Job Hoster
                   </button>

@@ -37,25 +37,24 @@ const BlogSection = () => {
           See how you can up your career status
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {blogs.map((blog, index) => (
-            <Link to='/blog'>
-            <div
-              key={index}
-              className="bg-white rounded-lg shadow-md overflow-hidden"
-            >
-              <img
-                src={blog.image}
-                alt={blog.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <p className="text-sm text-gray-500">{blog.date}</p>
-                <h3 className="text-lg font-semibold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent mt-1">
-                  {blog.title}
-                </h3>
-                <p className="text-gray-600 text-sm mt-2">{blog.description}</p>
+          {blogs.map((blog) => (
+            <Link to='/blog' key={`${blog.date}-${blog.title}`}>
+              <div
+                className="bg-white rounded-lg shadow-md overflow-hidden"
+              >
+                <img
+                  src={blog.image}
+                  alt={blog.title}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4">
+                  <p className="text-sm text-gray-500">{blog.date}</p>
+                  <h3 className="text-lg font-semibold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent mt-1">
+                    {blog.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm mt-2">{blog.description}</p>
+                </div>
               </div>
-            </div>
             </Link>
           ))}
         </div>

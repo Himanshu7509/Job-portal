@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import loginimg from "../../../assets/host-login.jpg"
+
 const HosterLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -42,7 +44,7 @@ const HosterLogin = () => {
 
           setSuccess("Login successful!");
           setError(null);
-          navigate("/");
+          navigate("/host-dashboard");
         } else {
           throw new Error("Token or ID not received");
         }
@@ -55,79 +57,86 @@ const HosterLogin = () => {
   };
 
   return (
-    <div className="flex flex-col-reverse lg:flex-row items-center justify-around min-h-screen p-5 md:p-10 bg-gray-100">
-      <div className="w-full max-w-lg bg-white p-6 md:p-10 rounded-lg shadow-lg">
-        <h2 className="text-2xl md:text-3xl font-bold text-center bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">
-          Welcome to Job Quick
-        </h2>
-        <p className="mt-2 text-center text-gray-600">Login to your account</p>
-        <form onSubmit={handleLogin} className="mt-6 space-y-5">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email Address
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400"
-              placeholder="Enter your email"
-            />
-          </div>
+    
+    <div className="flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-around min-h-screen p-5 md:p-10 bg-white">
 
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400"
-              placeholder="Enter your password"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full px-4 py-3 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 shadow-lg transition duration-300"
+    <div className="w-full max-w-lg bg-white p-6 md:p-10 rounded-lg shadow-2xl">
+      
+      <h2 className="text-3xl md:text-4xl font-bold text-center bg-gradient-to-r from-pink-500 to-indigo-500 bg-clip-text text-transparent">
+        Welcome to Job Quick
+      </h2>
+      <p className="text-center text-gray-700 text-lg font-semibold mt-4">Login to your account</p>
+  
+      <form onSubmit={handleLogin} className="mt-6 space-y-6">
+        <div>
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-800"
           >
-            Login
-          </button>
-          {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
-          {success && (
-            <div className="text-green-500 text-sm mt-2">{success}</div>
-          )}
-        </form>
-
-        <div className="mt-6 text-center">
-          <p className="text-gray-600">
-            Don’t have an account?{" "}
-            <Link to="/signup" className="text-indigo-500 hover:underline">
-              Sign Up
-            </Link>
-          </p>
+            Email Address
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300"
+            placeholder="Enter your email"
+          />
         </div>
-      </div>
-
-      <div className="w-full max-w-md lg:max-w-lg mb-8 lg:mb-0 flex justify-center">
-        <img
-          src="https://epaylater.in/assets/images/help.svg"
-          alt="Login Illustration"
-          className="w-full h-auto rounded-lg"
-        />
+  
+        <div>
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-800"
+          >
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300"
+            placeholder="Enter your password"
+          />
+        </div>
+  
+        <button
+          type="submit"
+          className="w-full px-4 py-3 font-semibold text-white bg-gradient-to-r from-pink-500 to-indigo-500 rounded-lg hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 shadow-xl transition duration-300"
+        >
+          Login
+        </button>
+  
+        {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
+        {success && (
+          <div className="text-green-500 text-sm mt-2">{success}</div>
+        )}
+      </form>
+  
+      <div className="mt-6 text-center">
+        <p className="text-gray-700 text-lg">
+          Don’t have an account?{" "}
+          <Link to="/host-signup" className="text-indigo-500 hover:underline">
+            Sign Up
+          </Link>
+        </p>
       </div>
     </div>
+  
+    <div className="w-full max-w-md lg:max-w-lg mb-8 lg:mb-0 flex justify-center">
+        <img
+          src={loginimg}
+          alt="Login Illustration"
+          className="w-full h-auto rounded-lg hidden sm:block"
+        /> 
+     </div>
+
+  </div>
+  
   );
 };
 
