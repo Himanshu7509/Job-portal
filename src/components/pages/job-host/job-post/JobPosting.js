@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
 const JobPosting = () => {
   const [step, setStep] = useState(1);
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     profileImg: null,
     fullName: "",
@@ -31,6 +34,64 @@ const JobPosting = () => {
   const JobToken = Cookies.get("jwtToken");
   const jobPostApi = "https://jobquick.onrender.com/job";
   const CategoryApi = "https://jobquick.onrender.com/categories";
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(CategoryApi, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${JobToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Raw API response:", data); // Debug log
+
+        // Handle different possible data structures
+        let processedCategories = [];
+
+        if (data.categories) {
+          // If data is wrapped in a 'categories' property
+          processedCategories = data.categories;
+        } else if (data.data) {
+          // If data is wrapped in a 'data' property
+          processedCategories = data.data;
+        } else if (typeof data === "object" && !Array.isArray(data)) {
+          // If data is an object with category entries
+          processedCategories = Object.values(data);
+        } else if (Array.isArray(data)) {
+          // If data is already an array
+          processedCategories = data;
+        }
+
+        if (!processedCategories.length) {
+          console.log("No categories found in response");
+          setCategories([]);
+          return;
+        }
+
+        console.log("Processed categories:", processedCategories);
+        setCategories(processedCategories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        setError("Failed to load categories. Please try again later.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (JobToken) {
+      fetchCategories();
+    }
+  }, [JobToken]);
 
   const handleInputChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -254,22 +315,28 @@ const JobPosting = () => {
         <label className="block text-sm font-medium text-gray-700">
           Category
         </label>
-        <select
-          name="categoryTitle"
-          value={formData.categoryTitle}
-          onChange={handleInputChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        >
-          <option value="">Select Category</option>
-          <option value="IT & Networking">IT & Networking</option>
-          <option value="Sales & Marketing">Sales & Marketing</option>
-          <option value="Data Science">Data Science</option>
-          <option value="Customer Service">Customer Service</option>
-          <option value="Digital Marketing">Digital Marketing</option>
-          <option value="Human Resource">Human Resource</option>
-          <option value="Project Manager">Project Manager</option>
-          <option value="Accounting">Accounting</option>
-        </select>
+        {isLoading ? (
+          <div className="mt-1 block w-full h-10 bg-gray-100 animate-pulse rounded-md" />
+        ) : error ? (
+          <div className="mt-1 text-red-500 text-sm">{error}</div>
+        ) : (
+          <select
+            name="categoryTitle"
+            value={formData.categoryTitle}
+            onChange={handleInputChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          >
+            <option value="" disabled>Select Category</option>
+            {categories.map((category) => (
+              <option 
+                key={category._id || category.id || Math.random().toString(36)} 
+                value={category.title || category.name || ''}
+              >
+                {category.title || category.name || 'Unnamed Category'}
+              </option>
+            ))}
+          </select>
+        )}
       </div>
 
       <div className="flex-1">

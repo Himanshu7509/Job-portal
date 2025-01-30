@@ -17,6 +17,7 @@ import HosterProfile from './components/pages/job-host/hoster-detail/hoster-prof
 import HosterLogin from './components/auth/hoster-auth/HosterLogin'
 import HosterSignup from './components/auth/hoster-auth/HosterSignup'
 import HosterDashboard from './components/pages/job-host/hoster-dashboard/HosterDashboard'
+import ProfilePage from './components/pages/users/profilePage/ProfilePage'
 
 
 const App = () => {
@@ -34,7 +35,8 @@ const App = () => {
           <Route path='/alljobs' element={<Categories/>}/>
           <Route path='/resbuild' element={<ResumePage/>}/>
           <Route path='/atschk' element={<ATS/>}/>
-          <Route path='/user' element={<UserDetails/>}/>
+          <Route path='/user-detail' element={<UserDetails/>}/>
+          <Route path='/user-profile' element={<ProfilePage/>}/>
           <Route path='/jobpost' element={<JobPosting/>}/>
           <Route path='/host-detail' element={<HosterDetail/>}/>
           <Route path='/host-profile' element={<HosterProfile/>}/>

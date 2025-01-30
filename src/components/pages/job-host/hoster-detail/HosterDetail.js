@@ -20,11 +20,6 @@ const HosterDetail = () => {
 
   const handleHostData = (e) => {
     e.preventDefault();
-    console.log("city:", city);
-    console.log("Company URL:", companyURL);
-    console.log("Address:", address);
-    console.log("PhoneNumber:", phoneNumber);
-    console.log("FullName:", fullName);
 
     const details = {
       city: city,
@@ -38,6 +33,8 @@ const HosterDetail = () => {
       country: country,
       image: image,
     };
+
+    console.log(details)
 
     fetch(hostDetailApi, {
       method: "PUT",

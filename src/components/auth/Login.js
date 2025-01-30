@@ -40,8 +40,8 @@ const Login = () => {
   
         if (data.token && data._id) {
     
-          Cookies.set("jwtToken", data.token, { expires: 1 }); 
-          Cookies.set("userId", data._id, { expires: 1 });
+          Cookies.set("Token", data.token, { expires: 1 }); 
+          Cookies.set("Id", data._id, { expires: 1 });
   
           setSuccess("Login successful!");
           setError(null);
