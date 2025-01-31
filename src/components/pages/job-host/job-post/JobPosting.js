@@ -396,12 +396,12 @@ const JobPosting = () => {
             Minimum Package
           </label>
           <input
-            type="number"
+            type="text"
             name="minPackage"
             value={formData.minPackage}
             onChange={handleInputChange}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Enter minimum package"
+            placeholder="Enter minimum package eg: 3LPA"
           />
         </div>
         <div className="flex-1">
@@ -409,12 +409,12 @@ const JobPosting = () => {
             Maximum Package
           </label>
           <input
-            type="number"
+            type="text"
             name="maxPackage"
             value={formData.maxPackage}
             onChange={handleInputChange}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Enter maximum package"
+            placeholder="Enter maximum package eg: 5LPA"
           />
         </div>
       </div>
@@ -448,7 +448,6 @@ const JobPosting = () => {
             <option value="">Select experience level</option>
             <option value="Fresher">Fresher</option>
             <option value="1 to 3 years">1 to 3 years</option>
-            <option value="3 to 5 years">1 to 3 years</option>
             <option value="3 to 5 years">3 to 5 years</option>
             <option value="more than 5 years">more than 5 years</option>
           </select>

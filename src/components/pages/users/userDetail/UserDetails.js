@@ -6,9 +6,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import Header from "../../../common/header/Header";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const UserDetails = () => {
   const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     image: null,
     fullName: "",
@@ -54,7 +58,7 @@ const UserDetails = () => {
         skills: value.split(",").map((skill) => skill.trim()),
       }));
     } else if (name.includes(".")) {
-      // Handle nested object fields
+
       const [parent, child] = name.split(".");
       setFormData((prev) => ({
         ...prev,
@@ -64,7 +68,7 @@ const UserDetails = () => {
         },
       }));
     } else if (name.startsWith("workExperience")) {
-      // Handle work experience fields
+ 
       const field = name;
       setFormData((prev) => ({
         ...prev,
@@ -85,15 +89,14 @@ const UserDetails = () => {
     e.preventDefault();
   
     try {
-      // Create FormData object if you're handling file upload
+    
       const formDataToSend = new FormData();
       
-      // If there's an image file, append it
+  
       if (formData.image) {
         formDataToSend.append('image', formData.image);
       }
   
-      // Convert the rest of the form data to a proper format
       const dataToSend = {
         fullName: formData.fullName,
         phoneNumber: formData.phoneNumber,
@@ -127,12 +130,6 @@ const UserDetails = () => {
       if (!SeekId || !SeekToken) {
         throw new Error('Authentication credentials missing');
       }
-
-      // console.log('Request URL:', `https://jobquick.onrender.com/seekuser/update/${SeekId}`);
-      // console.log('Request Headers:', {
-      //   Authorization: `Bearer ${SeekToken}`,
-      // });
-      // console.log('Request Data:', dataToSend);
   
       const response = await fetch(SeekApi, {
         method: 'PUT',
@@ -161,8 +158,7 @@ const UserDetails = () => {
       console.error('Error updating user details:', error);
     
       if (error.message.includes('Authentication')) {
-        // Redirect to login
-        // window.location.href = '/login';
+        
       }
     }
   };

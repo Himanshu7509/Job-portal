@@ -38,16 +38,16 @@ const ProfilePage = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <p className="text-red-600 text-lg">{error}</p>
+      <div classNameName="min-h-screen flex items-center justify-center bg-gray-100">
+        <p classNameName="text-red-600 text-lg">{error}</p>
       </div>
     );
   }
 
   if (!seeker) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <p className="text-gray-600 text-lg">Loading seeker details...</p>
+      <div classNameName="min-h-screen flex items-center justify-center bg-gray-100">
+        <p classNameName="text-gray-600 text-lg">Loading seeker details...</p>
       </div>
     );
   }
@@ -55,75 +55,75 @@ const ProfilePage = () => {
   return (
     <>
       <div>
-        <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden md:max-w-2xl p-4 sm:p-6 md:p-8 lg:p-10">
+        <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden md:max-w-2xl p-4 sm:p-6 md:p-8 lg:p-10">
          
 
-          <div class="px-4 sm:px-6 md:px-8 pb-6">
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6 sm:mb-8">
+          <div className="px-4 sm:px-6 md:px-8 pb-6">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6 sm:mb-8">
               My Profile
             </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
-                <p class="text-xs sm:text-sm font-semibold text-gray-800">
+                <p className="text-xs sm:text-sm font-semibold text-gray-800">
                   Full Name
                 </p>
-                <p class="text-base sm:text-lg font-medium text-gray-800">
+                <p className="text-base sm:text-lg font-medium text-gray-800">
                   {seeker.fullName}
                 </p>
               </div>
               <div>
-                <p class="text-xs sm:text-sm font-semibold text-gray-800">
+                <p className="text-xs sm:text-sm font-semibold text-gray-800">
                   City
                 </p>
-                <p class="text-base sm:text-lg font-medium text-gray-800">
+                <p className="text-base sm:text-lg font-medium text-gray-800">
                   {seeker.city}
                 </p>
               </div>
               <div>
-                <p class="text-xs sm:text-sm font-semibold text-gray-800">
+                <p className="text-xs sm:text-sm font-semibold text-gray-800">
                   State
                 </p>
-                <p class="text-base sm:text-lg font-medium text-gray-800">
+                <p className="text-base sm:text-lg font-medium text-gray-800">
                   {seeker.state}
                 </p>
               </div>
               <div>
-                <p class="text-xs sm:text-sm font-semibold text-gray-800">
+                <p className="text-xs sm:text-sm font-semibold text-gray-800">
                   Address
                 </p>
-                <p class="text-base sm:text-lg font-medium text-gray-800">
+                <p className="text-base sm:text-lg font-medium text-gray-800">
                   {seeker.address}
                 </p>
               </div>
               <div>
-                <p class="text-xs sm:text-sm font-semibold text-gray-800">
+                <p className="text-xs sm:text-sm font-semibold text-gray-800">
                   Phone Number
                 </p>
-                <p class="text-base sm:text-lg font-medium text-gray-800">
+                <p className="text-base sm:text-lg font-medium text-gray-800">
                   {seeker.phoneNumber}
                 </p>
               </div>
               <div>
-                <p class="text-xs sm:text-sm font-semibold text-gray-800">
+                <p className="text-xs sm:text-sm font-semibold text-gray-800">
                   skills
                 </p>
-                <p class="text-base sm:text-lg font-medium text-gray-800">
+                <p className="text-base sm:text-lg font-medium text-gray-800">
                   {seeker.skills}
                 </p>
               </div>
               <div>
-                <p class="text-xs sm:text-sm font-semibold text-gray-800">
+                <p className="text-xs sm:text-sm font-semibold text-gray-800">
                   Gender
                 </p>
-                <p class="text-base sm:text-lg font-medium text-gray-800">
+                <p className="text-base sm:text-lg font-medium text-gray-800">
                   {seeker.gender}
                 </p>
               </div>
               <div>
-                <p class="text-xs sm:text-sm font-semibold text-gray-800">
+                <p className="text-xs sm:text-sm font-semibold text-gray-800">
                   Pincode
                 </p>
-                <p class="text-base sm:text-lg font-medium text-gray-800">
+                <p className="text-base sm:text-lg font-medium text-gray-800">
                   {seeker.pincode}
                 </p>
               </div>
