@@ -318,7 +318,7 @@ const Jobs = () => {
                         />
                         <div className="flex-1">
                           <h3 className="font-semibold text-lg text-gray-800 mb-1">
-                            {job.title}
+                            {job.skills}
                           </h3>
                           <p className="text-gray-500 font-semibold mb-1">
                             {job.companyName}

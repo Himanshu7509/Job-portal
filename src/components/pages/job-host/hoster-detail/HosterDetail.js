@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import HostSidebar from "../hoster-dashboard/sidebar/HostSidebar";
 
 const HosterDetail = () => {
   const [formData, setFormData] = useState({
@@ -102,6 +103,8 @@ const HosterDetail = () => {
   }
 
   return (
+    <div className="w-full flex">
+      <HostSidebar/>
     <div className="max-w-3xl mx-auto p-6 bg-gray-50 rounded-lg shadow-md">
       <h2 className="text-4xl font-bold text-black mb-6 text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
         Hoster Details
@@ -269,6 +272,7 @@ const HosterDetail = () => {
           Submit
         </button>
       </form>
+    </div>
     </div>
   );
 };

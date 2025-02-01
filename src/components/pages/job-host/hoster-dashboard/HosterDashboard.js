@@ -12,6 +12,7 @@ import {
   Users,
   BriefcaseBusiness,
 } from "lucide-react";
+import HostSidebar from "./sidebar/HostSidebar";
 
 
 const JobHostingDashboard = () => {
@@ -22,50 +23,7 @@ const JobHostingDashboard = () => {
     
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
 
-      <div className="w-full md:w-64 bg-white p-6 flex flex-col shadow-sm">
-        <Link to='/'>
-        <div className="flex items-center mb-8">
-          <span className="ml-4 text-2xl md:text-3xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">
-            Job Quick
-          </span>
-        </div>
-        </Link>
-        <div className="flex items-center mb-6">
-          <div className="w-12 h-12 rounded-full bg-gray-200"/>
-          <div className="ml-3">
-            <div className="font-medium"> john William </div>
-          </div>
-        </div>
-
-        <nav className="flex-1">
-          <div className="space-y-1">
-            <div className="flex items-center space-x-3 p-3 bg-pink-700 text-white rounded-lg">
-              <Users className="w-5 h-5" />
-              <span>Dashboard</span>
-            </div>
-
-            {[
-              { icon: <User className="w-5 h-5" />, label: "My Profile" },
-              { icon: <Briefcase className="w-5 h-5" />, label: "My Jobs" },
-              { icon: <MessageSquare className="w-5 h-5" />, label: "Candidates" },
-            ].map((item, index) => (
-              <div key={index} className="flex items-center space-x-3 p-3 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
-                {item.icon}
-                <span>{item.label}</span>
-              </div>
-            ))}
-          </div>
-        </nav>
-
-        <div className="mt-auto">
-         
-          <div className="flex items-center space-x-2 text-gray-600 cursor-pointer">
-            <LogOut className="w-5 h-5" />
-            <span className="hover:text-red-600">Logout</span>
-          </div>
-        </div>
-      </div>
-
+      <HostSidebar/>
       <div className="flex-1 p-4 md:p-8">
 
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">

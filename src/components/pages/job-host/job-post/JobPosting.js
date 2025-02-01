@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const JobPosting = () => {
+  const JobId = Cookies.get("userId");
   const [step, setStep] = useState(1);
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [skillInput, setSkillInput] = useState("");
   const [formData, setFormData] = useState({
     profileImg: null,
     fullName: "",
@@ -28,57 +33,38 @@ const JobPosting = () => {
     noOfOpeaning: "",
     location: "",
     categoryTitle: "",
+    createdBy: JobId,
   });
 
-  const JobId = Cookies.get("userId");
   const JobToken = Cookies.get("jwtToken");
   const jobPostApi = "https://jobquick.onrender.com/job";
   const CategoryApi = "https://jobquick.onrender.com/categories";
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(CategoryApi, {
-          method: "GET",
+        const response = await axios.get(CategoryApi, {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${JobToken}`,
           },
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("Raw API response:", data); // Debug log
-
-        // Handle different possible data structures
         let processedCategories = [];
+        const data = response.data;
 
         if (data.categories) {
-          // If data is wrapped in a 'categories' property
           processedCategories = data.categories;
         } else if (data.data) {
-          // If data is wrapped in a 'data' property
           processedCategories = data.data;
-        } else if (typeof data === "object" && !Array.isArray(data)) {
-          // If data is an object with category entries
-          processedCategories = Object.values(data);
         } else if (Array.isArray(data)) {
-          // If data is already an array
           processedCategories = data;
+        } else if (typeof data === "object") {
+          processedCategories = Object.values(data);
         }
 
-        if (!processedCategories.length) {
-          console.log("No categories found in response");
-          setCategories([]);
-          return;
-        }
-
-        console.log("Processed categories:", processedCategories);
         setCategories(processedCategories);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -93,57 +79,114 @@ const JobPosting = () => {
     }
   }, [JobToken]);
 
-  const handleInputChange = (e) => {
-    const { name, value, type, files } = e.target;
-
-    if (type === "file") {
-      setFormData((prev) => ({
+  const addSkill = (skill) => {
+    const trimmedSkill = skill.trim();
+    if (trimmedSkill && !formData.skills.includes(trimmedSkill)) {
+      setFormData(prev => ({
         ...prev,
-        [name]: files[0],
-      }));
-    } else if (name === "skills") {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value.split(",").map((skill) => skill.trim()),
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
+        skills: [...prev.skills, trimmedSkill]
       }));
     }
   };
 
+  const handleInputChange = (e) => {
+    const { name, value, type, files } = e.target;
+
+    if (type === "file") {
+      const file = files[0];
+      if (file) {
+        // Check file type
+        if (!file.type.startsWith("image/")) {
+          setError("Please upload an image file");
+          return;
+        }
+        // Check file size (e.g., 5MB limit)
+        if (file.size > 5 * 1024 * 1024) {
+          setError("File size should be less than 5MB");
+          return;
+        }
+
+        // Create preview URL
+        const previewUrl = URL.createObjectURL(file);
+        setImagePreview(previewUrl);
+        setFormData((prev) => ({ ...prev, [name]: file }));
+      }
+      return;
+    }
+
+    else if (name === "skills") {
+      setSkillInput(value);
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleSkillInputKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent form submission
+      if (skillInput.trim()) {
+        addSkill(skillInput);
+        setSkillInput(''); // Clear input after adding
+      }
+    } else if (e.key === ',' || e.key === ' ') {
+      e.preventDefault();
+      if (skillInput.trim()) {
+        addSkill(skillInput);
+        setSkillInput('');
+      }
+    }
+  };
+
+  const handleRemoveSkill = (indexToRemove) => {
+    setFormData(prev => ({
+      ...prev,
+      skills: prev.skills.filter((_, index) => index !== indexToRemove)
+    }));
+  };
+
+
   const handlePostJob = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError(null);
 
     try {
-      const formPayload = {
-        ...formData,
-        createdBy: JobId,
-      };
+      const submitFormData = new FormData();
 
-      console.log(formPayload);
-
-      const response = await fetch(jobPostApi, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${JobToken}`,
-        },
-        body: JSON.stringify(formPayload),
+      // Append all form fields to FormData
+      Object.keys(formData).forEach(key => {
+        if (formData[key] !== null && formData[key] !== undefined) {
+          if (key === 'skills') {
+            // Convert skills array to a simple comma-separated string when sending to server
+            const skillsString = formData[key].join(", ");
+            submitFormData.append(key, skillsString);
+          } else if (key === 'profileImg') {
+            if (formData[key] instanceof File) {
+              submitFormData.append(key, formData[key]);
+            }
+          } else {
+            submitFormData.append(key, formData[key]);
+          }
+        }
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      const response = await axios.post(jobPostApi, submitFormData, {
+        headers: {
+          Authorization: `Bearer ${JobToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-      const data = await response.json();
-      console.log("Job posted successfully:", data);
-      // Add success notification here
+      if (response.data) {
+        navigate("/host-dashboard");
+      }
     } catch (error) {
       console.error("Error posting job:", error);
-      // Add error notification here
+      setError(
+        error.response?.data?.message || "Failed to post job. Please try again."
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -161,13 +204,23 @@ const JobPosting = () => {
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Upload Company Logo
         </label>
-        <input
-          type="file"
-          name="profileImg"
-          accept="image/*"
-          onChange={handleInputChange}
-          className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 text-sm"
-        />
+        <div className="mt-1 flex items-center space-x-4">
+          <input
+            type="file"
+            name="profileImg"
+            accept="image/*"
+            onChange={handleInputChange}
+            className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 text-sm"
+          />
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              alt="Preview"
+              className="h-20 w-20 object-cover rounded-lg"
+            />
+          )}
+        </div>
+        {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
       </div>
 
       <div className="flex gap-4">
@@ -326,13 +379,15 @@ const JobPosting = () => {
             onChange={handleInputChange}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           >
-            <option value="" disabled>Select Category</option>
+            <option value="" disabled>
+              Select Category
+            </option>
             {categories.map((category) => (
-              <option 
-                key={category._id || category.id || Math.random().toString(36)} 
-                value={category.title || category.name || ''}
+              <option
+                key={category._id || category.id || Math.random().toString(36)}
+                value={category.title || category.name || ""}
               >
-                {category.title || category.name || 'Unnamed Category'}
+                {category.title || category.name || "Unnamed Category"}
               </option>
             ))}
           </select>
@@ -490,14 +545,39 @@ const JobPosting = () => {
         <label className="block text-sm font-medium text-gray-700">
           Required Skills
         </label>
-        <input
-          type="text"
-          name="skills"
-          value={formData.skills.join(", ")}
-          onChange={handleInputChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          placeholder="Enter skills (comma-separated)"
-        />
+        <div className="relative">
+          <input
+            type="text"
+            name="skills"
+            value={skillInput}
+            onChange={handleInputChange}
+            onKeyDown={handleSkillInputKeyDown}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Type a skill and press Enter or comma to add"
+          />
+          <div className="mt-2 text-xs text-gray-500">
+            Press Enter or comma (,) to add a skill
+          </div>
+        </div>
+        {formData.skills.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {formData.skills.map((skill, index) => (
+              <span
+                key={index}
+                className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+              >
+                {skill}
+                <button
+                  type="button"
+                  onClick={() => handleRemoveSkill(index)}
+                  className="ml-1 inline-flex items-center p-0.5 rounded-full text-blue-400 hover:bg-blue-200 hover:text-blue-900"
+                >
+                  ×
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       <div>
@@ -537,6 +617,12 @@ const JobPosting = () => {
       <h2 className="text-4xl font-bold mb-6 text-center bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">
         Post Job
       </h2>
+
+      {isLoading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      )}
 
       <form className="space-y-6 p-4" onSubmit={handlePostJob}>
         {step === 1 && renderCompanyForm()}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HeroSl from "../../../../assets/slider71.png";
 import HeroS2 from "../../../../assets/slider72.jpg";
 import HeroS3 from "../../../../assets/slider73.jpg";
@@ -13,16 +13,18 @@ const UserDetails = () => {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [skillInput, setSkillInput] = useState("");
+  const [imagePreview, setImagePreview] = useState(null);
   const [formData, setFormData] = useState({
     image: null,
     fullName: "",
     city: "",
-    workExperience: {
+    workExperience: [{
       company: "",
       position: "",
       startDate: "",
       endDate: "",
-    },
+    }],
     address: "",
     pincode: "",
     state: "",
@@ -30,139 +32,176 @@ const UserDetails = () => {
     gender: "",
     phoneNumber: "",
     dateOfBirth: "",
-    skills: [],
-    education: {
+    skills: null,
+    education:[{
       degree: "",
       institution: "",
       specialisation: "",
       startYear: "",
       endYear: "",
-    },
+    }],
   });
 
   const SeekId = Cookies.get("Id");
   const SeekToken = Cookies.get("Token");
   const SeekApi = `https://jobquick.onrender.com/seekuser/update/${SeekId}`;
+  const userDetailApi = `https://jobquick.onrender.com/seekuser/${SeekId}`;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const response = await axios.get(userDetailApi, {
+          headers: { Authorization: `Bearer ${SeekToken}` },
+        });
+        
+        const userData = response.data;
+        setFormData(prevData => ({
+          ...prevData,
+          fullName: userData.fullName || "",
+          city: userData.city || "",
+          dateOfBirth: userData.dateOfBirth || "",
+          address: userData.address || "",
+          pincode: userData.pincode || "",
+          state: userData.state || "",
+          country: userData.country || "",
+          gender: userData.gender || "",
+          phoneNumber: userData.phoneNumber || "",
+          skills: userData.skills,
+          workExperience: {
+            company: userData.company ,
+            position: userData.position ,
+            startDate: userData.startDate ,
+            endDate: userData.endDate ,
+          },
+          education: {
+            degree: userData.degree || "",
+            institution: userData.institution || "",
+            specialisation: userData.specialisation || "",
+            startYear: userData.startYear || "",
+            endYear: userData.endYear || "",
+          },
+          image: userData.image || null
+        }));
+        
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+    fetchUserDetails();
+  }, [SeekId, SeekToken, userDetailApi]);
+
+  const addSkill = (skill) => {
+    const trimmedSkill = skill.trim();
+    if (trimmedSkill && !formData.skills.includes(trimmedSkill)) {
+      setFormData(prev => ({
+        ...prev,
+        skills: [...prev.skills, trimmedSkill]
+      }));
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value, type, files } = e.target;
-
+  
     if (type === "file") {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: files[0],
-      }));
-    } else if (name === "skills") {
-      setFormData((prev) => ({
-        ...prev,
-        skills: value.split(",").map((skill) => skill.trim()),
-      }));
-    } else if (name.includes(".")) {
-
-      const [parent, child] = name.split(".");
-      setFormData((prev) => ({
+      const file = files[0];
+      if (file) {
+        // Check file type
+        if (!file.type.startsWith("image/")) {
+          setError("Please upload an image file");
+          return;
+        }
+        // Check file size (e.g., 5MB limit)
+        if (file.size > 5 * 1024 * 1024) {
+          setError("File size should be less than 5MB");
+          return;
+        }
+  
+        // Create preview URL
+        const previewUrl = URL.createObjectURL(file);
+        setImagePreview(previewUrl);
+        setFormData((prev) => ({ ...prev, [name]: file }));
+      }
+      return;
+    }
+  
+    if (name === "skills") {
+      setSkillInput(value);
+    } else if (name.includes('.')) {
+      // Handle nested objects (education and workExperience)
+      const [parent, child] = name.split('.');
+      setFormData(prev => ({
         ...prev,
         [parent]: {
           ...prev[parent],
-          [child]: value,
-        },
-      }));
-    } else if (name.startsWith("workExperience")) {
- 
-      const field = name;
-      setFormData((prev) => ({
-        ...prev,
-        workExperience: {
-          ...prev.workExperience,
-          [field]: value,
-        },
+          [child]: value
+        }
       }));
     } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+      setFormData(prev => ({ ...prev, [name]: value }));
     }
+  };
+
+  const handleSkillInputKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent form submission
+      if (skillInput.trim()) {
+        addSkill(skillInput);
+        setSkillInput(''); // Clear input after adding
+      }
+    } else if (e.key === '' || e.key === ' ') {
+      e.preventDefault();
+      if (skillInput.trim()) {
+        addSkill(skillInput);
+        setSkillInput('');
+      }
+    }
+  };
+
+  const handleRemoveSkill = (indexToRemove) => {
+    setFormData(prev => ({
+      ...prev,
+      skills: prev.skills.filter((_, index) => index !== indexToRemove)
+    }));
   };
 
   const handleSeekData = async (e) => {
     e.preventDefault();
-  
-    try {
-    
-      const formDataToSend = new FormData();
-      
-  
-      if (formData.image) {
-        formDataToSend.append('image', formData.image);
-      }
-  
-      const dataToSend = {
-        fullName: formData.fullName,
-        phoneNumber: formData.phoneNumber,
-        dateOfBirth: formData.dateOfBirth,
-        gender: formData.gender,
-        address: formData.address,
-        city: formData.city,
-        state: formData.state,
-        country: formData.country,
-        pincode: formData.pincode,
-        workExperience: {
-          company: formData.workExperience.company,
-          position: formData.workExperience.position,
-          startDate: formData.workExperience.startDate,
-          endDate: formData.workExperience.endDate
-        },
-        education: {
-          degree: formData.education.degree,
-          institution: formData.education.institution,
-          specialisation: formData.education.specialisation,
-          startYear: formData.education.startYear,
-          endYear: formData.education.endYear
-        },
-        skills: formData.skills,
-      };
 
-       console.log(dataToSend)
-  
-      formDataToSend.append('data', JSON.stringify(dataToSend));
-  
-      if (!SeekId || !SeekToken) {
-        throw new Error('Authentication credentials missing');
-      }
-  
-      const response = await fetch(SeekApi, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${SeekToken}`,
-          'Content-Type': formData.image ? 'multipart/form-data' : 'application/json',
-        },
-        body: formData.image ? formDataToSend : JSON.stringify(dataToSend)
-      });
-  
-      // Handle different HTTP status codes
-      if (response.status === 404) {
-        throw new Error('User not found or invalid endpoint');
-      } else if (response.status === 401) {
-        throw new Error('Unauthorized access. Please login again');
-      } else if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-      }
-  
-      const data = await response.json();
-      console.log('User details updated successfully:', data);
-     
-  
-    } catch (error) {
-      console.error('Error updating user details:', error);
+    const submitFormData = new FormData();
     
-      if (error.message.includes('Authentication')) {
-        
+    Object.keys(formData).forEach(key => {
+      if (formData[key] !== null) {
+        if (typeof formData[key] === 'object' && !(formData[key] instanceof File)) {
+          submitFormData.append(key, JSON.stringify(formData[key]));
+        } else {
+          submitFormData.append(key, formData[key]);
+        }
       }
+    });
+
+    try {
+      const response = await axios.put(SeekApi, submitFormData, {
+        headers: { 
+          Authorization: `Bearer ${SeekToken}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      console.log("Success:", response.data);
+      navigate("/user-profile");
+    } catch (error) {
+      console.error("Error:", error);
+      setError(error.message || "An error occurred");
     }
   };
 
+  if (loading) {
+    return <p className="text-center mt-5 text-5xl text-pink-500 font-semibold">Loading...</p>;
+  }
 
   const handleNext = () => {
     setStep((prev) => prev + 1);
@@ -171,25 +210,30 @@ const UserDetails = () => {
   const handlePrevious = () => {
     setStep((prev) => prev - 1);
   };
-
   const renderuserDetailForm = () => (
     <>
       <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
-          User Details
-        </h2>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Upload Profile image
-          </label>
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+          Upload Company Logo
+        </label>
+        <div className="mt-1 flex items-center space-x-4">
           <input
             type="file"
             name="image"
             accept="image/*"
             onChange={handleInputChange}
-            className="block w-full border border-gray-300 rounded-lg shadow-sm py-1 px-3 focus:ring-blue-500 focus:border-blue-500 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-gradient-to-r from-pink-500 to-blue-500 file:text-white hover:file:opacity-90"
+            className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 text-sm"
           />
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              alt="Preview"
+              className="h-20 w-20 object-cover rounded-lg"
+            />
+          )}
         </div>
+        {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+        
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -452,8 +496,7 @@ const UserDetails = () => {
         </div>
       </div>
     </>
-  )
-
+  );
   const renderuserExperienceForm = () => (
     <>
       <div className="space-y-6">
@@ -517,17 +560,42 @@ const UserDetails = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Skills
-          </label>
+        <label className="block text-sm font-medium text-gray-700">
+          Required Skills
+        </label>
+        <div className="relative">
           <input
             type="text"
             name="skills"
-            value={formData.skills.join(", ")}
+            value={skillInput}
             onChange={handleInputChange}
-            placeholder="Enter your skills (comma-separated)"
-            className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            onKeyDown={handleSkillInputKeyDown}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Type a skill and press Enter or comma to add"
           />
+          <div className="mt-2 text-xs text-gray-500">
+            Press Enter or comma (,) to add a skill
+          </div>
+        </div>
+        {formData.skills.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {formData.skills.map((skill, index) => (
+              <span
+                key={index}
+                className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+              >
+                {skill}
+                <button
+                  type="button"
+                  onClick={() => handleRemoveSkill(index)}
+                  className="ml-1 inline-flex items-center p-0.5 rounded-full text-blue-400 hover:bg-blue-200 hover:text-blue-900"
+                >
+                  ×
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
         </div>
 
         <div className="flex justify-between">
