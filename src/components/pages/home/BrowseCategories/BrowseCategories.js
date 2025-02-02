@@ -1,75 +1,79 @@
 import React from "react";
 import { FaLaptopCode } from "react-icons/fa6";
-import { MdOutlineDesignServices } from "react-icons/md";
+import { GiReceiveMoney } from "react-icons/gi";
+import { LuDatabaseZap } from "react-icons/lu";
+import { RiCustomerService2Fill } from "react-icons/ri";
+import { SiCoinmarketcap } from "react-icons/si";
+import { GrResources } from "react-icons/gr";
+import { FaProjectDiagram } from "react-icons/fa";
 import { FaChartLine } from "react-icons/fa6";
-import { BsTranslate } from "react-icons/bs";
-import { FaMicrophoneAlt } from "react-icons/fa";
-import { MdOutlineOndemandVideo } from "react-icons/md";
-import { BsFileEarmarkBarGraph } from "react-icons/bs";
-import { LuFileCode } from "react-icons/lu";
+
+import { Link } from "react-router-dom";
 
 const categories = [
   {
-    title: "Development & IT",
+    title: "IT & Networking",
     services: 8,
     description: "Software Engineer, Web / Mobile Developer & More",
     icon: <FaLaptopCode />,
   },
   {
-    title: "Design & Creative",
+    title: "Sales & Marketing",
     services: 8,
-    description: "Website Design Adobe XD, Figma, Adobe Photoshop",
-    icon: <MdOutlineDesignServices />,
+    description: "Focuses on selling products/services and promoting brands",
+    icon: <GiReceiveMoney />,
+  },
+  {
+    title: "Data Science",
+    services: 1,
+    description: "Analyzing large datasets to derive insights and make predictions",
+    icon: <LuDatabaseZap />,
+  },
+  {
+    title: "Customer Service",
+    services: 1,
+    description: "Involves assisting customers with inquiries, complaints, and support",
+    icon: <RiCustomerService2Fill/>,
   },
   {
     title: "Digital Marketing",
-    services: 1,
-    description: "Service Digital and Social Media Management",
-    icon: <BsFileEarmarkBarGraph />,
-  },
-  {
-    title: "Writing & Translation",
-    services: 1,
-    description: "Writing, Translation Project, Get It Quickly Done",
-    icon: <BsTranslate />,
-  },
-  {
-    title: "Music & Audio",
     services: 0,
-    description: "Freelancer Music, Audio Services, Music Projects",
-    icon: <FaMicrophoneAlt />,
+    description: "Promotes businesses online through social media paid advertising",
+    icon: <SiCoinmarketcap/>,
   },
   {
-    title: "Video & Animation",
+    title: "Human Resource",
     services: 0,
-    description: "Animation Video Maker that Brings Studio Quality",
-    icon: <MdOutlineOndemandVideo />,
+    description: "Manages recruitment, employee relations, and organizational policies",
+    icon: <GrResources/>,
   },
   {
-    title: "Programming & Tech",
+    title: "Project Manager",
     services: 1,
-    description: "Programmers and Coders Both for Your Project",
-    icon: <LuFileCode />,
+    description: "Oversees projects from initiation to completion and budgets are met",
+    icon: <FaProjectDiagram/>,
   },
   {
-    title: "Finance & Accounting",
+    title: "Accounting",
     services: 4,
-    description: "Team Works, Collaboration Meet for Your Business",
+    description: "Handles financial records, audits, and taxation",
     icon: <FaChartLine />,
   },
 ];
 
 const CategoryCard = ({ title, services, description, icon }) => (
-  <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 ease-in-out">
-    <div className="flex items-center space-x-4 mb-4">
-      <div className="text-4xl text-purple-500">{icon}</div>
-      <div>
-        <h3 className="text-lg font-semibold">{title}</h3>
-        <p className="text-sm text-gray-500">{services} Services</p>
+  <Link to={"/alljobs"}>
+    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 ease-in-out">
+      <div className="flex items-center space-x-4 mb-4">
+        <div className="text-4xl text-purple-500">{icon}</div>
+        <div>
+          <h3 className="text-lg font-semibold">{title}</h3>
+          <p className="text-sm text-gray-500">{services} Services</p>
+        </div>
       </div>
+      <p className="text-gray-600 text-sm">{description}</p>
     </div>
-    <p className="text-gray-600 text-sm">{description}</p>
-  </div>
+  </Link>
 );
 
 const BrowseCategories = () => (

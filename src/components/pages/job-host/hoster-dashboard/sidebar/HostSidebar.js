@@ -1,16 +1,58 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaRegUser } from "react-icons/fa";
 import { HiBriefcase } from "react-icons/hi2";
 import { FaRegMessage } from "react-icons/fa6";
 import { IoLogOutOutline } from "react-icons/io5";
 import { LuUsers } from "react-icons/lu";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import ProfileImg from "../../../../../assets/profile.png";
 import { Menu, X } from "lucide-react";
+import Cookies from "js-cookie";
+
 
 const HostSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [hoster, setHoster] = useState(null);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const HostId = Cookies.get("userId");
+  const HostToken = Cookies.get("jwtToken");
+  const hostProfileApi = `https://jobquick.onrender.com/hostuser/${HostId}`;
+
+  useEffect(() => {
+    const fetchHostProfile = async () => {
+      try {
+        const response = await fetch(hostProfileApi, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${HostToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setHoster(data);
+      } catch (error) {
+        console.error("Error fetching host profile:", error);
+        setError("Failed to load hoster details.");
+      }
+    };
+
+    fetchHostProfile();
+  }, [hostProfileApi, HostToken]);
+
+  const handleLogout = () => {
+    Cookies.remove("userId");
+    Cookies.remove("jwtToken");
+    navigate("/");
+  };
+
   return (
     <>
       <div className="relative h-screen flex">
@@ -29,52 +71,63 @@ const HostSidebar = () => {
         >
           <div className="flex justify-center mb-6">
             <Link to="/">
-              <span className="ml-16 mr-4 text-2xl md:text-4xl lg:ml-2 mr-2 font-bold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">
+              <span className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">
                 Job Quick
               </span>
             </Link>
           </div>
 
-          <div className="flex items-center p-2 mb-6 mt-4">
-            <div className="w-12 h-12 rounded-full bg-gray-200" />
-            <div className="ml-3">
-              <div className="font-medium">John William</div>
+          <div className="flex flex-col items-center justify-center p-4 mb-6 mt-4 space-y-3">
+            <img
+              src={ProfileImg}
+              className="w-3/4 rounded-full border-blue-500 border-[2px]"
+              alt="Profile"
+            />
+            <div className="text-center">
+              <div className="text-2xl font-bold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
+              {"Admin"}
+              </div>
             </div>
           </div>
 
           <nav className="w-full p-2 flex-1">
-            <Link to='/host-dashboard'>
-            <div className="flex items-center space-x-3 p-3 text-gray-600 hover:bg-gray-50 rounded-lg">
-              <LuUsers className="w-5 h-5 text-pink-600" />
-              <span className="pointer">Dashboard</span>
-            </div>
+            <Link to="/host-dashboard">
+              <div className="flex items-center space-x-3 p-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+                <LuUsers className="w-5 h-5 text-pink-600" />
+                <span className="pointer">Dashboard</span>
+              </div>
             </Link>
             {[
               {
                 icon: <FaRegUser className="w-5 h-5 text-pink-500" />,
-                label: <Link to='/host-profile'>My Profile</Link>,
+                label: "My Profile",
+                path: "/host-profile",
               },
               {
                 icon: <HiBriefcase className="w-5 h-5 text-pink-500" />,
-                label: <Link to='/host-profile'>My Jobs</Link>,
+                label: "My Jobs",
+                path: "/host-jobs",
               },
               {
                 icon: <FaRegMessage className="w-5 h-5 text-pink-500" />,
-                label: <Link to='/host-profile'>Candidates</Link>,
+                label: "Candidates",
+                path: "/host-candidates",
               },
             ].map((item, index) => (
-              <div
-                key={index}
-                className="flex items-center space-x-3 p-3 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer"
-              >
-                {item.icon}
-                <span>{item.label}</span>
-              </div>
+              <Link to={item.path} key={index}>
+                <div className="flex items-center space-x-3 p-3 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+                  {item.icon}
+                  <span>{item.label}</span>
+                </div>
+              </Link>
             ))}
           </nav>
 
           <div className="mt-auto p-4">
-            <div className="flex items-center space-x-2 text-gray-600 cursor-pointer">
+            <div
+              className="flex items-center space-x-2 text-gray-600 cursor-pointer"
+              onClick={handleLogout}
+            >
               <IoLogOutOutline className="w-5 h-5 text-pink-600" />
               <span className="text-pink-600 hover:text-pink-700 text-lg font-semibold">
                 Logout

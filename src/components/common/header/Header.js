@@ -14,8 +14,8 @@ const Header = () => {
 
   useEffect(() => {
     // Check login status on mount
-    const token = Cookies.get("jwtToken"); // Assuming login stores a token
-    const userId = Cookies.get("userId");
+    const token = Cookies.get("Token"); // Assuming login stores a token
+    const userId = Cookies.get("Id");
     if (token && userId) {
       setIsLoggedIn(true);
     }
@@ -33,8 +33,8 @@ const Header = () => {
   }, []);
 
   const handleLogout = () => {
-    Cookies.remove("jwtToken");
-    Cookies.remove("userId");
+    Cookies.remove("Token");
+    Cookies.remove("Id");
     setIsLoggedIn(false);
     navigate("/");
   };
@@ -122,7 +122,7 @@ const Header = () => {
             {isLoggedIn ? (
               <>
                 <Link to="/host-login">
-                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer">
+                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
                     Job Hoster
                   </button>
                 </Link>
@@ -132,22 +132,22 @@ const Header = () => {
                       e.stopPropagation();
                       setUserDropdown(!userDropdown);
                     }}
-                    className="flex items-center space-x-2 border border-black text-black px-4 py-2 rounded cursor-pointer"
+                    className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-pink-500 hover:font-semibold px-4 py-2 rounded cursor-pointer flex items-center"
                   >
-                    <FaUserTie className="text-lg" />
-                    <span>User</span>
+                    <FaUserTie className="text-lg text-pink-500 mr-2" />
+                    <span className="font-semibold">User</span>
                   </button>
                   {userDropdown && (
-                    <div className="absolute top-full right-0 mt-2 bg-white shadow-md rounded-md w-48">
+                    <div className="absolute top-full right-0 mt-2 bg-white shadow-md rounded-md w-40 text-center">
                       <ul className="py-2 px-4">
-                        <Link to="/user">
-                          <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                        <Link to="/user-profile">
+                          <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-purple-500 font-semibold">
                             User Profile
                           </li>
                         </Link>
 
-                        <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                          <button onClick={handleLogout}>LogOut </button>
+                        <li onClick={handleLogout} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                          <button className="font-semibold text-red-700">LogOut </button>
                         </li>
                       </ul>
                     </div>
@@ -163,7 +163,7 @@ const Header = () => {
                 </Link>
                 <Link to="/login">
                   <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-pink-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
-                    Login
+                    Job Seeker
                   </button>
                 </Link>
               </>
@@ -240,7 +240,7 @@ const Header = () => {
                 <div className="flex">
                   <li>
                     <Link to="/host-login">
-                      <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-2 rounded cursor-pointer mr-3">
+                      <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer mr-3">
                         Job Hoster
                       </button>
                     </Link>
@@ -252,22 +252,22 @@ const Header = () => {
                         e.stopPropagation();
                         setUserDropdown(!userDropdown);
                       }}
-                      className="flex items-center space-x-2 border border-black text-black px-4 py-2 rounded cursor-pointer"
+                      className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-pink-500 hover:font-semibold px-4 py-2 rounded cursor-pointer flex items-center"
                     >
-                      <FaUserTie className="text-lg" />
-                      <span>User</span>
+                      <FaUserTie className="text-lg text-pink-500 mr-2" />
+                      <span className="font-semibold">User</span>
                     </button>
                     {userDropdown && (
                       <div className="mt-2 bg-white shadow-md rounded-md">
                         <ul className="py-2 px-4">
                           <Link to="/profile">
-                            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer font-semibold text-purple-500">
                               User Profile
                             </li>
                           </Link>
 
-                          <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                            <button onClick={handleLogout}>Logout</button>
+                          <li onClick={handleLogout} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                            <button  className="font-semibold text-red-700">Logout</button>
                           </li>
                         </ul>
                       </div>
@@ -283,7 +283,7 @@ const Header = () => {
                 </Link>
                 <Link to="/login">
                   <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-pink-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
-                    Login
+                    Job Seeker
                   </button>
                 </Link>
                 </div>

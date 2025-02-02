@@ -4,10 +4,11 @@ import HeroS2 from "../../../../assets/slider72.jpg";
 import HeroS3 from "../../../../assets/slider73.jpg";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import Header from "../../../common/header/Header";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Header from "../../../common/header/Header";
+import Footer from "../../../common/footer/Footer";
 
 const UserDetails = () => {
   const [step, setStep] = useState(1);
@@ -19,12 +20,14 @@ const UserDetails = () => {
     image: null,
     fullName: "",
     city: "",
-    workExperience: [{
-      company: "",
-      position: "",
-      startDate: "",
-      endDate: "",
-    }],
+    workExperience: [
+      {
+        company: "",
+        position: "",
+        startDate: "",
+        endDate: "",
+      },
+    ],
     address: "",
     pincode: "",
     state: "",
@@ -33,13 +36,15 @@ const UserDetails = () => {
     phoneNumber: "",
     dateOfBirth: "",
     skills: null,
-    education:[{
-      degree: "",
-      institution: "",
-      specialisation: "",
-      startYear: "",
-      endYear: "",
-    }],
+    education: [
+      {
+        degree: "",
+        institution: "",
+        specialisation: "",
+        startYear: "",
+        endYear: "",
+      },
+    ],
   });
 
   const SeekId = Cookies.get("Id");
@@ -54,9 +59,9 @@ const UserDetails = () => {
         const response = await axios.get(userDetailApi, {
           headers: { Authorization: `Bearer ${SeekToken}` },
         });
-        
+
         const userData = response.data;
-        setFormData(prevData => ({
+        setFormData((prevData) => ({
           ...prevData,
           fullName: userData.fullName || "",
           city: userData.city || "",
@@ -68,22 +73,26 @@ const UserDetails = () => {
           gender: userData.gender || "",
           phoneNumber: userData.phoneNumber || "",
           skills: userData.skills,
-          workExperience: {
-            company: userData.company ,
-            position: userData.position ,
-            startDate: userData.startDate ,
-            endDate: userData.endDate ,
-          },
-          education: {
-            degree: userData.degree || "",
-            institution: userData.institution || "",
-            specialisation: userData.specialisation || "",
-            startYear: userData.startYear || "",
-            endYear: userData.endYear || "",
-          },
-          image: userData.image || null
+          workExperience: [
+            {
+              company: userData.company,
+              position: userData.position,
+              startDate: userData.startDate,
+              endDate: userData.endDate,
+            },
+          ],
+          education: [
+            {
+              degree: userData.degree || "",
+              institution: userData.institution || "",
+              specialisation: userData.specialisation || "",
+              startYear: userData.startYear || "",
+              endYear: userData.endYear || "",
+            },
+          ],
+          image: userData.image || null,
         }));
-        
+
         setLoading(false);
       } catch (error) {
         setError(error.message);
@@ -96,16 +105,16 @@ const UserDetails = () => {
   const addSkill = (skill) => {
     const trimmedSkill = skill.trim();
     if (trimmedSkill && !formData.skills.includes(trimmedSkill)) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        skills: [...prev.skills, trimmedSkill]
+        skills: [...prev.skills, trimmedSkill],
       }));
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value, type, files } = e.target;
-  
+
     if (type === "file") {
       const file = files[0];
       if (file) {
@@ -119,52 +128,40 @@ const UserDetails = () => {
           setError("File size should be less than 5MB");
           return;
         }
-  
+
         // Create preview URL
         const previewUrl = URL.createObjectURL(file);
         setImagePreview(previewUrl);
         setFormData((prev) => ({ ...prev, [name]: file }));
       }
       return;
-    }
-  
-    if (name === "skills") {
+    } else if (name === "skills") {
       setSkillInput(value);
-    } else if (name.includes('.')) {
-      // Handle nested objects (education and workExperience)
-      const [parent, child] = name.split('.');
-      setFormData(prev => ({
-        ...prev,
-        [parent]: {
-          ...prev[parent],
-          [child]: value
-        }
-      }));
     } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
   const handleSkillInputKeyDown = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault(); // Prevent form submission
       if (skillInput.trim()) {
         addSkill(skillInput);
-        setSkillInput(''); // Clear input after adding
+        setSkillInput(""); // Clear input after adding
       }
-    } else if (e.key === '' || e.key === ' ') {
+    } else if (e.key === ",") {
       e.preventDefault();
       if (skillInput.trim()) {
         addSkill(skillInput);
-        setSkillInput('');
+        setSkillInput("");
       }
     }
   };
 
   const handleRemoveSkill = (indexToRemove) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      skills: prev.skills.filter((_, index) => index !== indexToRemove)
+      skills: prev.skills.filter((_, index) => index !== indexToRemove),
     }));
   };
 
@@ -172,11 +169,17 @@ const UserDetails = () => {
     e.preventDefault();
 
     const submitFormData = new FormData();
-    
+
     Object.keys(formData).forEach(key => {
-      if (formData[key] !== null) {
-        if (typeof formData[key] === 'object' && !(formData[key] instanceof File)) {
-          submitFormData.append(key, JSON.stringify(formData[key]));
+      if (formData[key] !== null && formData[key] !== undefined) {
+        if (key === 'skills') {
+          // Convert skills array to a simple comma-separated string when sending to server
+          const skillsString = formData[key].join(", ");
+          submitFormData.append(key, skillsString);
+        } else if (key === 'image') {
+          if (formData[key] instanceof File) {
+            submitFormData.append(key, formData[key]);
+          }
         } else {
           submitFormData.append(key, formData[key]);
         }
@@ -185,10 +188,10 @@ const UserDetails = () => {
 
     try {
       const response = await axios.put(SeekApi, submitFormData, {
-        headers: { 
+        headers: {
           Authorization: `Bearer ${SeekToken}`,
-          'Content-Type': 'multipart/form-data'
-        }
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       console.log("Success:", response.data);
@@ -200,7 +203,11 @@ const UserDetails = () => {
   };
 
   if (loading) {
-    return <p className="text-center mt-5 text-5xl text-pink-500 font-semibold">Loading...</p>;
+    return (
+      <p className="text-center mt-5 text-5xl text-pink-500 font-semibold">
+        Loading...
+      </p>
+    );
   }
 
   const handleNext = () => {
@@ -213,7 +220,10 @@ const UserDetails = () => {
   const renderuserDetailForm = () => (
     <>
       <div className="space-y-6">
-      <label className="block text-sm font-medium text-gray-700 mb-2">
+      <h2 className="text-3xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
+          User Detials
+        </h2>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
           Upload Company Logo
         </label>
         <div className="mt-1 flex items-center space-x-4">
@@ -233,7 +243,6 @@ const UserDetails = () => {
           )}
         </div>
         {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
-        
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -560,10 +569,10 @@ const UserDetails = () => {
         </div>
 
         <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Required Skills
-        </label>
-        <div className="relative">
+          <label className="block text-sm font-medium text-gray-700">
+            Required Skills
+          </label>
+          <div className="relative">
           <input
             type="text"
             name="skills"
@@ -675,6 +684,7 @@ const UserDetails = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

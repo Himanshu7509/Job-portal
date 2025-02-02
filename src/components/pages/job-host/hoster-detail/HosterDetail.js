@@ -103,10 +103,13 @@ const HosterDetail = () => {
   }
 
   return (
-    <div className="w-full flex">
+    <div className="w-full flex bg-gray-50">
+      <div className="w-1/4 h-screen fixed top-0 left-0">
       <HostSidebar/>
-    <div className="max-w-3xl mx-auto p-6 bg-gray-50 rounded-lg shadow-md">
-      <h2 className="text-4xl font-bold text-black mb-6 text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
+      </div>
+      <div className="p-2 sm:w-3/4 ml-auto sm:p-10">
+    <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
+      <h2 className="mt-2 text-4xl font-bold text-black mb-6 text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
         Hoster Details
       </h2>
       <form className="space-y-6 p-4" onSubmit={handleSubmit}>
@@ -272,6 +275,7 @@ const HosterDetail = () => {
           Submit
         </button>
       </form>
+    </div>
     </div>
     </div>
   );

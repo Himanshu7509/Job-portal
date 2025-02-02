@@ -1,5 +1,6 @@
 import React from "react";
 import Slh from "../../../../assets/slider71.png";
+import { Link } from "react-router-dom";
 
 const JobExploreSec = () => {
   return (
@@ -40,12 +41,16 @@ const JobExploreSec = () => {
             </div>
           </div>
           <div className="flex space-x-4">
+            <Link to='/alljobs'>
             <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-2 rounded-md">
               Search
             </button>
+            </Link>
+            <Link to='/alljobs'>
             <button className="px-6 py-2 border rounded-md bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">
               Learn More →
             </button>
+            </Link>
           </div>
         </div>
       </div>
