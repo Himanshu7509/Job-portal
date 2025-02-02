@@ -260,7 +260,7 @@ const Header = () => {
                     {userDropdown && (
                       <div className="mt-2 bg-white shadow-md rounded-md">
                         <ul className="py-2 px-4">
-                          <Link to="/profile">
+                          <Link to="/user-profile">
                             <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer font-semibold text-purple-500">
                               User Profile
                             </li>

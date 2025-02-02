@@ -1,52 +1,117 @@
-import React from 'react'
-import Signup from './components/auth/Signup'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Login from './components/auth/Login'
-import Home from './components/pages/home/Home'
-import Blog from './components/pages/Blogs/Blog'
-import Categories from './components/pages/categories/Categories'
-import Contact from './components/pages/contact/Contact'
-import ATS from './components/pages/AI-Tools/ATS/ATS'
-import ResumePage from './components/pages/AI-Tools/Resume-Builder/ResumePage'
-import Salaries from './components/pages/Salaries/Salaries'
-import UserDetails from './components/pages/users/userDetail/UserDetails'
-import NotFound from './components/pages/notFound/NotFound'
-import JobPosting from './components/pages/job-host/job-post/JobPosting'
-import HosterDetail from './components/pages/job-host/hoster-detail/HosterDetail'
-import HosterProfile from './components/pages/job-host/hoster-detail/hoster-profile/HosterProfile'
-import HosterLogin from './components/auth/hoster-auth/HosterLogin'
-import HosterSignup from './components/auth/hoster-auth/HosterSignup'
-import HosterDashboard from './components/pages/job-host/hoster-dashboard/HosterDashboard'
-import ProfilePage from './components/pages/users/profilePage/ProfilePage'
-
+import React from 'react';
+import Signup from './components/auth/Signup';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Login from './components/auth/Login';
+import Home from './components/pages/home/Home';
+import Blog from './components/pages/Blogs/Blog';
+import Categories from './components/pages/categories/Categories';
+import Contact from './components/pages/contact/Contact';
+import ATS from './components/pages/AI-Tools/ATS/ATS';
+import ResumePage from './components/pages/AI-Tools/Resume-Builder/ResumePage';
+import Salaries from './components/pages/Salaries/Salaries';
+import UserDetails from './components/pages/users/userDetail/UserDetails';
+import NotFound from './components/pages/notFound/NotFound';
+import JobPosting from './components/pages/job-host/job-post/JobPosting';
+import HosterDetail from './components/pages/job-host/hoster-detail/HosterDetail';
+import HosterProfile from './components/pages/job-host/hoster-detail/hoster-profile/HosterProfile';
+import HosterLogin from './components/auth/hoster-auth/HosterLogin';
+import HosterSignup from './components/auth/hoster-auth/HosterSignup';
+import HosterDashboard from './components/pages/job-host/hoster-dashboard/HosterDashboard';
+import ProfilePage from './components/pages/users/profilePage/ProfilePage';
+import ProtectedRoute from './components/auth/ProtectedRoute'
 
 const App = () => {
   return (
-    <div >
+    <div>
       <BrowserRouter>
         <Routes>
-          <Route path='/signup' element={<Signup/>}/>
-          <Route path='/login' element={<Login/>}/>
-          <Route path='/host-login' element={<HosterLogin/>}/>
-          <Route path='/host-signup' element={<HosterSignup/>}/>
-          <Route path='/' element={<Home/>}/>
-          <Route path='/blog' element={<Blog/>}/>
-          <Route path='/salary' element={<Salaries/>}/>
-          <Route path='/alljobs' element={<Categories/>}/>
-          <Route path='/resbuild' element={<ResumePage/>}/>
-          <Route path='/atschk' element={<ATS/>}/>
-          <Route path='/user-detail' element={<UserDetails/>}/>
-          <Route path='/user-profile' element={<ProfilePage/>}/>
-          <Route path='/jobpost' element={<JobPosting/>}/>
-          <Route path='/host-detail' element={<HosterDetail/>}/>
-          <Route path='/host-profile' element={<HosterProfile/>}/>
-          <Route path='/host-dashboard' element={<HosterDashboard/>}/>
-          <Route path='/contact' element={<Contact/>}/>
-          <Route path='/*' element={<NotFound/>}/>
+          <Route path='/signup' element={<Signup />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/host-login' element={<HosterLogin />} />
+          <Route path='/host-signup' element={<HosterSignup />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/blog' element={<Blog />} />
+          <Route path='/salary' element={<Salaries />} />
+          <Route path='/contact' element={<Contact />} />
+          <Route path='/*' element={<NotFound />} />
+
+          {/* Protected Routes */}
+          <Route
+            path='/alljobs'
+            element={
+              <ProtectedRoute>
+                <Categories />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/resbuild'
+            element={
+              <ProtectedRoute>
+                <ResumePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/atschk'
+            element={
+              <ProtectedRoute>
+                <ATS />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/user-detail'
+            element={
+              <ProtectedRoute>
+                <UserDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/user-profile'
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/jobpost'
+            element={
+              <ProtectedRoute>
+                <JobPosting />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/host-detail'
+            element={
+              <ProtectedRoute>
+                <HosterDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/host-profile'
+            element={
+              <ProtectedRoute>
+                <HosterProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/host-dashboard'
+            element={
+              <ProtectedRoute>
+                <HosterDashboard />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
