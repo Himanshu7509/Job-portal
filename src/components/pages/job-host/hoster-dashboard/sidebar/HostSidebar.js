@@ -2,7 +2,6 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaRegUser } from "react-icons/fa";
 import { HiBriefcase } from "react-icons/hi2";
-import { FaRegMessage } from "react-icons/fa6";
 import { IoLogOutOutline } from "react-icons/io5";
 import { LuUsers } from "react-icons/lu";
 import { useState, useEffect } from "react";
@@ -108,11 +107,7 @@ const HostSidebar = () => {
                 label: "My Jobs",
                 path: "/host-jobs",
               },
-              {
-                icon: <FaRegMessage className="w-5 h-5 text-pink-500" />,
-                label: "Candidates",
-                path: "/host-candidates",
-              },
+              
             ].map((item, index) => (
               <Link to={item.path} key={index}>
                 <div className="flex items-center space-x-3 p-3 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">

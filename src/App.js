@@ -19,6 +19,8 @@ import HosterSignup from './components/auth/hoster-auth/HosterSignup';
 import HosterDashboard from './components/pages/job-host/hoster-dashboard/HosterDashboard';
 import ProfilePage from './components/pages/users/profilePage/ProfilePage';
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import MyJob from './components/pages/job-host/hoster-dashboard/myJob/MyJob';
+import JobDetails from './components/pages/categories/filtering/jobDetails/JobDetails';
 
 const App = () => {
   return (
@@ -108,6 +110,22 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+          path='/host-jobs'
+          element={
+            <ProtectedRoute>
+              <MyJob/>
+            </ProtectedRoute>
+          }
+          />
+          <Route
+          path='/job-detials/:id'
+          element={
+            <ProtectedRoute>
+              <JobDetails/>
+            </ProtectedRoute>
+            }
+            />
         </Routes>
       </BrowserRouter>
     </div>

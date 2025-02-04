@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import Header from "../../../common/header/Header";
 import Footer from "../../../common/footer/Footer";
-import ProfileImg from '../../../../assets/profile.png'
+import ProfileImg from "../../../../assets/profile.png";
 
 const ProfilePage = () => {
   const [seeker, setSeeker] = useState(null);
@@ -52,8 +52,8 @@ const ProfilePage = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <p className="text-center mt-5 text-5xl text-pink-500 font-semibold">
-        Loading...
-      </p>
+          Loading...
+        </p>
       </div>
     );
   }
@@ -115,6 +115,30 @@ const ProfilePage = () => {
                       {seeker.phoneNumber}
                     </span>{" "}
                   </div>
+                  <div>
+                    <p className="font-semibold text-gray-500">Github Link:</p>
+                    <a
+                      className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text"
+                      href={seeker.projectUrl}
+                    >
+                      {" "}
+                      {seeker.projectUrl}
+                    </a>{" "}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-1 gap-6 mt-4">
+                  <div>
+                    <p className="font-semibold text-gray-500">
+                      About yourself:
+                    </p>
+                    <span className="text-1xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text max-w-md overflow-hidden">
+                      {" "}
+                      {seeker.summary}{" "}
+                    </span>
+                  </div>
                 </div>
               </div>
 
@@ -170,14 +194,14 @@ const ProfilePage = () => {
                     <p className="font-semibold text-gray-500">Degree:</p>
                     <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
                       {" "}
-                      {seeker.education.degree}
+                      {seeker.eduDegree}
                     </span>
                   </div>
                   <div>
                     <p className="font-semibold text-gray-500">University:</p>
                     <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
                       {" "}
-                      {seeker.education.institution}
+                      {seeker.eduInstitution}
                     </span>
                   </div>
                   <div>
@@ -186,21 +210,21 @@ const ProfilePage = () => {
                     </p>
                     <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
                       {" "}
-                      {seeker.education.specialisation}
+                      {seeker.eduSpecialisation}
                     </span>
                   </div>
                   <div>
                     <p className="font-semibold text-gray-500">Start Year:</p>
                     <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
                       {" "}
-                      {seeker.education.startYear}
+                      {seeker.eduStartYear}
                     </span>
                   </div>
                   <div>
                     <p className="font-semibold text-gray-500">End Year:</p>
                     <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
                       {" "}
-                      {seeker.education.endYear}
+                      {seeker.eduEndYear}
                     </span>
                   </div>
                 </div>
@@ -215,28 +239,28 @@ const ProfilePage = () => {
                     <p className="font-semibold text-gray-500">Company Name:</p>
                     <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
                       {" "}
-                      {seeker.workExperience.company}
+                      {seeker.expCompany}
                     </span>
                   </div>
                   <div>
                     <p className="font-semibold text-gray-500">Position:</p>
                     <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
                       {" "}
-                      {seeker.workExperience.position}
+                      {seeker.expPosition}
                     </span>
                   </div>
                   <div>
                     <p className="font-semibold text-gray-500">Start Date:</p>
                     <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
                       {" "}
-                      {seeker.workExperience.startDate}
+                      {seeker.expStartYear}
                     </span>
                   </div>
                   <div>
                     <p className="font-semibold text-gray-500">End Date:</p>
                     <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
                       {" "}
-                      {seeker.workExperience.endDate}
+                      {seeker.expEndYear}
                     </span>
                   </div>
                 </div>

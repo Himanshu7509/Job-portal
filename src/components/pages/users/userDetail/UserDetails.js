@@ -14,38 +14,30 @@ const UserDetails = () => {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [skillInput, setSkillInput] = useState("");
-  const [imagePreview, setImagePreview] = useState(null);
-  const [formData, setFormData] = useState({
-    image: null,
-    fullName: "",
-    city: "",
-    workExperience: [
-      {
-        company: "",
-        position: "",
-        startDate: "",
-        endDate: "",
-      },
-    ],
-    address: "",
-    pincode: "",
-    state: "",
-    country: "",
-    gender: "",
-    phoneNumber: "",
-    dateOfBirth: "",
-    skills: null,
-    education: [
-      {
-        degree: "",
-        institution: "",
-        specialisation: "",
-        startYear: "",
-        endYear: "",
-      },
-    ],
-  });
+
+  const [fullName, setfullName] = useState("");
+  const [profileImg, setprofileImg] = useState(null);
+  const [city, setcity] = useState("");
+  const [eduDegree, seteduDegree] = useState("");
+  const [eduInstitution, seteduInstitution] = useState("");
+  const [eduSpecialisation, seteduSpecialisation] = useState("");
+  const [eduStartYear, seteduStartYear] = useState("");
+  const [eduEndYear, seteduEndYear] = useState("");
+  const [address, setaddress] = useState("");
+  const [pincode, setpincode] = useState("");
+  const [state, setstate] = useState("");
+  const [country, setcountry] = useState("");
+  const [gender, setgender] = useState("");
+  const [phoneNumber, setphoneNumber] = useState("");
+  const [dateOfBirth, setdateOfBirth] = useState("");
+  const [skills, setskills] = useState([]);
+  const [expCompany, setexpCompany] = useState("");
+  const [expPosition, setexpPosition] = useState("");
+  const [expStartYear, setexpStartYear] = useState("");
+  const [expEndYear, setexpEndYear] = useState("");
+  const [summary, setsummary] = useState("");
+  const [projectUrl, setprojectUrl] = useState("");
+  const [resume, setresume] = useState(null);
 
   const SeekId = Cookies.get("Id");
   const SeekToken = Cookies.get("Token");
@@ -61,38 +53,29 @@ const UserDetails = () => {
         });
 
         const userData = response.data;
-        setFormData((prevData) => ({
-          ...prevData,
-          fullName: userData.fullName || "",
-          city: userData.city || "",
-          dateOfBirth: userData.dateOfBirth || "",
-          address: userData.address || "",
-          pincode: userData.pincode || "",
-          state: userData.state || "",
-          country: userData.country || "",
-          gender: userData.gender || "",
-          phoneNumber: userData.phoneNumber || "",
-          skills: userData.skills,
-          workExperience: [
-            {
-              company: userData.company,
-              position: userData.position,
-              startDate: userData.startDate,
-              endDate: userData.endDate,
-            },
-          ],
-          education: [
-            {
-              degree: userData.degree || "",
-              institution: userData.institution || "",
-              specialisation: userData.specialisation || "",
-              startYear: userData.startYear || "",
-              endYear: userData.endYear || "",
-            },
-          ],
-          image: userData.image || null,
-        }));
-
+        setfullName(userData.fullName || "");
+        setprofileImg(userData.profileImg || "");
+        setcity(userData.city || "");
+        seteduDegree(userData.eduDegree || "");
+        seteduInstitution(userData.eduInstitution || "");
+        seteduSpecialisation(userData.eduSpecialisation || "");
+        seteduStartYear(userData.eduStartYear || "");
+        seteduEndYear(userData.eduEndYear || "");
+        setaddress(userData.address || "");
+        setpincode(userData.pincode || "");
+        setstate(userData.state || "");
+        setcountry(userData.country || "");
+        setgender(userData.gender || "");
+        setphoneNumber(userData.phoneNumber || "");
+        setdateOfBirth(userData.dateOfBirth || "");
+        setskills(userData.skills || []);
+        setexpCompany(userData.expCompany || "");
+        setexpPosition(userData.expPosition || "");
+        setexpStartYear(userData.expStartYear || "");
+        setexpEndYear(userData.expEndYear || "");
+        setsummary(userData.summary || "");
+        setprojectUrl(userData.projectUrl || "");
+        setresume(userData.resume || null);
         setLoading(false);
       } catch (error) {
         setError(error.message);
@@ -102,106 +85,6 @@ const UserDetails = () => {
     fetchUserDetails();
   }, [SeekId, SeekToken, userDetailApi]);
 
-  const addSkill = (skill) => {
-    const trimmedSkill = skill.trim();
-    if (trimmedSkill && !formData.skills.includes(trimmedSkill)) {
-      setFormData((prev) => ({
-        ...prev,
-        skills: [...prev.skills, trimmedSkill],
-      }));
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value, type, files } = e.target;
-
-    if (type === "file") {
-      const file = files[0];
-      if (file) {
-        // Check file type
-        if (!file.type.startsWith("image/")) {
-          setError("Please upload an image file");
-          return;
-        }
-        // Check file size (e.g., 5MB limit)
-        if (file.size > 5 * 1024 * 1024) {
-          setError("File size should be less than 5MB");
-          return;
-        }
-
-        // Create preview URL
-        const previewUrl = URL.createObjectURL(file);
-        setImagePreview(previewUrl);
-        setFormData((prev) => ({ ...prev, [name]: file }));
-      }
-      return;
-    } else if (name === "skills") {
-      setSkillInput(value);
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
-  };
-
-  const handleSkillInputKeyDown = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault(); // Prevent form submission
-      if (skillInput.trim()) {
-        addSkill(skillInput);
-        setSkillInput(""); // Clear input after adding
-      }
-    } else if (e.key === ",") {
-      e.preventDefault();
-      if (skillInput.trim()) {
-        addSkill(skillInput);
-        setSkillInput("");
-      }
-    }
-  };
-
-  const handleRemoveSkill = (indexToRemove) => {
-    setFormData((prev) => ({
-      ...prev,
-      skills: prev.skills.filter((_, index) => index !== indexToRemove),
-    }));
-  };
-
-  const handleSeekData = async (e) => {
-    e.preventDefault();
-
-    const submitFormData = new FormData();
-
-    Object.keys(formData).forEach(key => {
-      if (formData[key] !== null && formData[key] !== undefined) {
-        if (key === 'skills') {
-          // Convert skills array to a simple comma-separated string when sending to server
-          const skillsString = formData[key].join(", ");
-          submitFormData.append(key, skillsString);
-        } else if (key === 'image') {
-          if (formData[key] instanceof File) {
-            submitFormData.append(key, formData[key]);
-          }
-        } else {
-          submitFormData.append(key, formData[key]);
-        }
-      }
-    });
-
-    try {
-      const response = await axios.put(SeekApi, submitFormData, {
-        headers: {
-          Authorization: `Bearer ${SeekToken}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      console.log("Success:", response.data);
-      navigate("/user-profile");
-    } catch (error) {
-      console.error("Error:", error);
-      setError(error.message || "An error occurred");
-    }
-  };
-
   if (loading) {
     return (
       <p className="text-center mt-5 text-5xl text-pink-500 font-semibold">
@@ -210,6 +93,56 @@ const UserDetails = () => {
     );
   }
 
+  const handleSeekData = (e) => {
+    e.preventDefault();
+    const update = {
+      fullName: fullName,
+      profileImg: profileImg,
+      city: city,
+      eduDegree: eduDegree,
+      eduInstitution: eduInstitution,
+      eduSpecialisation: eduSpecialisation,
+      eduStartYear: eduStartYear,
+      eduEndYear: eduEndYear,
+      eduAddress: address,
+      pincode: pincode,
+      state: state,
+      country: country,
+      gender: gender,
+      phoneNumber: phoneNumber,
+      dateOfBirth: dateOfBirth,
+      skills: skills,
+      expCompany: expCompany,
+      expPosition: expPosition,
+      expStartYear: expStartYear,
+      expEndYear: expEndYear,
+      summary: summary,
+      projectUrl: projectUrl,
+      resume: resume,
+      address: address
+    };
+
+    fetch(SeekApi, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${SeekToken}`,
+      },
+      body: JSON.stringify(update),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Data updated successfully");
+          navigate("/user-profile");
+        } else {
+          console.error("Error updating data:", response.status);
+        }
+      })
+      .catch((error) => {
+        console.error("Error updating data:", error);
+      });
+  };
+
   const handleNext = () => {
     setStep((prev) => prev + 1);
   };
@@ -217,30 +150,23 @@ const UserDetails = () => {
   const handlePrevious = () => {
     setStep((prev) => prev - 1);
   };
+
   const renderuserDetailForm = () => (
     <>
       <div className="space-y-6">
-      <h2 className="text-3xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
+        <h2 className="text-3xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
           User Detials
         </h2>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Upload Company Logo
+          Upload Image
         </label>
         <div className="mt-1 flex items-center space-x-4">
           <input
             type="file"
-            name="image"
-            accept="image/*"
-            onChange={handleInputChange}
+            name="profileImg"
+            accept="profileImg/*"
             className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 text-sm"
           />
-          {imagePreview && (
-            <img
-              src={imagePreview}
-              alt="Preview"
-              className="h-20 w-20 object-cover rounded-lg"
-            />
-          )}
         </div>
         {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
 
@@ -251,8 +177,8 @@ const UserDetails = () => {
           <input
             type="text"
             name="fullName"
-            value={formData.fullName}
-            onChange={handleInputChange}
+            value={fullName}
+            onChange={(e) => setfullName(e.target.value)}
             className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             placeholder="Enter your full name"
           />
@@ -266,8 +192,8 @@ const UserDetails = () => {
             <input
               type="date"
               name="dateOfBirth"
-              value={formData.dateOfBirth}
-              onChange={handleInputChange}
+              value={dateOfBirth}
+              onChange={(e) => setdateOfBirth(e.target.value)}
               className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
@@ -277,8 +203,8 @@ const UserDetails = () => {
             </label>
             <select
               name="gender"
-              value={formData.gender}
-              onChange={handleInputChange}
+              value={gender}
+              onChange={(e) => setgender(e.target.value)}
               className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             >
               <option value="">Select your gender</option>
@@ -289,6 +215,8 @@ const UserDetails = () => {
           </div>
         </div>
 
+      
+
         <div className="flex-1">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Phone Number
@@ -296,12 +224,14 @@ const UserDetails = () => {
           <input
             type="tel"
             name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleInputChange}
+            value={phoneNumber}
+            onChange={(e) => setphoneNumber(e.target.value)}
             placeholder="Enter your phone number"
             className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
+
+    
 
         <button
           type="button"
@@ -310,6 +240,74 @@ const UserDetails = () => {
         >
           Next
         </button>
+      </div>
+    </>
+  );
+
+  const renderuserAboutForm = () => (
+    <>
+      <div className="space-y-6">
+        <h2 className="text-3xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
+          About yourself
+        </h2>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Summary
+          </label>
+          <input
+            type="text"
+            name="summary"
+            value={summary}
+            onChange={(e) => setsummary(e.target.value)}
+            rows="5"
+            placeholder="Enter your Address"
+            className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          />
+        </div>
+
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Github Link
+          </label>
+          <input
+            type="url"
+            name="projectUrl"
+            value={projectUrl}
+            onChange={(e) => setprojectUrl(e.target.value)}
+            placeholder="Enter your github link for projects"
+            className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          />
+        </div>
+
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Upload Resume
+          </label>
+          <input
+            type="file"
+            name="resume"
+            accept="resume/*"
+            className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 text-sm"
+          />
+        </div>
+
+        <div className="flex justify-between">
+          <button
+            type="button"
+            onClick={handlePrevious}
+            className="bg-gray-300 text-gray-700 py-2 px-4 rounded-lg shadow-md hover:opacity-90"
+          >
+            Previous
+          </button>
+
+          <button
+            type="button"
+            onClick={handleNext}
+            className="bg-gradient-to-r from-pink-500 to-blue-500 text-white text-xl py-3 px-4 rounded-lg shadow-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </>
   );
@@ -327,8 +325,8 @@ const UserDetails = () => {
           <input
             type="text"
             name="address"
-            value={formData.address}
-            onChange={handleInputChange}
+            value={address}
+            onChange={(e) => setaddress(e.target.value)}
             placeholder="Enter your Address"
             className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
@@ -341,8 +339,8 @@ const UserDetails = () => {
             <input
               type="text"
               name="city"
-              value={formData.city}
-              onChange={handleInputChange}
+              value={city}
+              onChange={(e) => setcity(e.target.value)}
               placeholder="Enter your city"
               className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
@@ -354,8 +352,8 @@ const UserDetails = () => {
             <input
               type="text"
               name="pincode"
-              value={formData.pincode}
-              onChange={handleInputChange}
+              value={pincode}
+              onChange={(e) => setpincode(e.target.value)}
               placeholder="Enter your pincode"
               className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
@@ -369,8 +367,8 @@ const UserDetails = () => {
           <input
             type="text"
             name="country"
-            value={formData.country}
-            onChange={handleInputChange}
+            value={country}
+            onChange={(e) => setcountry(e.target.value)}
             placeholder="Enter your country"
             className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
@@ -383,8 +381,8 @@ const UserDetails = () => {
           <input
             type="text"
             name="state"
-            value={formData.state}
-            onChange={handleInputChange}
+            value={state}
+            onChange={(e) => setstate(e.target.value)}
             placeholder="Enter your state"
             className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
@@ -423,9 +421,9 @@ const UserDetails = () => {
           </label>
           <input
             type="text"
-            name="education.degree"
-            value={formData.education.degree}
-            onChange={handleInputChange}
+            name="eduDegree"
+            value={eduDegree}
+            onChange={(e) => seteduDegree(e.target.value)}
             placeholder="Enter the degree"
             className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
@@ -437,9 +435,9 @@ const UserDetails = () => {
           </label>
           <input
             type="text"
-            name="education.institution"
-            value={formData.education.institution}
-            onChange={handleInputChange}
+            name="eduInstitution"
+            value={eduInstitution}
+            onChange={(e) => seteduInstitution(e.target.value)}
             placeholder="Enter the name of your university"
             className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
@@ -451,9 +449,9 @@ const UserDetails = () => {
           </label>
           <input
             type="text"
-            name="education.specialisation"
-            value={formData.education.specialisation}
-            onChange={handleInputChange}
+            name="eduSpecialisation"
+            value={eduSpecialisation}
+            onChange={(e) => seteduSpecialisation(e.target.value)}
             placeholder="Enter the field"
             className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
@@ -466,9 +464,9 @@ const UserDetails = () => {
             </label>
             <input
               type="date"
-              name="education.startYear"
-              value={formData.education.startYear}
-              onChange={handleInputChange}
+              name="eduStartYear"
+              value={eduStartYear}
+              onChange={(e) => seteduStartYear(e.target.value)}
               className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
@@ -478,9 +476,9 @@ const UserDetails = () => {
             </label>
             <input
               type="date"
-              name="education.endYear"
-              value={formData.education.endYear}
-              onChange={handleInputChange}
+              name="eduEndYear"
+              value={eduEndYear}
+              onChange={(e) => seteduEndYear(e.target.value)}
               className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
@@ -519,9 +517,9 @@ const UserDetails = () => {
           </label>
           <input
             type="text"
-            name="workExperience.company"
-            value={formData.workExperience.company}
-            onChange={handleInputChange}
+            name="expCompany"
+            value={expCompany}
+            onChange={(e) => setexpCompany(e.target.value)}
             placeholder="Enter the company name"
             className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
@@ -533,9 +531,9 @@ const UserDetails = () => {
           </label>
           <input
             type="text"
-            name="workExperience.position"
-            value={formData.workExperience.position}
-            onChange={handleInputChange}
+            name="expPosition"
+            value={expPosition}
+            onChange={(e) => setexpPosition(e.target.value)}
             placeholder="Enter the position you have been working"
             className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
@@ -548,9 +546,9 @@ const UserDetails = () => {
             </label>
             <input
               type="date"
-              name="workExperience.startDate"
-              value={formData.workExperience.startDate}
-              onChange={handleInputChange}
+              name="expStartYear"
+              value={expStartYear}
+              onChange={(e) => setexpStartYear(e.target.value)}
               className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
@@ -560,9 +558,9 @@ const UserDetails = () => {
             </label>
             <input
               type="date"
-              name="workExperience.endDate"
-              value={formData.workExperience.endDate}
-              onChange={handleInputChange}
+              name="expEndYear"
+              value={expEndYear}
+              onChange={(e) => setexpEndYear(e.target.value)}
               className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
@@ -570,15 +568,14 @@ const UserDetails = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Required Skills
+            Skills
           </label>
           <div className="relative">
           <input
             type="text"
             name="skills"
-            value={skillInput}
-            onChange={handleInputChange}
-            onKeyDown={handleSkillInputKeyDown}
+            value={skills}
+            onChange={(e) => setskills(e.target.value)}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             placeholder="Type a skill and press Enter or comma to add"
           />
@@ -586,25 +583,7 @@ const UserDetails = () => {
             Press Enter or comma (,) to add a skill
           </div>
         </div>
-        {formData.skills.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-2">
-            {formData.skills.map((skill, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
-              >
-                {skill}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveSkill(index)}
-                  className="ml-1 inline-flex items-center p-0.5 rounded-full text-blue-400 hover:bg-blue-200 hover:text-blue-900"
-                >
-                  ×
-                </button>
-              </span>
-            ))}
-          </div>
-        )}
+        
         </div>
 
         <div className="flex justify-between">
@@ -618,7 +597,6 @@ const UserDetails = () => {
 
           <button
             type="submit"
-            onClick={handleSeekData}
             className="bg-gradient-to-r from-pink-500 to-blue-500 text-white py-2 px-4 rounded-lg shadow-md hover:opacity-90"
           >
             Submit
@@ -677,9 +655,10 @@ const UserDetails = () => {
           <div className="bg-white shadow-lg rounded-lg w-full max-w-lg sm:p-6 p-4">
             <form onSubmit={handleSeekData}>
               {step === 1 && renderuserDetailForm()}
-              {step === 2 && renderuserAddressForm()}
-              {step === 3 && renderuserEducationForm()}
-              {step === 4 && renderuserExperienceForm()}
+              {step === 2 && renderuserAboutForm()}
+              {step === 3 && renderuserAddressForm()}
+              {step === 4 && renderuserEducationForm()}
+              {step === 5 && renderuserExperienceForm()}
             </form>
           </div>
         </div>

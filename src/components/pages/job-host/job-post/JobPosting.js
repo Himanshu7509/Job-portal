@@ -128,7 +128,7 @@ const JobPosting = () => {
         addSkill(skillInput);
         setSkillInput(''); // Clear input after adding
       }
-    } else if (e.key === ',' || e.key === ' ') {
+    } else if (e.key === ',' ){
       e.preventDefault();
       if (skillInput.trim()) {
         addSkill(skillInput);

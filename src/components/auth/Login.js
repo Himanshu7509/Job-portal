@@ -38,10 +38,10 @@ const Login = () => {
       .then((data) => {
         console.log("Login Response:", data);
   
-        if (data.token && data._id) {
+        if (data.token && data.userId) {
     
           Cookies.set("Token", data.token, { expires: 1 }); 
-          Cookies.set("Id", data._id, { expires: 1 });
+          Cookies.set("Id", data.userId, { expires: 1 });
   
           setSuccess("Login successful!");
           setError(null);
