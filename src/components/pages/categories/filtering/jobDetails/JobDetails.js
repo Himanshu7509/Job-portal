@@ -11,6 +11,9 @@ const JobDetails = () => {
   const { id } = useParams();
   const [jobData, setJobData] = useState(null);
   const [error, setError] = useState(null);
+  const [hasApplied, setHasApplied] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const jobToken = Cookies.get("Token");
   const userId = Cookies.get("Id");
   const jobDetailsAPI = `https://jobquick.onrender.com/job/${id}`;
@@ -44,32 +47,40 @@ const JobDetails = () => {
 
   const handleApplynow = async () => {
     try {
-      const response = await fetch(jobApplyAPI, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jobToken}`,
-        },
-        body: JSON.stringify({
+      const response = await axios.post(
+        jobApplyAPI,
+        {
           jobId: id,
-          applicantId: userId
-        })
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+          applicantId: userId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jobToken}`,
+          },
+        }
+      );
+
+      if (response && response.data) {
+        console.log(response.data);
+        if (hasApplied) {
+          setShowModal(true);
+          return;
+        }
+        setShowSuccessModal(true);
+        setHasApplied(true);
+      } else {
+        console.error("Error applying for job: No response data");
+        setShowModal(true);
       }
-  
-      const data = await response.json();
-      console.log(data)
-      alert("Application submitted successfully!");
     } catch (error) {
-      console.error("Error applying for job:", error);
-      alert("Failed to submit application. Please try again.");
+      console.error(
+        "Error applying for job:",
+        error.response?.data || error.message
+      );
+      setShowModal(true);
     }
   };
-
-
 
   if (error) {
     return (
@@ -89,7 +100,7 @@ const JobDetails = () => {
 
   return (
     <>
-      <Header/>
+      <Header />
 
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -112,11 +123,17 @@ const JobDetails = () => {
                     </p>
                   </div>
                   <div className="mt-6 sm:mt-0">
-                    
-                      <button onClick={handleApplynow} className="px-8 py-3 bg-gradient-to-r from-pink-500 to-blue-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-                        Apply Now
-                      </button>
-                    
+                    <button
+                      onClick={handleApplynow}
+                      disabled={hasApplied}
+                      className={`px-8 py-3 ${
+                        hasApplied
+                          ? "bg-gray-400 cursor-not-allowed"
+                          : "bg-gradient-to-r from-pink-500 to-blue-500 hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 text-white"
+                      } rounded-xl font-semibold shadow-lg`}
+                    >
+                      {hasApplied ? "Applied" : "Apply Now"}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -215,16 +232,44 @@ const JobDetails = () => {
             </div>
 
             <div className="px-4 sm:px-6 lg:px-8 py-6">
-              <Link to="">
+              <Link to="/alljobs">
                 <button className="px-8 py-3 mb-4 bg-gradient-to-r from-pink-500 to-blue-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-                  Apply Now
+                  Go Back
                 </button>
               </Link>
             </div>
           </div>
         </div>
       </div>
-    <Footer/>
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl">
+            <h2 className="text-xl font-bold mb-4">You have already applied</h2>
+            <p>You have already submitted your application for this job.</p>
+            <button
+              className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg"
+              onClick={() => setShowModal(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+      {showSuccessModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl">
+            <h2 className="text-xl font-bold mb-4">Application submitted successfully!</h2>
+            <p>Thank you for applying for this job. We will review your application and get back to you soon.</p>
+            <button
+              className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg"
+              onClick={() => setShowSuccessModal(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+      <Footer />
     </>
   );
 };

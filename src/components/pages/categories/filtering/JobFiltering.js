@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from "react";
-import {Search, BriefcaseBusiness, MapPin, Clock, Wallet, Menu, X} from "lucide-react";
+import {Search, Menu, X} from "lucide-react";
+import { TbCategory } from "react-icons/tb";
+import { GrUserWorker } from "react-icons/gr";
+import { BsPersonWorkspace } from "react-icons/bs";
+import { IoLocationOutline } from "react-icons/io5";
+import { FaUserClock } from "react-icons/fa";
+import { GiWallet } from "react-icons/gi";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 
+
+
 const JobFilters = ({filters, onFilterChange, categories, isLoading, onApplyFilters}) => {
+
   return (
-    <div className="rounded-lg">
-      {/* Search by title */}
-      <div className="mb-6">
-        <label className="text-2xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-4 mt-12">
+    
+    <div className="sticky top-4 rounded-lg p-4 bg-white shadow-lg w-90">
+    
+      <div className="mb-4 mt-4">
+        <label className="text-2xl font-bold text-center ml-8 text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text lg:ml-2">
           Search by Job Title
         </label>
         <div className="relative">
@@ -23,7 +33,7 @@ const JobFilters = ({filters, onFilterChange, categories, isLoading, onApplyFilt
         </div>
       </div>
 
-      {/* Categories */}
+
       <div className="mb-6">
         <label className="text-2xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
           Categories
@@ -46,7 +56,7 @@ const JobFilters = ({filters, onFilterChange, categories, isLoading, onApplyFilt
         </select>
       </div>
 
-      {/* Experience Level */}
+
       <div className="mb-6">
         <label className="text-2xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
           Experience Level
@@ -64,7 +74,6 @@ const JobFilters = ({filters, onFilterChange, categories, isLoading, onApplyFilt
         </select>
       </div>
 
-      {/* Job Type */}
       <div className="mb-6">
         <label className="text-2xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
           Job Type
@@ -80,7 +89,6 @@ const JobFilters = ({filters, onFilterChange, categories, isLoading, onApplyFilt
         </select>
       </div>
 
-      {/* Work Type */}
       <div className="mb-6">
         <label className="text-2xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
           Work Type
@@ -97,7 +105,6 @@ const JobFilters = ({filters, onFilterChange, categories, isLoading, onApplyFilt
         </select>
       </div>
 
-      {/* Apply Filters Button */}
       <button
         onClick={onApplyFilters}
         className="w-full h-12 bg-gradient-to-r from-pink-500 to-blue-500 text-white rounded-md font-medium hover:opacity-90 transition-opacity"
@@ -105,17 +112,21 @@ const JobFilters = ({filters, onFilterChange, categories, isLoading, onApplyFilt
         Apply Filters
       </button>
     </div>
+  
   );
 };
 
 const JobCard = ({ job }) => {
+
   return (
-    <div className="border rounded-lg p-4 flex flex-col justify-between items-start hover:shadow-lg transition-shadow bg-white">
+
+    <div className="border rounded-lg p-6 flex flex-col justify-between items-start hover:shadow-lg transition-shadow bg-white">
+      
       <div className="flex w-full mb-4">
         <img
-          src={job.profileImg || "https://www.pngkey.com/png/full/191-1911374_company-building-png-office-building-png.png"}
+          src={job.profileImg }
           alt={`${job.companyName} logo`}
-          className="w-14 h-14 rounded-lg object-cover mr-4"
+          className="w-24 h-24 rounded-lg object-cover mr-4"
         />
         <div className="flex-1">
           <h3 className="font-semibold text-lg text-gray-800 mb-1">
@@ -127,41 +138,56 @@ const JobCard = ({ job }) => {
           </span>
         </div>
       </div>
+ 
+       <div className="bg-white w-full">
 
-      <div className="text-sm text-gray-500 mb-4 font-semibold w-full">
-        <div className="flex items-center mb-2">
-          <BriefcaseBusiness className="w-5 h-5 text-pink-500 mr-2" />
-          {job.category?.title || "Uncategorized"}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+    
+        <div>
+          <div className="flex items-center mb-3">
+            <TbCategory className="w-6 h-6 text-pink-500 mr-3" />
+            <span className="text-gray-700 font-semibold">   {job.category?.title || "Uncategorized"}</span>
+          </div>
+          <div className="flex items-center mb-3">
+            <FaUserClock className="w-6 h-6 text-pink-500 mr-3" />
+            <span className="text-gray-700 font-semibold">{job.jobType}</span>
+          </div>
+          <div className="flex items-center mb-3">
+            <GiWallet className="w-6 h-6 text-pink-500 mr-3" />
+            <span className="text-gray-700 font-semibold">${job.minPackage} - ${job.maxPackage}</span>
+          </div>
         </div>
-        <div className="flex items-center mb-2">
-          <Clock className="w-5 h-5 text-pink-500 mr-2" />
-          {job.jobType}
-        </div>
-        <div className="flex items-center mb-2">
-          <Wallet className="w-5 h-5 text-pink-500 mr-2" />${job.minPackage} - ${job.maxPackage}
-        </div>
-        <div className="flex items-center mb-2">
-          <MapPin className="w-5 h-5 text-pink-500 mr-2" />
-          {job.location}
-        </div>
-        <div className="flex items-center">
-          <BriefcaseBusiness className="w-5 h-5 text-pink-500 mr-2" />
-          {job.experience}
-        </div>
-        <div className="flex items-center">
-          <BriefcaseBusiness className="w-5 h-5 text-pink-500 mr-2" />
-          {job.workType}
+        <div>
+          <div className="flex items-center mb-3">
+            <IoLocationOutline className="w-6 h-6 text-pink-500 mr-3" />
+            <span className="text-gray-700 font-semibold">{job.location}</span>
+          </div>
+          <div className="flex items-center mb-3">
+            <GrUserWorker className="w-6 h-6 text-pink-500 mr-3" />
+            <span className="text-gray-700 font-semibold">{job.experience}</span>
+          </div>
+          <div className="flex items-center mb-3">
+            <BsPersonWorkspace className="w-6 h-6 text-pink-500 mr-3" />
+            <span className="text-gray-700 font-semibold">{job.workType}</span>
+          </div>
         </div>
       </div>
-      <Link to={`/job-detials/${job._id}`}>
-      <button
-        className="w-full h-10 bg-gradient-to-r from-pink-500 to-blue-500 text-white rounded-md text-sm font-medium hover:opacity-90 transition-opacity"
-      >
-        View Job Details
-      </button>
+       </div>
+
+
+      <Link to={`/job-detials/${job._id}`} className="block w-full">
+          <button
+            className="mt-4 w-60 h-10 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500  text-white rounded-lg text-base font-semibold shadow-md  hover:scale-105 hover:shadow-lg transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-pink-400  sm:h-12 md:h-14 lg:h-12">
+              View Job Details
+          </button>
       </Link>
+
     </div>
+
+  
+
   );
+
 };
 
 const Jobs = () => {
@@ -172,7 +198,7 @@ const Jobs = () => {
   const [jobListings, setJobListings] = useState([]);
   const [totalJobs, setTotalJobs] = useState(0);
   
-  // Simplified filters without pagination
+  
   const [filters, setFilters] = useState({
     categories: "",
     title: "",
@@ -201,7 +227,6 @@ const Jobs = () => {
     return `https://jobquick.onrender.com/job/filter?${queryParams.toString()}`;
   };
 
-  // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       if (!isAuthenticated()) return;
@@ -231,7 +256,7 @@ const Jobs = () => {
     fetchCategories();
   }, [JobToken]);
 
-  // Fetch jobs
+
   const fetchJobs = async () => {
     if (!isAuthenticated()) return;
 
@@ -270,7 +295,6 @@ const Jobs = () => {
     fetchJobs();
   };
 
-  // Initial fetch
   useEffect(() => {
     fetchJobs();
   }, []);
@@ -298,24 +322,22 @@ const Jobs = () => {
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col space-y-8">
+
           <div className="flex gap-6">
-            {/* Sidebar filters */}
-            <div className="relative">
+
+            <div>
+
               <button
-                className="lg:hidden bg-gradient-to-r from-pink-500 to-blue-500 text-white p-2 rounded-md fixed top-4 left-4 z-50"
+                className="fixed top-16 left-4 z-50 p-2  bg-gradient-to-r from-pink-500 to-blue-500 text-white rounded-lg lg:hidden"
                 onClick={() => setIsOpen(!isOpen)}
               >
-                {isOpen ? (
-                  <X className="h-6 w-6" />
-                ) : (
-                  <Menu className="h-6 w-6" />
-                )}
+                {isOpen ? <X className="h-5 w-6" /> : <Menu className="h-5 w-6" />}
               </button>
 
               <div
-                className={`fixed top-0 left-0 h-full overflow-y-auto bg-gray-50 shadow-lg p-4 transform transition-transform duration-300 z-40 ${
-                  isOpen ? "translate-x-0" : "-translate-x-full"
-                } lg:relative lg:translate-x-0 lg:w-64 flex-shrink-0`}
+                className={`fixed top-4 left-0 h-full w-96 p-4 transition-transform duration-300 ease-in-out transform 
+                ${isOpen ? "translate-x-0" : "-translate-x-full"} 
+                lg:relative lg:translate-x-0 lg:w-90 lg:flex-shrink-0`}
               >
                 <JobFilters
                   filters={pendingFilters}
@@ -325,9 +347,16 @@ const Jobs = () => {
                   onApplyFilters={handleApplyFilters}
                 />
               </div>
+
+              {isOpen && (
+                <div
+
+                className="lg:hidden fixed top-4 right-4 p-2 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 text-white shadow-lg hover:opacity-90 transition-all"
+                ></div>
+              )}
             </div>
 
-            {/* Job Listings */}
+
             <div className="flex-1 px-4 sm:px-6 lg:px-8">
               {isLoading ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
@@ -350,7 +379,7 @@ const Jobs = () => {
                   <p className="text-gray-400">Try adjusting your filters</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1">
                   {jobListings.map((job) => (
                     <JobCard key={job._id} job={job} />
                   ))}
@@ -358,6 +387,7 @@ const Jobs = () => {
               )}
             </div>
           </div>
+
         </div>
       </div>
     </div>

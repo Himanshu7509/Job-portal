@@ -132,7 +132,7 @@ const MyJob = () => {
             <h1 className="text-xl font-semibold">No jobs found.</h1>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-full max-w-6xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-full max-w-6xl mt-3">
             {jobs.map((job) => (
               <div
                 key={job._id}
