@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {Search, Menu, X} from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { TbCategory } from "react-icons/tb";
 import { GrUserWorker } from "react-icons/gr";
 import { BsPersonWorkspace } from "react-icons/bs";
@@ -9,14 +9,15 @@ import { GiWallet } from "react-icons/gi";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 
-
-
-const JobFilters = ({filters, onFilterChange, categories, isLoading, onApplyFilters}) => {
-
+const JobFilters = ({
+  filters,
+  onFilterChange,
+  categories,
+  isLoading,
+  onApplyFilters,
+}) => {
   return (
-    
     <div className="sticky top-4 rounded-lg p-4 bg-white shadow-lg w-90">
-    
       <div className="mb-4 mt-4">
         <label className="text-2xl font-bold text-center ml-8 text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text lg:ml-2">
           Search by Job Title
@@ -29,10 +30,8 @@ const JobFilters = ({filters, onFilterChange, categories, isLoading, onApplyFilt
             value={filters.title}
             onChange={(e) => onFilterChange("title", e.target.value)}
           />
-          <Search className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
         </div>
       </div>
-
 
       <div className="mb-6">
         <label className="text-2xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
@@ -55,7 +54,6 @@ const JobFilters = ({filters, onFilterChange, categories, isLoading, onApplyFilt
           <option value="Other">Other</option>
         </select>
       </div>
-
 
       <div className="mb-6">
         <label className="text-2xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
@@ -112,19 +110,15 @@ const JobFilters = ({filters, onFilterChange, categories, isLoading, onApplyFilt
         Apply Filters
       </button>
     </div>
-  
   );
 };
 
 const JobCard = ({ job }) => {
-
   return (
-
     <div className="border rounded-lg p-6 flex flex-col justify-between items-start hover:shadow-lg transition-shadow bg-white">
-      
       <div className="flex w-full mb-4">
         <img
-          src={job.profileImg }
+          src={job.profileImg}
           alt={`${job.companyName} logo`}
           className="w-24 h-24 rounded-lg object-cover mr-4"
         />
@@ -138,56 +132,58 @@ const JobCard = ({ job }) => {
           </span>
         </div>
       </div>
- 
-       <div className="bg-white w-full">
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-    
-        <div>
-          <div className="flex items-center mb-3">
-            <TbCategory className="w-6 h-6 text-pink-500 mr-3" />
-            <span className="text-gray-700 font-semibold">   {job.category?.title || "Uncategorized"}</span>
+      <div className="bg-white w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div>
+            <div className="flex items-center mb-3">
+              <TbCategory className="w-6 h-6 text-pink-500 mr-3" />
+              <span className="text-gray-700 font-semibold">
+                {" "}
+                {job.category?.title || "Uncategorized"}
+              </span>
+            </div>
+            <div className="flex items-center mb-3">
+              <FaUserClock className="w-6 h-6 text-pink-500 mr-3" />
+              <span className="text-gray-700 font-semibold">{job.jobType}</span>
+            </div>
+            <div className="flex items-center mb-3">
+              <GiWallet className="w-6 h-6 text-pink-500 mr-3" />
+              <span className="text-gray-700 font-semibold">
+                ${job.minPackage} - ${job.maxPackage}
+              </span>
+            </div>
           </div>
-          <div className="flex items-center mb-3">
-            <FaUserClock className="w-6 h-6 text-pink-500 mr-3" />
-            <span className="text-gray-700 font-semibold">{job.jobType}</span>
-          </div>
-          <div className="flex items-center mb-3">
-            <GiWallet className="w-6 h-6 text-pink-500 mr-3" />
-            <span className="text-gray-700 font-semibold">${job.minPackage} - ${job.maxPackage}</span>
-          </div>
-        </div>
-        <div>
-          <div className="flex items-center mb-3">
-            <IoLocationOutline className="w-6 h-6 text-pink-500 mr-3" />
-            <span className="text-gray-700 font-semibold">{job.location}</span>
-          </div>
-          <div className="flex items-center mb-3">
-            <GrUserWorker className="w-6 h-6 text-pink-500 mr-3" />
-            <span className="text-gray-700 font-semibold">{job.experience}</span>
-          </div>
-          <div className="flex items-center mb-3">
-            <BsPersonWorkspace className="w-6 h-6 text-pink-500 mr-3" />
-            <span className="text-gray-700 font-semibold">{job.workType}</span>
+          <div>
+            <div className="flex items-center mb-3">
+              <IoLocationOutline className="w-6 h-6 text-pink-500 mr-3" />
+              <span className="text-gray-700 font-semibold">
+                {job.location}
+              </span>
+            </div>
+            <div className="flex items-center mb-3">
+              <GrUserWorker className="w-6 h-6 text-pink-500 mr-3" />
+              <span className="text-gray-700 font-semibold">
+                {job.experience}
+              </span>
+            </div>
+            <div className="flex items-center mb-3">
+              <BsPersonWorkspace className="w-6 h-6 text-pink-500 mr-3" />
+              <span className="text-gray-700 font-semibold">
+                {job.workType}
+              </span>
+            </div>
           </div>
         </div>
       </div>
-       </div>
-
 
       <Link to={`/job-detials/${job._id}`} className="block w-full">
-          <button
-            className="mt-4 w-60 h-10 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500  text-white rounded-lg text-base font-semibold shadow-md  hover:scale-105 hover:shadow-lg transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-pink-400  sm:h-12 md:h-14 lg:h-12">
-              View Job Details
-          </button>
+        <button className="mt-4 w-60 h-10 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500  text-white rounded-lg text-base font-semibold shadow-md  hover:scale-105 hover:shadow-lg transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-pink-400  sm:h-12 md:h-14 lg:h-12">
+          View Job Details
+        </button>
       </Link>
-
     </div>
-
-  
-
   );
-
 };
 
 const Jobs = () => {
@@ -197,17 +193,16 @@ const Jobs = () => {
   const [error, setError] = useState(null);
   const [jobListings, setJobListings] = useState([]);
   const [totalJobs, setTotalJobs] = useState(0);
-  
-  
+
   const [filters, setFilters] = useState({
     categories: "",
     title: "",
     jobType: "",
     workType: "",
     experience: "",
-    limit: 100
+    limit: 10,
   });
-
+ 
   const [pendingFilters, setPendingFilters] = useState(filters);
 
   const JobToken = Cookies.get("Token");
@@ -233,11 +228,14 @@ const Jobs = () => {
 
       setIsLoading(true);
       try {
-        const response = await fetch("https://jobquick.onrender.com/categories", {
-          headers: {
-            Authorization: `Bearer ${JobToken}`,
-          },
-        });
+        const response = await fetch(
+          "https://jobquick.onrender.com/categories",
+          {
+            headers: {
+              Authorization: `Bearer ${JobToken}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -255,7 +253,6 @@ const Jobs = () => {
 
     fetchCategories();
   }, [JobToken]);
-
 
   const fetchJobs = async () => {
     if (!isAuthenticated()) return;
@@ -284,9 +281,9 @@ const Jobs = () => {
   };
 
   const handleFilterChange = (name, value) => {
-    setPendingFilters(prev => ({
+    setPendingFilters((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -322,16 +319,17 @@ const Jobs = () => {
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col space-y-8">
-
           <div className="flex gap-6">
-
             <div>
-
               <button
                 className="fixed top-16 left-4 z-50 p-2  bg-gradient-to-r from-pink-500 to-blue-500 text-white rounded-lg lg:hidden"
                 onClick={() => setIsOpen(!isOpen)}
               >
-                {isOpen ? <X className="h-5 w-6" /> : <Menu className="h-5 w-6" />}
+                {isOpen ? (
+                  <X className="h-5 w-6" />
+                ) : (
+                  <Menu className="h-5 w-6" />
+                )}
               </button>
 
               <div
@@ -349,19 +347,18 @@ const Jobs = () => {
               </div>
 
               {isOpen && (
-                <div
-
-                className="lg:hidden fixed top-4 right-4 p-2 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 text-white shadow-lg hover:opacity-90 transition-all"
-                ></div>
+                <div className="lg:hidden fixed top-4 right-4 p-2 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 text-white shadow-lg hover:opacity-90 transition-all"></div>
               )}
             </div>
-
 
             <div className="flex-1 px-4 sm:px-6 lg:px-8">
               {isLoading ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
                   {[1, 2, 3, 4].map((n) => (
-                    <div key={n} className="border rounded-lg p-4 animate-pulse">
+                    <div
+                      key={n}
+                      className="border rounded-lg p-4 animate-pulse"
+                    >
                       <div className="h-32 bg-gray-200 rounded-lg mb-4"></div>
                       <div className="h-4 bg-gray-200 rounded mb-2"></div>
                       <div className="h-4 bg-gray-200 rounded w-2/3"></div>
@@ -387,7 +384,6 @@ const Jobs = () => {
               )}
             </div>
           </div>
-
         </div>
       </div>
     </div>

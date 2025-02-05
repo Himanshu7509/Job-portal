@@ -35,6 +35,7 @@ const JobDetails = () => {
         }
 
         const data = await response.json();
+        console.log(data)
         setJobData(data);
       } catch (error) {
         console.error("Error fetching host jobs:", error);
@@ -194,6 +195,8 @@ const JobDetails = () => {
                       ["Openings", jobData.noOfOpeaning],
                       ["Min Package", jobData.minPackage],
                       ["Max Package", jobData.maxPackage],
+                      ["Categories",jobData.category.title],
+                      ["Posted Date", new Date(jobData.dateCreated).toLocaleDateString()]
                     ].map(([label, value]) => (
                       <div key={label} className="bg-pink-50 rounded-xl p-4">
                         <p className="text-gray-600 text-sm">{label}</p>

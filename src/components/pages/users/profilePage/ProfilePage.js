@@ -10,7 +10,7 @@ const ProfilePage = () => {
   const [seeker, setSeeker] = useState(null);
   const [error, setError] = useState(null);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const userId = Cookies.get("Id");
   const userToken = Cookies.get("Token");
@@ -44,7 +44,7 @@ const ProfilePage = () => {
     fetchUserProfile();
   }, [userProfileApi, userToken]);
 
-  const handleDeleteProfile = async (userId) =>{
+  const handleDeleteProfile = async (userId) => {
     console.log("Attempting to delete profile with ID:", userId);
     try {
       const response = await fetch(deleteProfile, {
@@ -68,7 +68,6 @@ const ProfilePage = () => {
           `Failed to delete profile. Status: ${response.status}, Message: ${
             result.message || "Unknown error"
           }`
-
         );
       }
 
@@ -77,7 +76,7 @@ const ProfilePage = () => {
       console.error("Delete profile Error:", error);
       setError(error.message);
     }
-  }
+  };
 
   if (error) {
     return (
@@ -128,7 +127,10 @@ const ProfilePage = () => {
                     </Link>
                   </div>
                 </div>
-                <button onClick={handleDeleteProfile} className="bg-gradient-to-r from-pink-500 to-red-800 text-white font-semibold px-4 py-2 rounded mt-4 w-30">
+                <button
+                  onClick={handleDeleteProfile}
+                  className="bg-gradient-to-r from-pink-500 to-red-800 text-white font-semibold px-4 py-2 rounded mt-4 w-30"
+                >
                   Delete Account
                 </button>
               </div>

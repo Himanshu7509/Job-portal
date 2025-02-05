@@ -64,7 +64,7 @@ const ShowJobs = () => {
               className="border p-4 rounded-lg shadow-lg bg-white hover:shadow-xl transition-all duration-300"
             >
               <h2 className="text-xl mb-3 font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
-                {job.title}
+                 {job.title}
               </h2>
               <p className="text-gray-500 font-semibold">
                 <span className="font-bold text-black">Company:</span>{" "}
