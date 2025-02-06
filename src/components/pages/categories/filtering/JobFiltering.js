@@ -177,7 +177,7 @@ const JobCard = ({ job }) => {
       </div>
 
       <Link to={`/job-detials/${job._id}`} className="block w-full">
-        <button className="mt-4 w-60 h-10 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white rounded-lg text-base font-semibold shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-pink-400 sm:h-12 md:h-14 lg:h-12">
+        <button className="mt-4 w-48 h-10 bg-gradient-to-r from-pink-400 to-blue-400 text-white rounded-lg text-base font-semibold shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-pink-400 sm:h-12 md:h-14 lg:h-12">
           View Job Details
         </button>
       </Link>

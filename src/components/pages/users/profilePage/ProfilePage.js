@@ -36,7 +36,7 @@ const ProfilePage = () => {
         setSeeker(data);
         console.log(data);
       } catch (error) {
-        console.error("Error fetching host profile:", error);
+        console.error("Error fetching user profile:", error);
         setError("Failed to load seeker details.");
       }
     };

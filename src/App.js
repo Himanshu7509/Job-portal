@@ -22,6 +22,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute'
 import MyJob from './components/pages/job-host/hoster-dashboard/myJob/MyJob';
 import JobDetails from './components/pages/categories/filtering/jobDetails/JobDetails';
 import ViewApplicant from './components/pages/job-host/hoster-dashboard/view-Applicant/ViewApplicant';
+import Applicant from './components/pages/job-host/hoster-dashboard/view-Applicant/Applicant-Details/Applicant';
 
 const App = () => {
   return (
@@ -133,6 +134,14 @@ const App = () => {
               <ViewApplicant/>
               }
               />
+              <Route
+              path='/applicant/:id'
+              element={
+                <ProtectedRoute>
+                  <Applicant/>
+                </ProtectedRoute>
+                }
+                />
         </Routes>
       </BrowserRouter>
     </div>

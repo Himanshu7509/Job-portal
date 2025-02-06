@@ -9,6 +9,7 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [hostLoggedIn, sethostLoggedIn] = useState(false);
 
   const navigate = useNavigate();
 
@@ -16,10 +17,14 @@ const Header = () => {
     // Check login status on mount
     const token = Cookies.get("Token"); // Assuming login stores a token
     const userId = Cookies.get("Id");
+    const hostId = Cookies.get("userId");
+    const hostToken = Cookies.get("jwtToken");
     if (token && userId) {
       setIsLoggedIn(true);
     }
+   
   }, []);
+
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -121,6 +126,7 @@ const Header = () => {
           <div className="hidden lg:flex items-center space-x-4">
             {isLoggedIn ? (
               <>
+              
                 <Link to="/host-login">
                   <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
                     Job Hoster

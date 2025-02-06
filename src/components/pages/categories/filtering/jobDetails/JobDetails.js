@@ -14,10 +14,13 @@ const JobDetails = () => {
   const [hasApplied, setHasApplied] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+
   const jobToken = Cookies.get("Token");
   const userId = Cookies.get("Id");
   const jobDetailsAPI = `https://jobquick.onrender.com/job/${id}`;
   const jobApplyAPI = `https://jobquick.onrender.com/applicants`;
+  const userProfileApi = `https://jobquick.onrender.com/seekuser/${userId}`;
 
   useEffect(() => {
     const fetchAllJobDetails = async () => {
@@ -45,6 +48,39 @@ const JobDetails = () => {
 
     fetchAllJobDetails();
   }, [id]);
+
+   useEffect(() => {
+      const fetchUserProfile = async () => {
+        try {
+          const response = await fetch(userProfileApi, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jobToken}`,
+            },
+          });
+  
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+  
+          const data = await response.json();
+
+          console.log([
+            data._id,
+            data.fullName,
+            data.email,
+            data.phoneNumber,
+
+          ]);
+        } catch (error) {
+          console.error("Error fetching host profile:", error);
+          setError("Failed to load seeker details.");
+        }
+      };
+  
+      fetchUserProfile();
+    }, [userProfileApi, jobToken]);
 
   const handleApplynow = async () => {
     try {
