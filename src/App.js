@@ -21,6 +21,7 @@ import ProfilePage from './components/pages/users/profilePage/ProfilePage';
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import MyJob from './components/pages/job-host/hoster-dashboard/myJob/MyJob';
 import JobDetails from './components/pages/categories/filtering/jobDetails/JobDetails';
+import ViewApplicant from './components/pages/job-host/hoster-dashboard/view-Applicant/ViewApplicant';
 
 const App = () => {
   return (
@@ -126,6 +127,12 @@ const App = () => {
             </ProtectedRoute>
             }
             />
+            <Route
+            path='/job/:id/applicants'
+            element={
+              <ViewApplicant/>
+              }
+              />
         </Routes>
       </BrowserRouter>
     </div>

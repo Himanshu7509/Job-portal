@@ -139,7 +139,6 @@ const JobCard = ({ job }) => {
             <div className="flex items-center mb-3">
               <TbCategory className="w-6 h-6 text-pink-500 mr-3" />
               <span className="text-gray-700 font-semibold">
-                {" "}
                 {job.category?.title || "Uncategorized"}
               </span>
             </div>
@@ -178,7 +177,7 @@ const JobCard = ({ job }) => {
       </div>
 
       <Link to={`/job-detials/${job._id}`} className="block w-full">
-        <button className="mt-4 w-60 h-10 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500  text-white rounded-lg text-base font-semibold shadow-md  hover:scale-105 hover:shadow-lg transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-pink-400  sm:h-12 md:h-14 lg:h-12">
+        <button className="mt-4 w-60 h-10 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white rounded-lg text-base font-semibold shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-pink-400 sm:h-12 md:h-14 lg:h-12">
           View Job Details
         </button>
       </Link>
@@ -193,6 +192,10 @@ const Jobs = () => {
   const [error, setError] = useState(null);
   const [jobListings, setJobListings] = useState([]);
   const [totalJobs, setTotalJobs] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [page, setPage] = useState();
+  const jobsPerPage = 10;
 
   const [filters, setFilters] = useState({
     categories: "",
@@ -200,9 +203,8 @@ const Jobs = () => {
     jobType: "",
     workType: "",
     experience: "",
-    limit: 10,
   });
- 
+
   const [pendingFilters, setPendingFilters] = useState(filters);
 
   const JobToken = Cookies.get("Token");
@@ -212,13 +214,15 @@ const Jobs = () => {
     return !!JobToken && !!userId;
   };
 
-  const buildFilterUrl = () => {
+  const buildFilterUrl = (pageNum) => {
     const queryParams = new URLSearchParams();
     Object.entries(pendingFilters).forEach(([key, value]) => {
       if (value) {
         queryParams.append(key, value);
       }
     });
+    queryParams.append("page", pageNum);
+    queryParams.append("limit", jobsPerPage);
     return `https://jobquick.onrender.com/job/filter?${queryParams.toString()}`;
   };
 
@@ -254,12 +258,12 @@ const Jobs = () => {
     fetchCategories();
   }, [JobToken]);
 
-  const fetchJobs = async () => {
+  const fetchJobs = async (pageNum, isLoadMore = false) => {
     if (!isAuthenticated()) return;
 
     setIsLoading(true);
     try {
-      const response = await fetch(buildFilterUrl(), {
+      const response = await fetch(buildFilterUrl(pageNum), {
         headers: {
           Authorization: `Bearer ${JobToken}`,
         },
@@ -270,8 +274,15 @@ const Jobs = () => {
       }
 
       const data = await response.json();
-      setJobListings(data.jobs || data.data || []);
-      setTotalJobs(data.totalJobs || 0);
+      
+      if (isLoadMore) {
+        setJobListings(prevJobs => [...prevJobs, ...data.jobs]);
+      } else {
+        setJobListings(data.jobs || []);
+      }
+      
+      setTotalJobs(data.pagination.total);
+      setTotalPages(data.pagination.totalPages);
     } catch (error) {
       console.error("Error fetching jobs:", error);
       setError("Failed to load jobs");
@@ -288,13 +299,32 @@ const Jobs = () => {
   };
 
   const handleApplyFilters = () => {
+    setPage(1); // Reset page when applying new filters
+    setJobListings([]); // Clear existing jobs
     setFilters(pendingFilters);
-    fetchJobs();
+    fetchJobs(1, false);
+  };
+
+  const handleLoadMore = () => {
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    fetchJobs(nextPage, true);
   };
 
   useEffect(() => {
-    fetchJobs();
+    if (isAuthenticated()) {
+      fetchJobs(1, false);
+    }
   }, []);
+
+  useEffect(() => {
+    if (page === 1) {
+      fetchJobs(false);
+    }
+  }, [filters]);
+
+  // Show load more button only if there are more jobs to load
+  const showLoadMore = currentPage < totalPages;
 
   if (!isAuthenticated()) {
     return (
@@ -304,12 +334,12 @@ const Jobs = () => {
           <p className="text-gray-600 mb-4">
             You need to be logged in to view job listings
           </p>
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="inline-block bg-gradient-to-r from-pink-500 to-blue-500 text-white py-2 px-6 rounded-md hover:opacity-90"
           >
             Go to Login
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -322,7 +352,7 @@ const Jobs = () => {
           <div className="flex gap-6">
             <div>
               <button
-                className="fixed top-16 left-4 z-50 p-2  bg-gradient-to-r from-pink-500 to-blue-500 text-white rounded-lg lg:hidden"
+                className="fixed top-16 left-4 z-50 p-2 bg-gradient-to-r from-pink-500 to-blue-500 text-white rounded-lg lg:hidden"
                 onClick={() => setIsOpen(!isOpen)}
               >
                 {isOpen ? (
@@ -345,14 +375,9 @@ const Jobs = () => {
                   onApplyFilters={handleApplyFilters}
                 />
               </div>
-
-              {isOpen && (
-                <div className="lg:hidden fixed top-4 right-4 p-2 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 text-white shadow-lg hover:opacity-90 transition-all"></div>
-              )}
             </div>
-
             <div className="flex-1 px-4 sm:px-6 lg:px-8">
-              {isLoading ? (
+              {isLoading && jobListings.length === 0 ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
                   {[1, 2, 3, 4].map((n) => (
                     <div
@@ -380,6 +405,49 @@ const Jobs = () => {
                   {jobListings.map((job) => (
                     <JobCard key={job._id} job={job} />
                   ))}
+                </div>
+              )}
+
+              {/* Load More Button */}
+              {showLoadMore && !isLoading && jobListings.length > 0 && (
+                <div className="flex justify-center mt-8">
+                  <button
+                    onClick={handleLoadMore}
+                    className="w-60 h-10 bg-gradient-to-r from-purple-500 to-purple-800 text-white rounded-lg text-base font-semibold shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-pink-400 sm:h-12 md:h-14 lg:h-12"
+                  >
+                    {isLoading ? (
+                      <span className="flex items-center justify-center">
+                        <svg
+                          className="animate-spin h-5 w-5 mr-3"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        Loading...
+                      </span>
+                    ) : (
+                      "Load More"
+                    )}
+                  </button>
+                </div>
+              )}
+
+              {/* Loading indicator for load more */}
+              {isLoading && jobListings.length > 0 && (
+                <div className="flex justify-center mt-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
                 </div>
               )}
             </div>

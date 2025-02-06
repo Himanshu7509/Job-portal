@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Mail, User, Briefcase, GraduationCap, MapPin, Star } from 'lucide-react';
 import Cookies from 'js-cookie';
 import { useParams } from 'react-router-dom';
+import { FaRegBookmark, FaBookmark } from "react-icons/fa";
 
 const ViewApplicant = () => {
   const { id } = useParams();
@@ -9,7 +10,7 @@ const ViewApplicant = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  const token = Cookies.get("token");
+  const token = Cookies.get("jwtToken");
 
   useEffect(() => {
     const fetchApplicants = async () => {
@@ -44,6 +45,8 @@ const ViewApplicant = () => {
             .filter((applicant) => applicant !== null && applicant !== undefined);
 
           setApplicants(applicantDetails);
+         
+        
         } else {
           setApplicants([]);
         }
@@ -113,7 +116,11 @@ const ViewApplicant = () => {
                         </div>
                         <div>
                           <p className="text-sm text-gray-500">Full Name</p>
+                          <div className='flex justify-between space-x-40 items-center'>
                           <p className="font-semibold text-gray-900 text-lg">{applicant?.fullName || "N/A"}</p>
+                          
+                          
+                          </div>
                         </div>
                       </div>
 

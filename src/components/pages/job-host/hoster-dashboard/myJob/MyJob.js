@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import HostSidebar from "../sidebar/HostSidebar";
+import { Link } from "lucide-react";
 
 const MyJob = () => {
   const [jobs, setJobs] = useState([]);
@@ -54,6 +55,10 @@ const MyJob = () => {
       setLoading(false);
     }
   };
+
+  const handleViewApplicant = (jobId) =>{
+    navigate(`/job/${jobId}/applicants`);
+  }
 
   const handleDeleteJob = async (jobId) => {
     const token = Cookies.get("jwtToken");
@@ -159,9 +164,11 @@ const MyJob = () => {
                 </p>
 
                 <div className="flex justify-between">
-                  <button className="bg-gradient-to-r from-blue-500 to-blue-800 text-white font-semibold px-4 py-2 rounded mt-4 w-35">
+                  
+                  <button onClick={()=> handleViewApplicant(job._id)} className="bg-gradient-to-r from-blue-500 to-blue-800 text-white font-semibold px-4 py-2 rounded mt-4 w-35">
                     View Applicants
                   </button>
+                  
                   <button
                     onClick={() => handleDeleteJob(job._id)}
                     className="bg-gradient-to-r from-red-500 to-red-800 text-white font-semibold px-4 py-2 rounded mt-4 w-30"
