@@ -118,7 +118,7 @@ const JobCard = ({ job }) => {
     <div className="border rounded-lg p-6 flex flex-col justify-between items-start hover:shadow-lg transition-shadow bg-white">
       <div className="flex w-full mb-4">
         <img
-          src={job.profileImg}
+          src="https://thumbs.dreamstime.com/b/building-logo-19190924.jpg"
           alt={`${job.companyName} logo`}
           className="w-24 h-24 rounded-lg object-cover mr-4"
         />
@@ -137,17 +137,17 @@ const JobCard = ({ job }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
           <div>
             <div className="flex items-center mb-3">
-              <TbCategory className="w-6 h-6 text-pink-500 mr-3" />
+              <TbCategory className="w-6 h-6 text-purple-500 mr-3" />
               <span className="text-gray-700 font-semibold">
                 {job.category?.title || "Uncategorized"}
               </span>
             </div>
             <div className="flex items-center mb-3">
-              <FaUserClock className="w-6 h-6 text-pink-500 mr-3" />
+              <FaUserClock className="w-6 h-6 text-purple-500 mr-3" />
               <span className="text-gray-700 font-semibold">{job.jobType}</span>
             </div>
             <div className="flex items-center mb-3">
-              <GiWallet className="w-6 h-6 text-pink-500 mr-3" />
+              <GiWallet className="w-6 h-6 text-purple-500 mr-3" />
               <span className="text-gray-700 font-semibold">
                 ${job.minPackage} - ${job.maxPackage}
               </span>
@@ -155,19 +155,19 @@ const JobCard = ({ job }) => {
           </div>
           <div>
             <div className="flex items-center mb-3">
-              <IoLocationOutline className="w-6 h-6 text-pink-500 mr-3" />
+              <IoLocationOutline className="w-6 h-6 text-purple-500 mr-3" />
               <span className="text-gray-700 font-semibold">
                 {job.location}
               </span>
             </div>
             <div className="flex items-center mb-3">
-              <GrUserWorker className="w-6 h-6 text-pink-500 mr-3" />
+              <GrUserWorker className="w-6 h-6 text-purple-500 mr-3" />
               <span className="text-gray-700 font-semibold">
                 {job.experience}
               </span>
             </div>
             <div className="flex items-center mb-3">
-              <BsPersonWorkspace className="w-6 h-6 text-pink-500 mr-3" />
+              <BsPersonWorkspace className="w-6 h-6 text-purple-500 mr-3" />
               <span className="text-gray-700 font-semibold">
                 {job.workType}
               </span>
@@ -177,7 +177,7 @@ const JobCard = ({ job }) => {
       </div>
 
       <Link to={`/job-detials/${job._id}`} className="block w-full">
-        <button className="mt-4 w-48 h-10 bg-gradient-to-r from-pink-400 to-blue-400 text-white rounded-lg text-base font-semibold shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-pink-400 sm:h-12 md:h-14 lg:h-12">
+        <button className="mt-4 w-48 h-10 bg-gradient-to-r from-blue-500 to-blue-600  text-white font-medium rounded-lg hover:from-blue-700 hover:to-blue-700 transition-all duration-300 transform">
           View Job Details
         </button>
       </Link>

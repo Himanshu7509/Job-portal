@@ -78,8 +78,8 @@ const HostSidebar = () => {
 
           <div className="flex flex-col items-center justify-center p-4 mb-6 mt-4 space-y-3">
             <img
-              src={ProfileImg}
-              className="w-3/4 rounded-full border-blue-500 border-[2px]"
+              src={"https://cdn-icons-png.freepik.com/512/3397/3397425.png"}
+              className="w-28 rounded-full border-orange-500 border-[2px]"
               alt="Profile"
             />
             <div className="text-center">
@@ -92,18 +92,18 @@ const HostSidebar = () => {
           <nav className="w-full p-2 flex-1">
             <Link to="/host-dashboard">
               <div className="flex items-center space-x-3 p-3 text-gray-600 hover:bg-gray-50 rounded-lg">
-                <LuUsers className="w-5 h-5 text-pink-600" />
+                <LuUsers className="w-5 h-5 text-purple-700" />
                 <span className="pointer">Dashboard</span>
               </div>
             </Link>
             {[
               {
-                icon: <FaRegUser className="w-5 h-5 text-pink-500" />,
+                icon: <FaRegUser className="w-5 h-5 text-purple-700" />,
                 label: "My Profile",
                 path: "/host-profile",
               },
               {
-                icon: <HiBriefcase className="w-5 h-5 text-pink-500" />,
+                icon: <HiBriefcase className="w-5 h-5 text-purple-700" />,
                 label: "My Jobs",
                 path: "/host-jobs",
               },
@@ -123,7 +123,7 @@ const HostSidebar = () => {
               className="flex items-center space-x-2 text-gray-600 cursor-pointer"
               onClick={handleLogout}
             >
-              <IoLogOutOutline className="w-5 h-5 text-pink-600" />
+              <IoLogOutOutline className="w-5 h-5 text-purple-700" />
               <span className="text-pink-600 hover:text-pink-700 text-lg font-semibold">
                 Logout
               </span>

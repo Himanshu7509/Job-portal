@@ -14,6 +14,9 @@ const JobDetails = () => {
   const [hasApplied, setHasApplied] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [profile, setProfile] = useState(null);
+  const [modalMessage, setModalMessage] = useState("");
 
 
   const jobToken = Cookies.get("Token");
@@ -66,13 +69,8 @@ const JobDetails = () => {
   
           const data = await response.json();
 
-          console.log([
-            data._id,
-            data.fullName,
-            data.email,
-            data.phoneNumber,
-
-          ]);
+          console.log(data)
+          setProfile(data);
         } catch (error) {
           console.error("Error fetching host profile:", error);
           setError("Failed to load seeker details.");
@@ -82,42 +80,63 @@ const JobDetails = () => {
       fetchUserProfile();
     }, [userProfileApi, jobToken]);
 
-  const handleApplynow = async () => {
-    try {
-      const response = await axios.post(
-        jobApplyAPI,
-        {
-          jobId: id,
-          applicantId: userId,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${jobToken}`,
-          },
-        }
-      );
+    const isProfileComplete = () => {
+      if (!profile) return false;
+      
+      const requiredFields = ['fullName', 'city', 'phoneNumber', 'gender'];
+      const missingFields = requiredFields.filter(field => !profile[field]);
+      
+      if (missingFields.length > 0) {
+        const formattedFields = missingFields.map(field => 
+          field.replace(/([A-Z])/g, ' $1').toLowerCase()
+        ).join(', ');
+        setModalMessage(`Please complete your profile. Missing fields: ${formattedFields}`);
+        return false;
+      }
+      return true;
+    };
 
-      if (response && response.data) {
-        console.log(response.data);
-        if (hasApplied) {
+    const handleApplynow = async () => {
+      if (!isProfileComplete()) {
+        setShowProfileModal(true);
+        return;
+      }
+    
+      try {
+        const response = await axios.post(
+          jobApplyAPI,
+          {
+            jobId: id,
+            applicantId: userId,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jobToken}`,
+            },
+          }
+        );
+    
+        if (response && response.data) {
+          console.log(response.data);
+          if (hasApplied) {
+            setShowModal(true);
+            return;
+          }
+          setShowSuccessModal(true);
+          setHasApplied(true);
+        } else {
+          console.error("Error applying for job: No response data");
           setShowModal(true);
-          return;
         }
-        setShowSuccessModal(true);
-        setHasApplied(true);
-      } else {
-        console.error("Error applying for job: No response data");
+      } catch (error) {
+        console.error(
+          "Error applying for job:",
+          error.response?.data || error.message
+        );
         setShowModal(true);
       }
-    } catch (error) {
-      console.error(
-        "Error applying for job:",
-        error.response?.data || error.message
-      );
-      setShowModal(true);
-    }
-  };
+    };
 
   if (error) {
     return (
@@ -280,6 +299,28 @@ const JobDetails = () => {
           </div>
         </div>
       </div>
+      {showProfileModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl max-w-md">
+            <h2 className="text-xl font-bold mb-4 text-red-600">Incomplete Profile</h2>
+            <p className="text-gray-700">{modalMessage}</p>
+            <div className="mt-6 flex justify-between">
+              <button
+                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                onClick={() => setShowProfileModal(false)}
+              >
+                Close
+              </button>
+              <Link
+                to="/user-profile"
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              >
+                Complete Profile
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-xl">

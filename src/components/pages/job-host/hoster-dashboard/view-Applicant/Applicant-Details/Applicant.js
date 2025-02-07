@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { FaArrowLeftLong } from "react-icons/fa6";
+import HostSidebar from "../../sidebar/HostSidebar";
 
 const Applicant = () => {
   const { id } = useParams();
@@ -107,203 +110,122 @@ const Applicant = () => {
   const job = application.jobId;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
-          <div className="bg-gradient-to-r from-pink-500 to-blue-500 px-6 py-5 w-full flex justify-between items-center">
-            <h2 className="text-3xl font-bold text-white">Applicant Details</h2>
-            <button
-              onClick={handleShorlisted}
-              className={`bg-white text-black p-3 ${
-                application.shortListed ? "bg-green-500 text-white" : ""
-              }`}
-            >
-              {application.shortListed ? "Shortlisted" : "Shortlist"}
-            </button>
-          </div>
+    <div className="min-h-screen flex flex-col lg:flex-row bg-gray-50">
+      < >
+      <div className="w-1/4 h-screen fixed top-0 left-0">
+          <HostSidebar />
+        </div>
+        <div className="p-2 sm:w-3/4 ml-auto sm:p-10">
+          <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-md p-0">
+            <div className="p-4 md:p-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="flex gap-5">
+                  {/* <Link to={`/job/${id}/applicants`}>
+                    <button>
+                      <FaArrowLeftLong className="text-white font-bold w-6 h-6 mt-2" />
+                    </button>
+                  </Link> */}
+                  <h2 className="text-2xl md:text-3xl font-bold">
+                    Applicant Details
+                  </h2>
+                </div>
 
-          <div className="p-6">
-            <div className="bg-white rounded-2xl shadow-lg p-6">
-              {/* Job Details */}
-              <div className="mb-8 bg-orange-50 p-6 rounded-xl">
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                  Applied Job Details
-                </h3>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  <div>
-                    <p className="text-gray-600">Company Name</p>
-                    <p className="font-semibold">{job?.companyName || "N/A"}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Company Email</p>
-                    <p className="font-semibold">
-                      {job?.companyEmail || "N/A"}
-                    </p>
-                  </div>
-                  {job?.companyURL && (
-                    <div>
-                      <p className="text-gray-600">Company Website</p>
-                      <a
-                        href={job.companyURL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
-                      >
-                        {job.companyURL}
-                      </a>
-                    </div>
-                  )}
+                <div>
+                  <button
+                    onClick={handleShorlisted}
+                    className={`w-full sm:w-auto px-6 py-2 rounded-full transition-all duration-300 ${
+                      application.shortListed
+                        ? "bg-green-300 hover:bg-green-500 text-white"
+                        : "bg-white hover:bg-gray-100 text-gray-800"
+                    }`}
+                  >
+                    {application.shortListed ? "✓ Shortlisted" : "Shortlist"}
+                  </button>
                 </div>
               </div>
+            </div>
 
-              {/* Personal Information */}
-              <div className="mb-8 bg-pink-50 p-6 rounded-xl">
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                  Personal Information
-                </h3>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  <div>
-                    <p className="text-gray-600">Full Name</p>
-                    <p className="font-semibold">
-                      {applicant.fullName || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Email</p>
-                    <p className="font-semibold">{applicant.email || "N/A"}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Phone</p>
-                    <p className="font-semibold">
-                      {applicant.phoneNumber || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Gender</p>
-                    <p className="font-semibold">{applicant.gender || "N/A"}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Date of Birth</p>
-                    <p className="font-semibold">
-                      {applicant.dateOfBirth
+            <div className="p-4 space-y-6">
+              {/* Info Cards */}
+              {[
+                {
+                  title: "Applied Job Details",
+                  bgColor: "bg-orange-50",
+                  fields: [
+                    { label: "Company Name", value: job?.companyName },
+                    { label: "Company Email", value: job?.companyEmail },
+                    {
+                      label: "Company Website",
+                      value: job?.companyURL,
+                      isLink: true,
+                    },
+                  ],
+                },
+                {
+                  title: "Personal Information",
+                  bgColor: "bg-pink-50",
+                  fields: [
+                    { label: "Full Name", value: applicant.fullName },
+                    { label: "Email", value: applicant.email },
+                    { label: "Phone", value: applicant.phoneNumber },
+                    { label: "Gender", value: applicant.gender },
+                    {
+                      label: "Date of Birth",
+                      value: applicant.dateOfBirth
                         ? new Date(applicant.dateOfBirth).toLocaleDateString()
-                        : "N/A"}
-                    </p>
+                        : null,
+                    },
+                  ],
+                },
+                {
+                  title: "Address",
+                  bgColor: "bg-blue-50",
+                  fields: [
+                    { label: "Street", value: applicant.address },
+                    { label: "City", value: applicant.city },
+                    { label: "State", value: applicant.state },
+                    { label: "Country", value: applicant.country },
+                    { label: "Pincode", value: applicant.pincode },
+                  ],
+                },
+              ].map((section, index) => (
+                <div
+                  key={index}
+                  className={`${section.bgColor} rounded-xl p-4 transition-all duration-300 hover:shadow-md`}
+                >
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
+                    {section.title}
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {section.fields.map((field, fieldIndex) => (
+                      <div key={fieldIndex} className="space-y-1">
+                        <p className="text-gray-600 text-sm font-medium">
+                          {field.label}
+                        </p>
+                        {field.isLink && field.value ? (
+                          <a
+                            href={field.value}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:underline break-all"
+                          >
+                            {field.value}
+                          </a>
+                        ) : (
+                          <p className="font-medium break-words">
+                            {field.value || "N/A"}
+                          </p>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
-              </div>
+              ))}
 
-              {/* Address */}
-              <div className="mb-8 bg-blue-50 p-6 rounded-xl">
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                  Address
-                </h3>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  <div>
-                    <p className="text-gray-600">Street</p>
-                    <p className="font-semibold">
-                      {applicant.address || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">City</p>
-                    <p className="font-semibold">{applicant.city || "N/A"}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">State</p>
-                    <p className="font-semibold">{applicant.state || "N/A"}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Country</p>
-                    <p className="font-semibold">
-                      {applicant.country || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Pincode</p>
-                    <p className="font-semibold">
-                      {applicant.pincode || "N/A"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Education */}
-              <div className="mb-8 bg-green-50 p-6 rounded-xl">
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                  Education
-                </h3>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  <div>
-                    <p className="text-gray-600">Degree</p>
-                    <p className="font-semibold">
-                      {applicant.eduDegree || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Specialization</p>
-                    <p className="font-semibold">
-                      {applicant.eduSpecialisation || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Institution</p>
-                    <p className="font-semibold">
-                      {applicant.eduInstitution || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Duration</p>
-                    <p className="font-semibold">
-                      {applicant.eduStartYear && applicant.eduEndYear
-                        ? `${new Date(
-                            applicant.eduStartYear
-                          ).getFullYear()} - ${new Date(
-                            applicant.eduEndYear
-                          ).getFullYear()}`
-                        : "N/A"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Experience */}
-              <div className="mb-8 bg-yellow-50 p-6 rounded-xl">
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                  Experience
-                </h3>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  <div>
-                    <p className="text-gray-600">Position</p>
-                    <p className="font-semibold">
-                      {applicant.expPosition || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Company</p>
-                    <p className="font-semibold">
-                      {applicant.expCompany || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">Duration</p>
-                    <p className="font-semibold">
-                      {applicant.expStartYear && applicant.expEndYear
-                        ? `${new Date(
-                            applicant.expStartYear
-                          ).getFullYear()} - ${new Date(
-                            applicant.expEndYear
-                          ).getFullYear()}`
-                        : "N/A"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Skills & Links */}
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-purple-50 p-6 rounded-xl">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-4">
+              {/* Skills & Links Section */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-purple-50 p-4 rounded-xl transition-all duration-300 hover:shadow-md">
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
                     Skills
                   </h3>
                   <div className="flex flex-wrap gap-2">
@@ -312,7 +234,7 @@ const Applicant = () => {
                       applicant.skills.map((skill, index) => (
                         <span
                           key={index}
-                          className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full"
+                          className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm"
                         >
                           {skill}
                         </span>
@@ -322,53 +244,65 @@ const Applicant = () => {
                     )}
                   </div>
                 </div>
-                <div className="bg-indigo-50 p-6 rounded-xl">
-                  <h3 className="text-2xl font-bold text-gray-800 mb-4">
+
+                <div className="bg-indigo-50 p-4 rounded-xl transition-all duration-300 hover:shadow-md">
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
                     Links
                   </h3>
-                  <div className="space-y-2">
-                    <div>
-                      <p className="text-gray-600">Project URL</p>
-                      {applicant.projectUrl ? (
-                        <a
-                          href={applicant.projectUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 hover:underline"
-                        >
-                          {applicant.projectUrl}
-                        </a>
-                      ) : (
-                        <p className="text-gray-500">No project URL provided</p>
-                      )}
-                    </div>
+                  <div>
+                    <p className="text-gray-600 text-sm font-medium">
+                      Project URL
+                    </p>
+                    {applicant.projectUrl ? (
+                      <a
+                        href={applicant.projectUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline break-all"
+                      >
+                        {applicant.projectUrl}
+                      </a>
+                    ) : (
+                      <p className="text-gray-500">No project URL provided</p>
+                    )}
                   </div>
                 </div>
               </div>
 
-              {/* Summary */}
-              <div className="mt-8 bg-gray-50 p-6 rounded-xl">
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">
+              {/* Summary Section */}
+              <div className="bg-gray-50 p-4 rounded-xl transition-all duration-300 hover:shadow-md">
+                <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
                   Summary
                 </h3>
-                <p className="text-gray-700">
+                <p className="text-gray-700 leading-relaxed">
                   {applicant.summary || "No summary provided"}
                 </p>
               </div>
 
               {/* Application Status */}
-              <div className="mt-8 bg-green-50 p-6 rounded-xl">
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">
+              <div className="bg-green-50 p-4 rounded-xl transition-all duration-300 hover:shadow-md">
+                <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
                   Application Status
                 </h3>
-                <p className="font-semibold text-green-600">
+                <div
+                  className={`inline-flex items-center px-4 py-2 rounded-full ${
+                    application.shortListed
+                      ? "bg-green-100 text-green-800"
+                      : "bg-yellow-100 text-yellow-800"
+                  }`}
+                >
+                  <span
+                    className={`w-2 h-2 rounded-full mr-2 ${
+                      application.shortListed ? "bg-green-500" : "bg-yellow-500"
+                    }`}
+                  ></span>
                   {application.shortListed ? "Shortlisted" : "Under Review"}
-                </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     </div>
   );
 };

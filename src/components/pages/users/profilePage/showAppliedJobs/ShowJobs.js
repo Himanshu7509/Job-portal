@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { FaBuilding, FaMapMarkerAlt, FaBriefcase, FaUserTie, FaDollarSign, FaUsers } from "react-icons/fa";
 
 const ShowJobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -53,47 +54,66 @@ const ShowJobs = () => {
   const displayedJobs = showAllJobs ? jobs : jobs.slice(0, visibleJobs);
   return (
     <>
-      <div className="mt-8">
-        <h2 className="text-3xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
-          Jobs you've applied to
+      <div className="max-w-7xl mx-auto px-4">
+        <h2 className="text-2xl lg:text-4xl md:text-5xl font-bold text-center mt-6 mb-8">
+          <span className="text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
+            Jobs you've applied to
+          </span>
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 w-full max-w-6xl mt-5">
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {displayedJobs.map((job) => (
             <div
               key={job._id}
-              className="border p-4 rounded-lg shadow-lg bg-white hover:shadow-xl transition-all duration-300"
+              className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
             >
-              <h2 className="text-xl mb-3 font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
-                 {job.title}
-              </h2>
-              <p className="text-gray-500 font-semibold">
-                <span className="font-bold text-black">Company:</span>{" "}
-                {job.companyName}
-              </p>
-              <p className="text-gray-500 font-semibold">
-                <span className="font-bold text-black">Location:</span>{" "}
-                {job.location}
-              </p>
-              <p className="text-gray-500 font-semibold">
-                <span className="font-bold text-black">Type:</span>{" "}
-                {job.jobType}
-              </p>
-              <p className="text-gray-500 font-semibold">
-                <span className="font-bold text-black">Experience:</span>{" "}
-                {job.experience}
-              </p>
-              <p className="text-gray-500 font-semibold">
-                <span className="font-bold text-black">Package:</span>{" "}
-                {job.minPackage} - {job.maxPackage}
-              </p>
-              <p className="text-gray-500 font-semibold">
-                <span className="font-bold text-black">Skills:</span>{" "}
-                {job.skills?.length > 0 ? job.skills.join(", ") : "N/A"}
-              </p>
-              <p className="text-gray-500 font-semibold">
-                <span className="font-bold text-black">Openings:</span>{" "}
-                {job.noOfOpeaning}
-              </p>
+              <div className="p-6">
+                <h3 className="text-2xl md:text-3xl font-bold mb-4">
+                  <span className="text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
+                    {job.title}
+                  </span>
+                </h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {[
+                    { label: "Company", value: job.companyName, icon: <FaBuilding /> },
+                    { label: "Location", value: job.location, icon: <FaMapMarkerAlt /> },
+                    { label: "Type", value: job.jobType, icon: <FaBriefcase /> },
+                    { label: "Experience", value: job.experience, icon: <FaUserTie /> },
+                    { label: "Package", value: job.minPackage, icon: <FaDollarSign /> },
+                    { label: "Openings", value: job.noOfOpeaning, icon: <FaUsers /> },
+                  ].map((item, index) => (
+                    <div
+                      key={index}
+                      className="bg-gradient-to-r from-pink-50 to-blue-50 rounded-xl p-4 transform hover:scale-102 transition-transform duration-200 flex items-center gap-3"
+                    >
+                      {item.icon}
+                      <div className="flex flex-col">
+                        <span className="text-gray-900 font-semibold text-md whitespace-nowrap">
+                          {item.label}
+                        </span>
+                        <span className="text-gray-800 text-md break-words mt-1">
+                          {item.value}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <section className="bg-gradient-to-r from-sky-50 to-blue-50 rounded-xl p-4 transform hover:scale-102 transition-transform duration-200 mt-4">
+                  <span className="text-gray-900 font-semibold text-md whitespace-nowrap">
+                    Skills
+                  </span>
+                  <div className="flex flex-wrap mt-2 gap-3">
+                    {job.skills.slice(0, 3).map((skill, index) => (
+                      <span key={index} className="bg-transparent px-3 py-1 rounded-md">
+                        {skill}
+                      </span>
+                    ))}
+                    {job.skills.length > 3 && <span className="text-gray-600">...</span>}
+                  </div>
+                </section>
+              </div>
             </div>
           ))}
         </div>
@@ -102,7 +122,7 @@ const ShowJobs = () => {
           <div className="flex justify-center mt-6">
             <button
               onClick={handleSeeMoreJobs}
-              className="px-6 py-3 bg-gradient-to-r from-pink-500 to-blue-500 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-lg"
+              className="mb-4 mt-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-blue-500 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-lg"
             >
               {showAllJobs ? "Show Less" : "See More Jobs"}
             </button>

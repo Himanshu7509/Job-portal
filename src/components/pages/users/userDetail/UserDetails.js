@@ -244,73 +244,73 @@ const UserDetails = () => {
     </>
   );
 
-  const renderuserAboutForm = () => (
-    <>
-      <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
-          About yourself
-        </h2>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Summary
-          </label>
-          <input
-            type="text"
-            name="summary"
-            value={summary}
-            onChange={(e) => setsummary(e.target.value)}
-            rows="5"
-            placeholder="Enter your Address"
-            className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          />
-        </div>
+  // const renderuserAboutForm = () => (
+  //   <>
+  //     <div className="space-y-6">
+  //       <h2 className="text-3xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
+  //         About yourself
+  //       </h2>
+  //       <div>
+  //         <label className="block text-sm font-medium text-gray-700 mb-2">
+  //           Summary
+  //         </label>
+  //         <input
+  //           type="text"
+  //           name="summary"
+  //           value={summary}
+  //           onChange={(e) => setsummary(e.target.value)}
+  //           rows="5"
+  //           placeholder="Enter your Address"
+  //           className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+  //         />
+  //       </div>
 
-        <div className="flex-1">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Github Link
-          </label>
-          <input
-            type="url"
-            name="projectUrl"
-            value={projectUrl}
-            onChange={(e) => setprojectUrl(e.target.value)}
-            placeholder="Enter your github link for projects"
-            className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          />
-        </div>
+  //       <div className="flex-1">
+  //         <label className="block text-sm font-medium text-gray-700 mb-2">
+  //           Github Link
+  //         </label>
+  //         <input
+  //           type="url"
+  //           name="projectUrl"
+  //           value={projectUrl}
+  //           onChange={(e) => setprojectUrl(e.target.value)}
+  //           placeholder="Enter your github link for projects"
+  //           className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+  //         />
+  //       </div>
 
-        <div className="flex-1">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Upload Resume
-          </label>
-          <input
-            type="file"
-            name="resume"
-            accept="resume/*"
-            className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 text-sm"
-          />
-        </div>
+  //       <div className="flex-1">
+  //         <label className="block text-sm font-medium text-gray-700 mb-2">
+  //           Upload Resume
+  //         </label>
+  //         <input
+  //           type="file"
+  //           name="resume"
+  //           accept="resume/*"
+  //           className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 text-sm"
+  //         />
+  //       </div>
 
-        <div className="flex justify-between">
-          <button
-            type="button"
-            onClick={handlePrevious}
-            className="bg-gray-300 text-gray-700 py-2 px-4 rounded-lg shadow-md hover:opacity-90"
-          >
-            Previous
-          </button>
+  //       <div className="flex justify-between">
+  //         <button
+  //           type="button"
+  //           onClick={handlePrevious}
+  //           className="bg-gray-300 text-gray-700 py-2 px-4 rounded-lg shadow-md hover:opacity-90"
+  //         >
+  //           Previous
+  //         </button>
 
-          <button
-            type="button"
-            onClick={handleNext}
-            className="bg-gradient-to-r from-pink-500 to-blue-500 text-white text-xl py-3 px-4 rounded-lg shadow-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            Next
-          </button>
-        </div>
-      </div>
-    </>
-  );
+  //         <button
+  //           type="button"
+  //           onClick={handleNext}
+  //           className="bg-gradient-to-r from-pink-500 to-blue-500 text-white text-xl py-3 px-4 rounded-lg shadow-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+  //         >
+  //           Next
+  //         </button>
+  //       </div>
+  //     </div>
+  //   </>
+  // );
 
   const renderuserAddressForm = () => (
     <>
@@ -655,10 +655,10 @@ const UserDetails = () => {
           <div className="bg-white shadow-lg rounded-lg w-full max-w-lg sm:p-6 p-4">
             <form onSubmit={handleSeekData}>
               {step === 1 && renderuserDetailForm()}
-              {step === 2 && renderuserAboutForm()}
-              {step === 3 && renderuserAddressForm()}
-              {step === 4 && renderuserEducationForm()}
-              {step === 5 && renderuserExperienceForm()}
+              {/* {step === 2 && renderuserAboutForm()} */}
+              {step === 2 && renderuserAddressForm()}
+              {step === 3 && renderuserEducationForm()}
+              {step === 4 && renderuserExperienceForm()}
             </form>
           </div>
         </div>

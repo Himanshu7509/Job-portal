@@ -22,9 +22,10 @@ const Header = () => {
     if (token && userId) {
       setIsLoggedIn(true);
     }
-   
+    if (hostToken && hostId) {
+      sethostLoggedIn(true);
+    }
   }, []);
-
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -126,12 +127,20 @@ const Header = () => {
           <div className="hidden lg:flex items-center space-x-4">
             {isLoggedIn ? (
               <>
-              
-                <Link to="/host-login">
-                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
-                    Job Hoster
-                  </button>
-                </Link>
+                {hostLoggedIn ? (
+                  <Link to="/host-dashboard">
+                    <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
+                      Dashboard
+                    </button>
+                  </Link>
+                ) : (
+                  <Link to="/host-login">
+                    <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
+                      Job Hoster
+                    </button>
+                  </Link>
+                )}
+
                 <div className="relative dropdown">
                   <button
                     onClick={(e) => {
@@ -152,8 +161,13 @@ const Header = () => {
                           </li>
                         </Link>
 
-                        <li onClick={handleLogout} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                          <button className="font-semibold text-red-700">LogOut </button>
+                        <li
+                          onClick={handleLogout}
+                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                        >
+                          <button className="font-semibold text-red-700">
+                            LogOut{" "}
+                          </button>
                         </li>
                       </ul>
                     </div>
@@ -162,11 +176,19 @@ const Header = () => {
               </>
             ) : (
               <>
-                <Link to="/host-login">
-                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
-                    Job Hoster
-                  </button>
-                </Link>
+                {hostLoggedIn ? (
+                  <Link to="/host-dashboard">
+                    <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
+                      Dashboard
+                    </button>
+                  </Link>
+                ) : (
+                  <Link to="/host-login">
+                    <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
+                      Job Hoster
+                    </button>
+                  </Link>
+                )}
                 <Link to="/login">
                   <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-pink-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
                     Job Seeker
@@ -244,13 +266,23 @@ const Header = () => {
               </li>
               {isLoggedIn ? (
                 <div className="flex">
-                  <li>
-                    <Link to="/host-login">
-                      <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer mr-3">
-                        Job Hoster
-                      </button>
-                    </Link>
-                  </li>
+                  {hostLoggedIn ? (
+                    <li>
+                      <Link to="/host-dashboard">
+                        <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer mr-3">
+                          Dashboard
+                        </button>
+                      </Link>
+                    </li>
+                  ) : (
+                    <li>
+                      <Link to="/host-login">
+                        <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer mr-3">
+                          Job Hoster
+                        </button>
+                      </Link>
+                    </li>
+                  )}
 
                   <li className="relative dropdown">
                     <button
@@ -272,8 +304,13 @@ const Header = () => {
                             </li>
                           </Link>
 
-                          <li onClick={handleLogout} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                            <button  className="font-semibold text-red-700">Logout</button>
+                          <li
+                            onClick={handleLogout}
+                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                          >
+                            <button className="font-semibold text-red-700">
+                              Logout
+                            </button>
                           </li>
                         </ul>
                       </div>
@@ -282,16 +319,24 @@ const Header = () => {
                 </div>
               ) : (
                 <div className="flex">
-                  <Link to="/host-login">
-                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
-                    Job Hoster
-                  </button>
-                </Link>
-                <Link to="/login">
-                  <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-pink-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
-                    Job Seeker
-                  </button>
-                </Link>
+                  {hostLoggedIn ? (
+                    <Link to="/host-dashboard">
+                      <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer mr-3">
+                        Dashboard
+                      </button>
+                    </Link>
+                  ) : (
+                    <Link to="/host-login">
+                      <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer mr-3">
+                        Job Hoster
+                      </button>
+                    </Link>
+                  )}
+                  <Link to="/login">
+                    <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-pink-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
+                      Job Seeker
+                    </button>
+                  </Link>
                 </div>
               )}
             </ul>

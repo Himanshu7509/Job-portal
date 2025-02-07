@@ -2,16 +2,21 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import HostSidebar from "../../hoster-dashboard/sidebar/HostSidebar";
-import { Link } from "react-router-dom";
-import ProfileImg from '../../../../../assets/profile.png'
+import { Link, useNavigate } from "react-router-dom";
+import ProfileImg from "../../../../../assets/profile.png";
+import { FaUserEdit, FaTrashAlt, FaTimes, FaCheck } from "react-icons/fa";
 
 const HosterProfile = () => {
   const [hoster, setHoster] = useState(null);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const HostId = Cookies.get("userId");
   const HostToken = Cookies.get("jwtToken");
   const hostProfileApi = `https://jobquick.onrender.com/hostuser/${HostId}`;
+  const deleteProfile = `https://jobquick.onrender.com/hostuser/delete/${HostId}`;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchHostProfile = async () => {
@@ -39,6 +44,40 @@ const HosterProfile = () => {
     fetchHostProfile();
   }, [hostProfileApi, HostToken]);
 
+  const handleDeleteProfile = async (HostId) => {
+    console.log("Attempting to delete profile with ID:", HostId);
+    try {
+      const response = await fetch(deleteProfile, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${HostToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const result = await response.json();
+      console.log("Delete API Response:", result);
+      if (response.ok) {
+        Cookies.remove("jwtToken");
+        Cookies.remove("userId");
+        navigate("/");
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to delete profile. Status: ${response.status}, Message: ${
+            result.message || "Unknown error"
+          }`
+        );
+      }
+
+      console.log("Profile deleted successfully");
+    } catch (error) {
+      console.error("Delete profile Error:", error);
+      setError(error.message);
+    }
+  };
+
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-500">
@@ -51,33 +90,33 @@ const HosterProfile = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <p className="text-center mt-5 text-5xl text-pink-500 font-semibold">
-        Loading...
-      </p>
+          Loading...
+        </p>
       </div>
     );
   }
 
   return (
     <>
-      
       <div className="min-h-screen flex flex-col lg:flex-row bg-gray-50">
         <div className="w-1/4 h-screen fixed top-0 left-0">
-      <HostSidebar />
-      </div>
-        
-          <main className="p-2 sm:w-3/4 ml-auto sm:p-10">
-            <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
-              <h1 className="mt-2 text-4xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
-                Hoster Profile
-              </h1>
-              <div className="flex flex-col items-center md:flex-row md:items-center text-center md:text-left">
+          <HostSidebar />
+        </div>
+
+        <main className="p-2 sm:w-3/4 ml-auto sm:p-10">
+          <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
+            <h1 className="mt-2 text-4xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
+              Hoster Profile
+            </h1>
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="flex flex-col sm:flex-row items-center text-center sm:text-left w-full sm:w-auto gap-4">
                 <img
-                  src={hoster.profileImg || ProfileImg}
+                  src={"https://cdn-icons-png.freepik.com/512/3397/3397425.png"}
                   alt="Profile"
                   className="w-40 h-40 sm:w-32 sm:h-32 md:w-40 md:h-40 border-4 rounded-2xl border-pink-300 shadow-lg"
                 />
                 <div className="md:ml-6 mt-4 md:mt-0">
-                  <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
+                  <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-pink-700 bg-clip-text mb-2">
                     {hoster.fullName || "Admin"}
                   </h1>
                   <h4 className="text-xl md:text-1xl text-gray-400 font-semibold">
@@ -90,83 +129,88 @@ const HosterProfile = () => {
                   </Link>
                 </div>
               </div>
-
-              <div className="mt-8">
-                <h2 className="text-3xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
-                  Personal Details
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
-                  <div>
-                    <p className="font-semibold text-gray-500">Gender:</p>{" "}
-                    <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
-                      {" "}
-                      {hoster.gender}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-500">Company Url:</p>
-                    <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
-                      {" "}
-                      {hoster.companyURL}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-500">Phone No.:</p>
-                    <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
-                      {" "}
-                      {hoster.phoneNumber}
-                    </span>{" "}
-                  </div>
-                  
-                </div>
-              </div>
-
-              <div className="mt-8">
-                <h2 className="text-3xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
-                  Location
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
-                  <div>
-                    <p className="font-semibold text-gray-500">Address:</p>
-                    <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
-                      {" "}
-                      {hoster.address}{" "}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-500">City:</p>
-                    <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
-                      {" "}
-                      {hoster.city}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-500">State:</p>
-                    <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
-                      {" "}
-                      {hoster.state}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-500">Country:</p>
-                    <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
-                      {" "}
-                      {hoster.country}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-500">Pincode:</p>
-                    <span className="text-2xl font-semibold text-transparent bg-gradient-to-r from-blue-500 to-blue-800 bg-clip-text">
-                      {" "}
-                      {hoster.pincode}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-gradient-to-r from-red-500 to-red-800 text-white font-semibold px-4 py-2 rounded mt-4 w-30"
+              >
+                Delete Account
+              </button>
             </div>
-          </main>
-        
+
+            <section>
+              <h2 className="text-3xl mt-6 font-bold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent mb-6">
+                Personal Details
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                {[
+                  ["Gender", hoster.gender],
+                  ["Company Url", hoster.companyURL],
+                  ["Phone No", hoster.phoneNumber],
+                ].map(([label, value]) => (
+                  <div key={label} className="bg-pink-50 rounded-xl p-4">
+                    <p className="text-gray-900 text-lg font-semibold">
+                      {label}
+                    </p>
+                    <p className="font-semibold text-lg text-gray-900 mt-1">
+                      {value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section>
+              <h2 className="text-3xl mt-4 font-bold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent mb-6">
+                Location
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                {[
+                  ["Address", hoster.address],
+                  ["City", hoster.city],
+                  ["Country", hoster.country],
+                  ["Pincode", hoster.pincode],
+                ].map(([label, value]) => (
+                  <div key={label} className="bg-pink-50 rounded-xl p-4">
+                    <p className="text-gray-900 text-lg font-semibold">
+                      {label}
+                    </p>
+                    <p className="font-semibold text-lg text-gray-900 mt-1">
+                      {value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
+
+          {isModalOpen && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+              <div className="bg-white p-8 rounded-2xl shadow-xl max-w-sm w-full transform transition-all scale-100 hover:scale-105">
+                <h2 className="text-xl font-bold text-gray-800 mb-4">
+                  Are you sure you want to delete your account?
+                </h2>
+                <p className="text-gray-500 text-sm mb-6">
+                  This action cannot be undone and will permanently remove your
+                  profile.
+                </p>
+                <div className="flex justify-between">
+                  <button
+                    onClick={handleDeleteProfile}
+                    className="px-5 py-2 bg-red-500 text-white font-medium rounded-lg flex items-center gap-2 hover:bg-red-700 transition-all duration-200"
+                  >
+                    <FaCheck className="w-5 h-5" /> Yes, Delete
+                  </button>
+                  <button
+                    onClick={() => setIsModalOpen(false)}
+                    className="px-5 py-2 bg-gray-300 text-gray-700 font-medium rounded-lg flex items-center gap-2 hover:bg-gray-400 transition-all duration-200"
+                  >
+                    <FaTimes className="w-5 h-5" /> Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </main>
       </div>
     </>
   );
