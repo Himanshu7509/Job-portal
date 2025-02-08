@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './components/auth/Login';
 import Home from './components/pages/home/Home';
 import Blog from './components/pages/Blogs/Blog';
-import Categories from './components/pages/categories/Categories';
+import FilterPage from './components/pages/categories/FilterPage';
 import Contact from './components/pages/contact/Contact';
 import ATS from './components/pages/AI-Tools/ATS/ATS';
 import ResumePage from './components/pages/AI-Tools/Resume-Builder/ResumePage';
@@ -44,7 +44,7 @@ const App = () => {
             path='/alljobs'
             element={
               <ProtectedRoute>
-                <Categories />
+                <FilterPage />
               </ProtectedRoute>
             }
           />

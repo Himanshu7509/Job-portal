@@ -166,7 +166,7 @@ const JobDetails = () => {
               <div className="px-4 sm:px-6 lg:px-8 pb-6">
                 <div className="relative -mt-16 flex flex-col items-center sm:flex-row sm:items-end sm:space-x-8">
                   <img
-                    src={jobData.profileImg}
+                    src="https://thumbs.dreamstime.com/b/building-logo-19190924.jpg"
                     alt="Company Profile"
                     className="w-32 h-32 rounded-2xl border-4 border-white shadow-xl bg-white"
                   />
@@ -227,7 +227,7 @@ const JobDetails = () => {
                     {jobData.skills.map((skill, index) => (
                       <span
                         key={index}
-                        className="px-4 py-4 bg-gradient-to-r from-blue-500/30 to-pink-500/30 text-blue-900 rounded-lg text-md font-medium"
+                        className="px-4 py-4 bg-sky-100 rounded-lg text-md font-medium"
                       >
                         {skill}
                       </span>

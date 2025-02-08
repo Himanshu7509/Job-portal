@@ -54,7 +54,7 @@ const ShowJobs = () => {
   const displayedJobs = showAllJobs ? jobs : jobs.slice(0, visibleJobs);
   return (
     <>
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-0 sm:px-4">
         <h2 className="text-2xl lg:text-4xl md:text-5xl font-bold text-center mt-6 mb-8">
           <span className="text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
             Jobs you've applied to
@@ -85,14 +85,14 @@ const ShowJobs = () => {
                   ].map((item, index) => (
                     <div
                       key={index}
-                      className="bg-gradient-to-r from-pink-50 to-blue-50 rounded-xl p-4 transform hover:scale-102 transition-transform duration-200 flex items-center gap-3"
+                      className="bg-gradient-to-r from-blue-50 to-blue-50 rounded-xl p-4 transform hover:scale-102 transition-transform duration-200 flex items-center gap-3"
                     >
-                      {item.icon}
+                      <span className="text-2xl">{item.icon}</span>
                       <div className="flex flex-col">
-                        <span className="text-gray-900 font-semibold text-md whitespace-nowrap">
+                        <span className="text-gray-500 font-semibold text-sm whitespace-nowrap">
                           {item.label}
                         </span>
-                        <span className="text-gray-800 text-md break-words mt-1">
+                        <span className="text-gray-800 text-lg font-semibold break-words mt-1">
                           {item.value}
                         </span>
                       </div>
@@ -101,12 +101,12 @@ const ShowJobs = () => {
                 </div>
 
                 <section className="bg-gradient-to-r from-sky-50 to-blue-50 rounded-xl p-4 transform hover:scale-102 transition-transform duration-200 mt-4">
-                  <span className="text-gray-900 font-semibold text-md whitespace-nowrap">
+                  <span className="text-gray-500 font-semibold text-sm whitespace-nowrap">
                     Skills
                   </span>
                   <div className="flex flex-wrap mt-2 gap-3">
                     {job.skills.slice(0, 3).map((skill, index) => (
-                      <span key={index} className="bg-transparent px-3 py-1 rounded-md">
+                      <span key={index} className="bg-transparent text-gray-800 text-lg font-semibold px-3 py-1 rounded-md">
                         {skill}
                       </span>
                     ))}

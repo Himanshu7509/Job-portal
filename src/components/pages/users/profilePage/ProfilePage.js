@@ -105,22 +105,22 @@ const ProfilePage = () => {
       <div className="min-h-screen bg-gray-50">
         {seeker ? (
           <>
-            <div className="w-full p-2 sm:p-4 md:p-6 mx-auto max-w-7xl">
+            <div className="w-full p-0 sm:p-4 md:p-6 mx-auto max-w-7xl">
               <div className="bg-white shadow-xl rounded-2xl overflow-hidden p-3 sm:p-6 md:p-8 lg:p-10">
-                <h1 className="text-3xl sm:text-4xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-4 sm:mb-6">
-                  User Profile
+                <h1 className="text-4xl sm:text-4xl font-bold mb-8 text-zinc-500 sm:mb-6">
+                  Profile
                 </h1>
 
                 {/* Profile Header Section */}
                 <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                   <div className="flex flex-col sm:flex-row items-center text-center sm:text-left w-full sm:w-auto gap-4">
                     <img
-                      src="https://cdn-icons-png.flaticon.com/512/11772/11772904.png"
+                      src="https://static.vecteezy.com/system/resources/thumbnails/020/911/740/small_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png"
                       alt="Profile"
-                      className="rounded-full w-32 h-32 sm:w-44 sm:h-44 border-4 border-blue-900 shadow-lg"
+                      className="rounded-full w-32 h-32 sm:w-44 sm:h-44 border-4 border-black shadow-lg"
                     />
                     <div className="sm:ml-6">
-                      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-transparent bg-pink-700 bg-clip-text mb-2">
+                      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-transparent bg-gray-600 bg-clip-text mb-2">
                         {seeker.fullName || "Admin"}
                       </h1>
                       <h4 className="text-lg sm:text-xl text-gray-400 font-semibold">
@@ -135,7 +135,7 @@ const ProfilePage = () => {
                   </div>
                   <button
                     onClick={() => setIsModalOpen(true)}
-                    className="bg-gradient-to-r from-red-500 to-red-800 text-white font-semibold px-4 py-2 sm:py-3 rounded sm:w-50"
+                    className="border border-red-500 text-red-500 font-semibold px-4 py-2 sm:py-3 rounded sm:w-50 hover:bg-red-500 hover:text-white"
                   >
                     Delete Account
                   </button>
@@ -143,7 +143,7 @@ const ProfilePage = () => {
 
                 {/* Personal Details Section */}
                 <section className="mt-8">
-                  <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent mb-4">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-zinc-500 mb-4">
                     Personal Details
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -153,7 +153,7 @@ const ProfilePage = () => {
                       ["Phone No", seeker.phoneNumber],
                       ["Github Link", seeker.projectUrl],
                     ].map(([label, value]) => (
-                      <div key={label} className="bg-gray-100 rounded-xl p-4">
+                      <div key={label} className="bg-sky-50 rounded-xl p-4">
                         <p className="text-gray-600 font-semibold">{label}</p>
                         <p className="font-semibold text-base sm:text-lg text-gray-900 mt-1 break-words">
                           {value}
@@ -164,8 +164,8 @@ const ProfilePage = () => {
                 </section>
 
                 {/* About Section */}
-                <div className="mt-6">
-                  <div className="bg-gray-100 rounded-xl p-4">
+                {/* <div className="mt-6">
+                  <div className="bg-sky-50 rounded-xl p-4">
                     <p className="text-gray-600 font-semibold">
                       About yourself
                     </p>
@@ -173,18 +173,18 @@ const ProfilePage = () => {
                       {seeker.summary}
                     </p>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Skills Section */}
                 <section className="mt-6">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-4">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-transparent text-zinc-500 mb-4">
                     Skills
                   </h2>
                   <div className="flex flex-wrap gap-2 sm:gap-3">
                     {seeker.skills.map((skill, index) => (
                       <span
                         key={index}
-                        className="px-3 sm:px-5 py-2 sm:py-3 bg-rose-100 rounded-xl text-sm sm:text-base transform hover:scale-105 transition-transform duration-200"
+                        className="px-3 sm:px-5 py-2 sm:py-3 bg-sky-50 font-semibold rounded-xl text-sm sm:text-base transform hover:scale-105 transition-transform duration-200"
                       >
                         {skill}
                       </span>
@@ -194,10 +194,10 @@ const ProfilePage = () => {
 
                 {/* Location Section */}
                 <section className="mt-6">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-4">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-transparent text-zinc-500 mb-4">
                     Location
                   </h2>
-                  <div className="bg-gray-100 rounded-xl p-4 mb-4">
+                  <div className="bg-sky-50 rounded-xl p-4 mb-4">
                     <p className="text-gray-600 font-semibold">Address</p>
                     <p className="font-semibold text-base sm:text-lg text-gray-900 mt-1 break-words">
                       {seeker.address}
@@ -210,7 +210,7 @@ const ProfilePage = () => {
                       ["Country", seeker.country],
                       ["Pincode", seeker.Pincode],
                     ].map(([label, value]) => (
-                      <div key={label} className="bg-gray-100 rounded-xl p-4">
+                      <div key={label} className="bg-sky-50 rounded-xl p-4">
                         <p className="text-gray-600 font-semibold">{label}</p>
                         <p className="font-semibold text-base sm:text-lg text-gray-900 mt-1 break-words">
                           {value}
@@ -222,7 +222,7 @@ const ProfilePage = () => {
 
                 {/* Education Section */}
                 <section className="mt-6">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-4">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-transparent text-zinc-500 mb-4">
                     Education
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -233,7 +233,7 @@ const ProfilePage = () => {
                       ["Start Year", seeker.eduStartYear],
                       ["End Year", seeker.eduEndYear],
                     ].map(([label, value]) => (
-                      <div key={label} className="bg-gray-100 rounded-xl p-4">
+                      <div key={label} className="bg-sky-50 rounded-xl p-4">
                         <p className="text-gray-600 font-semibold">{label}</p>
                         <p className="font-semibold text-base sm:text-lg text-gray-900 mt-1 break-words">
                           {value}
@@ -245,7 +245,7 @@ const ProfilePage = () => {
 
                 {/* Work Experience Section */}
                 <section className="mt-6">
-                  <h2 className="text-2xl sm:text-3xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-4">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-transparent text-zinc-500 mb-4">
                     Work Experience
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -255,7 +255,7 @@ const ProfilePage = () => {
                       ["Start Date", seeker.expStartYear],
                       ["End Date", seeker.expEndYear],
                     ].map(([label, value]) => (
-                      <div key={label} className="bg-gray-100 rounded-xl p-4">
+                      <div key={label} className="bg-sky-50 rounded-xl p-4">
                         <p className="text-gray-600 font-semibold">{label}</p>
                         <p className="font-semibold text-base sm:text-lg text-gray-900 mt-1 break-words">
                           {value}

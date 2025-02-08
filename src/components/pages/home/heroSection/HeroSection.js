@@ -1,8 +1,5 @@
-import React from "react";
-import Amazon from "../../../../assets/b1.png";
-import AMD from "../../../../assets/b2.png";
-import Logitech from "../../../../assets/b5.png";
-import Spotify from "../../../../assets/b6.png";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import HeroSl from "../../../../assets/slider72.jpg";
 import HeroS2 from "../../../../assets/slider73.jpg";
@@ -12,6 +9,15 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
 const HeroSection = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      navigate(`/alljobs`);
+    }
+  };
+
   return (
     <div className="bg-white py-16">
       <div className="max-w-7xl mx-auto px-6 lg:flex lg:items-center lg:space-x-10">
@@ -27,32 +33,30 @@ const HeroSection = () => {
           </p>
 
           {/* Search Box */}
-          <div className="mt-6">
-            <div className="flex items-center bg-white border border-gray-300 rounded-lg overflow-hidden shadow-sm">
-              <div className="flex items-center pl-4">
-                <span className="text-gray-400 text-xl">
-                  <FaSearch />
-                </span>
-              </div>
-              <input
-                type="text"
-                placeholder="What are you looking for?"
-                className="flex-1 px-4 py-3 text-gray-800 focus:outline-none"
-              />
-              
+          <div className="mt-6 flex items-center bg-white border border-gray-300 rounded-lg overflow-hidden shadow-sm w-full">
+            <div className="flex items-center pl-4">
+              <span className="text-gray-400 text-xl">
+                <FaSearch />
+              </span>
             </div>
-          </div>
-
-          {/* Logos */}
-          <div className="flex items-center justify-center lg:justify-start space-x-6 mt-6">
-            <img src={Amazon} alt="Amazon" className="h-6" />
-            {/* <img
-              src={AMD}
-              alt="AMD"
-              className="h-6"
-            /> */}
-            <img src={Logitech} alt="Logitech" className="h-6" />
-            <img src={Spotify} alt="Spotify" className="h-6" />
+            <input
+              type="text"
+              placeholder="What are you looking for?"
+              className="flex-1 px-4 py-3 text-gray-800 focus:outline-none"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  handleSearch();
+                }
+              }}
+            />
+            <button
+              onClick={handleSearch}
+              className="hidden lg:block bg-blue-500 text-white px-4 py-3 hover:bg-blue-600 transition"
+            >
+              Search
+            </button>
           </div>
         </div>
 
@@ -62,10 +66,10 @@ const HeroSection = () => {
             modules={[Autoplay]}
             spaceBetween={20}
             slidesPerView={1}
-            loop={true} 
+            loop={true}
             autoplay={{
-              delay: 3000, 
-              disableOnInteraction: false, 
+              delay: 3000,
+              disableOnInteraction: false,
             }}
             breakpoints={{
               640: { slidesPerView: 1 },

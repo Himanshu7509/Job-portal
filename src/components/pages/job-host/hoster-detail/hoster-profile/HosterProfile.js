@@ -105,18 +105,18 @@ const HosterProfile = () => {
 
         <main className="p-2 sm:w-3/4 ml-auto sm:p-10">
           <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
-            <h1 className="mt-2 text-4xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
-              Hoster Profile
+            <h1 className="mt-2 text-4xl font-bold text-center sm:text-left text-transparent text-zinc-600 mb-6">
+              Profile
             </h1>
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
               <div className="flex flex-col sm:flex-row items-center text-center sm:text-left w-full sm:w-auto gap-4">
                 <img
-                  src={"https://cdn-icons-png.freepik.com/512/3397/3397425.png"}
+                  src="https://static.vecteezy.com/system/resources/thumbnails/020/911/740/small_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png"
                   alt="Profile"
-                  className="w-40 h-40 sm:w-32 sm:h-32 md:w-40 md:h-40 border-4 rounded-2xl border-pink-300 shadow-lg"
+                  className="w-40 h-40 sm:w-32 sm:h-32 md:w-40 md:h-40 border-4 rounded-2xl border-gray-300 shadow-lg"
                 />
                 <div className="md:ml-6 mt-4 md:mt-0">
-                  <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-pink-700 bg-clip-text mb-2">
+                  <h1 className="text-3xl md:text-4xl font-bold text-transparent bg-zinc-700 bg-clip-text mb-2">
                     {hoster.fullName || "Admin"}
                   </h1>
                   <h4 className="text-xl md:text-1xl text-gray-400 font-semibold">
@@ -131,14 +131,14 @@ const HosterProfile = () => {
               </div>
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="bg-gradient-to-r from-red-500 to-red-800 text-white font-semibold px-4 py-2 rounded mt-4 w-30"
+                className="border border-red-500 text-red-500 font-semibold px-4 py-2 sm:py-3 rounded sm:w-50 hover:bg-red-500 hover:text-white"
               >
                 Delete Account
               </button>
             </div>
 
             <section>
-              <h2 className="text-3xl mt-6 font-bold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent mb-6">
+              <h2 className="text-3xl mt-6 font-bold text-zinc-500 mb-6">
                 Personal Details
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
@@ -147,11 +147,11 @@ const HosterProfile = () => {
                   ["Company Url", hoster.companyURL],
                   ["Phone No", hoster.phoneNumber],
                 ].map(([label, value]) => (
-                  <div key={label} className="bg-pink-50 rounded-xl p-4">
-                    <p className="text-gray-900 text-lg font-semibold">
+                  <div key={label} className="bg-sky-50 rounded-xl p-4">
+                    <p className="text-gray-600 font-semibold">
                       {label}
                     </p>
-                    <p className="font-semibold text-lg text-gray-900 mt-1">
+                    <p className="font-semibold text-base sm:text-lg text-gray-900 mt-1 break-words">
                       {value}
                     </p>
                   </div>
@@ -160,7 +160,7 @@ const HosterProfile = () => {
             </section>
 
             <section>
-              <h2 className="text-3xl mt-4 font-bold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent mb-6">
+              <h2 className="text-3xl mt-4 font-bold text-zinc-500 mb-6">
                 Location
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
@@ -170,11 +170,11 @@ const HosterProfile = () => {
                   ["Country", hoster.country],
                   ["Pincode", hoster.pincode],
                 ].map(([label, value]) => (
-                  <div key={label} className="bg-pink-50 rounded-xl p-4">
-                    <p className="text-gray-900 text-lg font-semibold">
+                  <div key={label} className="bg-sky-50 rounded-xl p-4">
+                    <p className="text-gray-600 font-semibold">
                       {label}
                     </p>
-                    <p className="font-semibold text-lg text-gray-900 mt-1">
+                    <p className="font-semibold text-base sm:text-lg text-gray-900 mt-1 break-words">
                       {value}
                     </p>
                   </div>

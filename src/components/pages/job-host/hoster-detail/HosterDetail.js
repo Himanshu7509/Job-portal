@@ -108,9 +108,9 @@ const HosterDetail = () => {
       <HostSidebar/>
       </div>
       <div className="p-2 sm:w-3/4 ml-auto sm:p-10">
-    <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
+    <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-4 sm:p-8">
       <h2 className="mt-2 text-4xl font-bold text-black mb-6 text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
-        Hoster Details
+        Employer Details
       </h2>
       <form className="space-y-6 p-4" onSubmit={handleSubmit}>
         <div>

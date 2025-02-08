@@ -5,6 +5,7 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { Link } from "react-router-dom";
 
 const JobGrid = () => {
   const jobs = [
@@ -102,12 +103,13 @@ const JobGrid = () => {
                       </span>
                     ))}
                   </div>
-                  <a
-                    href="#"
+                  <Link to="/alljobs">
+                  <div
                     className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                   >
                     View more &rarr;
-                  </a>
+                  </div>
+                  </Link>
                 </div>
               </div>
             </SwiperSlide>

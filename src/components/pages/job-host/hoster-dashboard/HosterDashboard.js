@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
-import { IoEllipsisHorizontal } from "react-icons/io5";
 import HostSidebar from "./sidebar/HostSidebar";
 import Statistics from "./statistics/Statistics";
 
@@ -50,43 +49,48 @@ const JobHostingDashboard = () => {
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-gray-50">
-      <div className="w-1/4 h-screen fixed top-0 left-0">
+      <div className="w-1/4 h-screen fixed top-0 left-0 z-50">
         <HostSidebar />
       </div>
-      <div className="p-2 sm:w-3/4 ml-auto sm:p-10">
+
+      <div className="p-2 w-full sm:w-3/4 ml-auto sm:p-10">
         <div className="flex justify-between items-center">
-          <h1 className="mt-2 text-4xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
+          <h1 className="mt-10 text-4xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
             Dashboard
           </h1>
           <Link to="/jobpost">
-            <button className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
+            <button className="bg-blue-500 text-white hover:font-semibold px-4 py-2 rounded cursor-pointer">
               Post Job
             </button>
           </Link>
         </div>
+
         <Statistics stats={stats} />
-        <h2 className="text-xl font-semibold mb-4">Posted Jobs</h2>
+
+        <h2 className="text-2xl text-zinc-600 font-semibold mb-4">Posted Jobs</h2>
+
         {loading ? (
           <p>Loading jobs...</p>
         ) : jobs.length === 0 ? (
           <p>No jobs found.</p>
         ) : (
-          <div className="w-full max-w-lg">
+          <div className="w-full grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6">
             {jobs.map((job) => (
               <div
                 key={job._id}
-                className="bg-gray-100 p-4 rounded-lg flex items-center justify-between shadow-md mb-4"
+                className="bg-white p-6 rounded-2xl shadow-lg flex flex-col items-start transition-transform duration-300 hover:shadow-xl"
               >
-                <div className="flex items-center">
-                  <div className="w-12 h-12 bg-gray-300 text-gray-700 font-semibold flex items-center justify-center rounded-lg text-xl uppercase">
+                <div className="flex items-center w-full">
+                  <div className="w-14 h-14 bg-sky-200 text-sky-700 font-bold flex items-center justify-center rounded-xl text-2xl uppercase">
                     {job.title.charAt(0)}
                   </div>
-                  <div className="ml-4">
-                    <h3 className="font-semibold text-gray-800">{job.title}</h3>
-                    <p className="text-gray-500">Full-time • {job.location}</p>
+                  <div className="ml-4 flex-1">
+                    <h3 className="font-bold text-lg text-gray-800">
+                      {job.title}
+                    </h3>
+                    <p className="text-gray-600 text-md font-semibold">{job.location}</p>
                   </div>
                 </div>
-                <IoEllipsisHorizontal className="text-gray-500 text-xl cursor-pointer" />
               </div>
             ))}
           </div>

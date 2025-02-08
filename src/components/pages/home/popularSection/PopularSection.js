@@ -6,6 +6,7 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { Link } from "react-router-dom";
 
 const JobSection = () => {
   const jobListings = [
@@ -98,18 +99,17 @@ const JobSection = () => {
         <div className="flex justify-between items-center">
           <div>
             <h2 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">
-              Featured Job Listings
+            Popular Job Listings
             </h2>
             <p className="text-gray-600 mt-2">
               Discover top opportunities for your next career move.
             </p>
           </div>
-          <a
-            href="#"
-            className="text-black font-semibold hover:underline flex items-center"
-          >
+          <Link to="/alljobs">
+          <div className="text-black font-semibold hover:underline flex items-center">
             Browse All Jobs &rarr;
-          </a>
+          </div>
+          </Link>
         </div>
 
         {/* Swiper Carousel */}
@@ -174,11 +174,7 @@ const JobSection = () => {
                 </div>
 
                 {/* Apply Button */}
-                <div className="mt-4">
-                  <button className="w-full bg-gradient-to-r from-pink-500 to-blue-500 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition">
-                    Try Now &rarr;
-                  </button>
-                </div>
+                
               </div>
             </SwiperSlide>
           ))}

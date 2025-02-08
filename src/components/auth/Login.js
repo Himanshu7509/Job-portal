@@ -111,7 +111,7 @@ const Login = () => {
         </div>
       </div>
 
-      <div className="w-full max-w-md lg:max-w-lg mb-8 lg:mb-0 flex justify-center">
+      <div className="w-full max-w-md lg:max-w-lg mb-8 lg:mb-0 justify-center md:block hidden">
         <img
           src="https://epaylater.in/assets/images/help.svg"
           alt="Login Illustration"

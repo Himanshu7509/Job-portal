@@ -83,9 +83,9 @@ const JobPosting = () => {
   const addSkill = (skill) => {
     const trimmedSkill = skill.trim();
     if (trimmedSkill && !formData.skills.includes(trimmedSkill)) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        skills: [...prev.skills, trimmedSkill]
+        skills: [...prev.skills, trimmedSkill],
       }));
     }
   };
@@ -113,38 +113,35 @@ const JobPosting = () => {
         setFormData((prev) => ({ ...prev, [name]: file }));
       }
       return;
-    }
-
-    else if (name === "skills") {
+    } else if (name === "skills") {
       setSkillInput(value);
     } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
   const handleSkillInputKeyDown = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault(); // Prevent form submission
       if (skillInput.trim()) {
         addSkill(skillInput);
-        setSkillInput(''); // Clear input after adding
+        setSkillInput(""); // Clear input after adding
       }
-    } else if (e.key === ',' ){
+    } else if (e.key === ",") {
       e.preventDefault();
       if (skillInput.trim()) {
         addSkill(skillInput);
-        setSkillInput('');
+        setSkillInput("");
       }
     }
   };
 
   const handleRemoveSkill = (indexToRemove) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      skills: prev.skills.filter((_, index) => index !== indexToRemove)
+      skills: prev.skills.filter((_, index) => index !== indexToRemove),
     }));
   };
-
 
   const handlePostJob = async (e) => {
     e.preventDefault();
@@ -155,13 +152,13 @@ const JobPosting = () => {
       const submitFormData = new FormData();
 
       // Append all form fields to FormData
-      Object.keys(formData).forEach(key => {
+      Object.keys(formData).forEach((key) => {
         if (formData[key] !== null && formData[key] !== undefined) {
-          if (key === 'skills') {
+          if (key === "skills") {
             // Convert skills array to a simple comma-separated string when sending to server
             const skillsString = formData[key].join(", ");
             submitFormData.append(key, skillsString);
-          } else if (key === 'profileImg') {
+          } else if (key === "profileImg") {
             if (formData[key] instanceof File) {
               submitFormData.append(key, formData[key]);
             }
@@ -205,7 +202,7 @@ const JobPosting = () => {
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Upload Company Logo
         </label>
-        <div className="mt-1 flex items-center space-x-4">
+        <div className="mt-1 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
           <input
             type="file"
             name="profileImg"
@@ -224,8 +221,8 @@ const JobPosting = () => {
         {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
       </div>
 
-      <div className="flex gap-4">
-        <div className="flex-1">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
           <label className="block text-sm font-medium text-gray-700">
             Company Name
           </label>
@@ -238,7 +235,7 @@ const JobPosting = () => {
             placeholder="Enter company name"
           />
         </div>
-        <div className="flex-1">
+        <div>
           <label className="block text-sm font-medium text-gray-700">
             Provider Name
           </label>
@@ -253,8 +250,8 @@ const JobPosting = () => {
         </div>
       </div>
 
-      <div className="flex gap-4">
-        <div className="flex-1">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
           <label className="block text-sm font-medium text-gray-700">
             Company Email
           </label>
@@ -267,7 +264,7 @@ const JobPosting = () => {
             placeholder="Enter company email"
           />
         </div>
-        <div className="flex-1">
+        <div>
           <label className="block text-sm font-medium text-gray-700">
             Phone Number
           </label>
@@ -282,8 +279,8 @@ const JobPosting = () => {
         </div>
       </div>
 
-      <div className="flex gap-4">
-        <div className="flex-1">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
           <label className="block text-sm font-medium text-gray-700">
             Company URL
           </label>
@@ -296,7 +293,7 @@ const JobPosting = () => {
             placeholder="Enter company website"
           />
         </div>
-        <div className="flex-1">
+        <div>
           <label className="block text-sm font-medium text-gray-700">
             Number of Employees
           </label>
@@ -325,13 +322,15 @@ const JobPosting = () => {
         ></textarea>
       </div>
 
+      <div className="w-full flex justify-end">
       <button
         type="button"
         onClick={handleNext}
-        className="w-full bg-gradient-to-r from-pink-500 to-blue-500 text-white py-3 px-4 rounded-md hover:opacity-90 font-semibold"
+        className="w-1/3 bg-gradient-to-r from-pink-500 to-blue-500 text-white py-3 px-4 rounded-md hover:opacity-90 font-semibold"
       >
         Next
       </button>
+      </div>
     </>
   );
 
@@ -446,8 +445,8 @@ const JobPosting = () => {
 
   const renderRequirementsForm = () => (
     <>
-      <div className="flex gap-4">
-        <div className="flex-1">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
           <label className="block text-sm font-medium text-gray-700">
             Minimum Package
           </label>
@@ -460,7 +459,7 @@ const JobPosting = () => {
             placeholder="Enter minimum package eg: 3LPA"
           />
         </div>
-        <div className="flex-1">
+        <div>
           <label className="block text-sm font-medium text-gray-700">
             Maximum Package
           </label>
@@ -475,8 +474,8 @@ const JobPosting = () => {
         </div>
       </div>
 
-      <div className="flex gap-4">
-        <div className="flex-1">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
           <label className="block text-sm font-medium text-gray-700">
             Interview Type
           </label>
@@ -491,7 +490,7 @@ const JobPosting = () => {
             <option value="Walk-In">Walk In</option>
           </select>
         </div>
-        <div className="flex-1">
+        <div>
           <label className="block text-sm font-medium text-gray-700">
             Experience Level
           </label>
@@ -510,8 +509,8 @@ const JobPosting = () => {
         </div>
       </div>
 
-      <div className="flex gap-4">
-        <div className="flex-1">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
           <label className="block text-sm font-medium text-gray-700">
             Work Type
           </label>
@@ -527,7 +526,7 @@ const JobPosting = () => {
             <option value="Hybrid">Hybrid</option>
           </select>
         </div>
-        <div className="flex-1">
+        <div>
           <label className="block text-sm font-medium text-gray-700">
             Minimum Education
           </label>
@@ -542,7 +541,7 @@ const JobPosting = () => {
         </div>
       </div>
 
-      <div className="flex-1">
+      <div>
         <label className="block text-sm font-medium text-gray-700">
           Required Skills
         </label>
@@ -595,17 +594,17 @@ const JobPosting = () => {
         ></textarea>
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex sm:flex-row justify-between gap-4 mt-4">
         <button
           type="button"
           onClick={handlePrevious}
-          className="w-1/3 bg-gradient-to-r from-pink-700 to-blue-700 text-white py-3 px-4 rounded-md hover:opacity-90 font-semibold"
+          className="w-full sm:w-1/3 bg-gradient-to-r from-pink-700 to-blue-700 text-white py-3 px-4 rounded-md hover:opacity-90 font-semibold"
         >
           Previous
         </button>
         <button
           type="submit"
-          className="w-1/2 bg-gradient-to-r from-pink-500 to-blue-500 text-white py-3 px-4 rounded-md hover:opacity-90 font-semibold"
+          className="w-full sm:w-1/2 bg-gradient-to-r from-pink-500 to-blue-500 text-white py-3 px-4 rounded-md hover:opacity-90 font-semibold"
         >
           Submit
         </button>
@@ -616,24 +615,24 @@ const JobPosting = () => {
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-gray-50">
       <div className="w-1/4 h-screen fixed top-0 left-0">
-        <HostSidebar/>
+        <HostSidebar />
       </div>
-      <div className="p-2 sm:w-3/4 ml-auto sm:p-10">
-      <h2 className="text-4xl font-bold mb-6 text-center bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">
-        Post Job
-      </h2>
+      <div className="p-2 w-full sm:w-3/4 ml-auto sm:p-10">
+        <h2 className="text-4xl font-bold mb-6 text-zinc-700 text-center sm:text-left">
+          Post Job
+        </h2>
 
-      {isLoading && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
-      )}
+        {isLoading && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        )}
 
-      <form className="space-y-6 p-4" onSubmit={handlePostJob}>
-        {step === 1 && renderCompanyForm()}
-        {step === 2 && renderJobDetailsForm()}
-        {step === 3 && renderRequirementsForm()}
-      </form>
+        <form className="space-y-6 p-4" onSubmit={handlePostJob}>
+          {step === 1 && renderCompanyForm()}
+          {step === 2 && renderJobDetailsForm()}
+          {step === 3 && renderRequirementsForm()}
+        </form>
       </div>
     </div>
   );

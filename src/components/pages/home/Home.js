@@ -1,10 +1,10 @@
 import React from 'react'
 import BrowseCategories from './BrowseCategories/BrowseCategories'
 import HeroSection from './heroSection/HeroSection'
-import JobSection from './jobSection/JobSection'
+import PopularSection from './popularSection/PopularSection'
 import ServicesSection from './servicesSection/ServicesSection'
 import JobExploreSec from './job-explore-sec/JobExploreSec'
-import JobGrid from './jobGrid/JobGrid'
+import RecentJobs from './recentJobs/RecentJobs'
 import FAQSection from './FAQ/FAQSection'
 import Header from '../../common/header/Header'
 import Footer from '../../common/footer/Footer'
@@ -16,9 +16,9 @@ const Home = () => {
     <div className='w-full'>
         <Header/>
         <HeroSection/>
-        <JobSection/>
+        <PopularSection/>
         <BrowseCategories/>
-        <JobGrid/>
+        <RecentJobs/>
         <BlogSection/>
         <Testimonials/>
         <JobExploreSec/>
