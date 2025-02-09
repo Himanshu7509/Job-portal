@@ -13,8 +13,8 @@ const Statistics = ({ stats }) => {
           <FaBriefcase size={24} />
         </div>
         <div>
-          <h3 className="text-xl font-semibold text-gray-800">{stats.totalJobs}</h3>
-          <p className="text-gray-500 text-sm">Total Jobs</p>
+          <h3 className="text-xl font-bold text-blue-800">{stats.totalJobs}</h3>
+          <p className="text-gray-500 text-md font-semibold">Total Jobs</p>
         </div>
       </div>
 
@@ -23,8 +23,8 @@ const Statistics = ({ stats }) => {
           <FaUsers size={24} />
         </div>
         <div>
-          <h3 className="text-xl font-semibold text-gray-800">{stats.totalApplicants}</h3>
-          <p className="text-gray-500 text-sm">Total Applicants</p>
+          <h3 className="text-xl font-bold text-green-800">{stats.totalApplicants}</h3>
+          <p className="text-gray-500 text-md font-semibold">Total Applicants</p>
         </div>
       </div>
 
@@ -33,8 +33,8 @@ const Statistics = ({ stats }) => {
           <FaUserCheck size={24} />
         </div>
         <div>
-          <h3 className="text-xl font-semibold text-gray-800">{stats.totalShortlisted}</h3>
-          <p className="text-gray-500 text-sm">Total Shortlisted</p>
+          <h3 className="text-xl font-bold text-yellow-800">{stats.totalShortlisted}</h3>
+          <p className="text-gray-500 text-md font-semibold">Total Shortlisted</p>
         </div>
       </div>
     </div>

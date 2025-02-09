@@ -54,12 +54,12 @@ const JobHostingDashboard = () => {
       </div>
 
       <div className="p-2 w-full sm:w-3/4 ml-auto sm:p-10">
-        <div className="flex justify-between items-center">
-          <h1 className="mt-10 text-4xl font-bold text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
+        <div className="flex sm:justify-between justify-center items-center">
+          <h1 className="mt-10 text-4xl font-bold text-zinc-600 mb-6">
             Dashboard
           </h1>
           <Link to="/jobpost">
-            <button className="bg-blue-500 text-white hover:font-semibold px-4 py-2 rounded cursor-pointer">
+            <button className="bg-blue-500 text-white font-semibold px-4 py-2 rounded cursor-pointer sm:block hidden">
               Post Job
             </button>
           </Link>

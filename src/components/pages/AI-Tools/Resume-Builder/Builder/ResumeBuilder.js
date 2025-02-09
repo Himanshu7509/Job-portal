@@ -211,7 +211,7 @@ const ResumeBuilder = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg">
+    <div className="max-w-8xl mx-auto p-6 bg-white rounded-lg">
       <h1 className="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">Resume Builder</h1>
 
       <div className="space-y-6">
@@ -283,7 +283,6 @@ const ResumeBuilder = () => {
               />
             </div>
           </div>
-          <img src="https://img.freepik.com/free-vector/employees-cv-candidates-resume-corporate-workers-students-id-isolate-flat-design-element-job-applications-avatars-personal-information-concept-illustration_335657-1661.jpg?semt=ais_incoming" className="lg:w-1/2 xl:w-1/2 md:w-1/2 sm:w-full xs:w-full" />
         </div>
 
         {/* Education Section */}
@@ -361,7 +360,6 @@ const ResumeBuilder = () => {
               </div>
             )}
           </div>
-          <img src="https://img.freepik.com/free-vector/teacher-concept-illustration_114360-2166.jpg" className="lg:w-1/2 xl:w-1/2 md:w-1/2 sm:w-full xs:w-full" />
         </div>
 
         {/* Work Experience Section */}
@@ -449,7 +447,6 @@ const ResumeBuilder = () => {
               </div>
             )}
           </div>
-          <img src="https://img.freepik.com/premium-vector/businessman-with-many-arms-sitting-computer-office-doing-many-tasks-same-time-freelance-worker-multitasking-skills-effective-time-management-productivity-concept_458444-1248.jpg" className="lg:w-1/2 xl:w-1/2 md:w-1/2 sm:w-full xs:w-full" />
         </div>
 
         {/* Skills Section */}
@@ -491,13 +488,14 @@ const ResumeBuilder = () => {
             )}
           </div>
         </div>
-
+        <div className="w-full flex justify-center">
         <button
           onClick={generatePDF}
-          className="bg-gradient-to-r from-pink-500 to-blue-500 text-white p-4 font-bold text-2xl rounded-lg w-full"
+          className="bg-gradient-to-r from-pink-500 to-blue-500 text-white p-4 font-bold text-2xl rounded-lg w-1/2"
         >
           Generate PDF
         </button>
+        </div>
       </div>
     </div>
   );

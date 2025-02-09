@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import HostSidebar from "../sidebar/HostSidebar";
-import { Link } from "react-router-dom";
-import { FaUser } from "react-icons/fa";
+
+import { TbCategory } from "react-icons/tb";
+import { FaUserClock } from "react-icons/fa";
+import { GiWallet } from "react-icons/gi";
+import { GrUserWorker } from "react-icons/gr";
+import { BsPersonWorkspace } from "react-icons/bs";
 import { FaLocationDot } from "react-icons/fa6";
-import { BsFillBriefcaseFill } from "react-icons/bs";
-import { Menu } from "lucide-react";
+import HostSidebar from "../sidebar/HostSidebar";
 
 const MyJob = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [expandedId, setExpandedId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,7 +42,6 @@ const MyJob = () => {
       });
 
       const result = await response.json();
-      console.log("API Response:", result);
 
       if (!response.ok) {
         throw new Error(
@@ -48,11 +51,7 @@ const MyJob = () => {
         );
       }
 
-      if (result.success && result.jobs) {
-        setJobs(result.jobs);
-      } else {
-        setJobs([]);
-      }
+      setJobs(result.success && result.jobs ? result.jobs : []);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -60,11 +59,12 @@ const MyJob = () => {
     }
   };
 
-  const handleViewApplicant = (jobId) => {
+  const handleViewApplicants = async (jobId) => {
     navigate(`/job/${jobId}/applicants`);
   };
 
-  const handleDeleteJob = async (jobId) => {
+  const handleDeleteJob = async () => {
+    if (!selectedJob) return;
     const token = Cookies.get("jwtToken");
 
     if (!token) {
@@ -72,9 +72,7 @@ const MyJob = () => {
       return;
     }
 
-    console.log("Attempting to delete job with ID:", jobId);
-
-    const deleteUrl = `https://jobquick.onrender.com/job/${jobId}`;
+    const deleteUrl = `https://jobquick.onrender.com/job/${selectedJob}`;
 
     try {
       const response = await fetch(deleteUrl, {
@@ -86,7 +84,6 @@ const MyJob = () => {
       });
 
       const result = await response.json();
-      console.log("Delete API Response:", result);
 
       if (!response.ok) {
         throw new Error(
@@ -96,9 +93,9 @@ const MyJob = () => {
         );
       }
 
-      setJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
+      setJobs((prevJobs) => prevJobs.filter((job) => job._id !== selectedJob));
+      setSelectedJob(null);
     } catch (error) {
-      console.error("Delete Job Error:", error);
       setError(error.message);
     }
   };
@@ -115,114 +112,184 @@ const MyJob = () => {
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-6 text-center">
-        <h1 className="text-red-500 text-lg font-semibold">Error: {error}</h1>
-        <button
-          onClick={() => window.location.reload()}
-          className="bg-red-500 text-white px-6 py-2 rounded mt-4 hover:bg-red-600 transition"
-        >
-          Retry
-        </button>
+      <div className="min-h-screen flex items-center justify-center bg-gray-500">
+        <p className="text-red-600 text-5xl">{error}</p>
       </div>
     );
   }
 
   return (
+    <>
+      <div className="min-h-screen flex flex-col lg:flex-row bg-gray-50">
+        <div className="w-1/4 h-screen fixed top-0 left-0">
+          <HostSidebar />
+        </div>
 
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Sidebar wrapper - only shown on larger screens */}
-      <div className="lg:block w-64 fixed top-0 left-0 h-screen z-20">
-        <HostSidebar />
-      </div>
+        <div className="p-2 w-full sm:w-3/4 ml-auto sm:p-10">
+          <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-md sm:p-8 p-2">
+            <h1 className="mt-2 text-4xl font-bold text-center sm:text-left text-transparent text-zinc-600 mb-6">
+              Profile
+            </h1>
 
-    
+            <div className="sm:p-6 p-2">
+              {jobs.length === 0 ? (
+                <div className="text-center py-12 bg-gray-50 rounded-lg">
+                  <p className="text-xl text-gray-500">No jobs found</p>
+                </div>
+              ) : (
+                <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-6">
+                  {jobs.map((job) => {
+                    const isExpanded = expandedId === job?._id;
 
-      {/* Main content area with improved responsive padding */}
-      <div className="w-full lg:w-[calc(100%-16rem)] lg:ml-64 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8">
-        <h1 className="text-3xl sm:text-4xl font-bold text-center mb-8 lg:mb-12">
-          <span className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
-            My Jobs 
-          </span>
-        </h1>
+                    return (
+                      <div
+                        key={job?._id}
+                        className={`bg-white border border-gray-200 shadow-lg sm:p-6 p-3 ${
+                          isExpanded ? "h-auto" : "h-fit"
+                        }`}
+                      >
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-4">
+                            <div className="w-12 h-10 bg-pink-100 text-zinc-700 font-bold flex items-center justify-center rounded-xl text-2xl uppercase">
+                              {job.companyName.charAt(0)}
+                            </div>
+                            <div className="w-full">
+                              <p className="font-semibold text-zinc-700 sm:text-lg text-md">
+                                {job.companyName}
+                              </p>
+                              <p className="text-sm text-gray-500 truncate max-w-full overflow-hidden whitespace-nowrap font-semibold">
+                                {new Date(job.dateCreated).toLocaleDateString()}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <div>
+                              <p className="text-lg text-gray-600 font-semibold">
+                                {job.title}
+                              </p>
+                            </div>
+                          </div>
 
-        {jobs.length === 0 ? (
-          <div className="flex flex-col items-center justify-center p-8 bg-white rounded-lg shadow-sm">
-            <BsFillBriefcaseFill className="h-16 w-16 text-pink-500 mb-4" />
-            <h2 className="text-xl font-semibold text-gray-700">
-              No jobs found
-            </h2>
-            <p className="text-gray-500 mt-2">
-              Start by posting your first job
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {jobs.map((job) => (
-              <div
-                key={job._id}
-                className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden transform hover:-translate-y-1"
-              >
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent bg:text-2xl">
-                      {job.title}
-                    </h2>
-                    <span className="px-3 py-1 text-sm font-medium text-pink-600 bg-pink-50 rounded-full">
-                      {job.jobType}
-                    </span>
-                  </div>
-
-                  <div className="space-y-4 mt-8">
-                    <div className="flex items-center text-gray-700 hover:text-pink-500 transition-colors">
-                      <BsFillBriefcaseFill className="h-5 w-5 mr-3 text-purple-500" />
-                      <span className="font-medium">{job.companyName}</span>
-                    </div>
-                    <div className="flex items-center text-gray-700 hover:text-pink-500 transition-colors">
-                      <FaLocationDot className="h-5 w-5 mr-3 text-purple-500" />
-                      <span>{job.location}</span>
-                    </div>
-                    <div className="flex items-center text-gray-700 hover:text-pink-500 transition-colors">
-                      <FaUser className="h-5 w-5 mr-3 text-purple-500" />
-                      <span>{job.noOfOpeaning} openings</span>
-                    </div>
-                  </div>
-
-                  {job.skills?.length > 0 && (
-                    <div className="mt-5">
-                      <div className="flex flex-wrap gap-2">
-                        {job.skills.map((skill, index) => (
-                          <span
-                            key={index}
-                            className="px-4 py-2 text-sm font-semibold bg-gradient-to-r from-pink-100 to-blue-100 text-gray-700 rounded-full"
+                          <button
+                            onClick={() =>
+                              setExpandedId(isExpanded ? null : job?._id)
+                            }
+                            className="mt-4 text-blue-600 font-semibold cursor-pointer"
                           >
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                            {isExpanded ? "View Less" : "View More"}
+                          </button>
 
-                  <div className="flex flex-col sm:flex-row gap-3 mt-6">
-                    <button
-                      onClick={() => handleViewApplicant(job._id)}
-                      className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600  text-white font-medium rounded-lg hover:from-blue-700 hover:to-blue-700 transition-all duration-300 transform"
-                    >
-                      View Applicants
-                    </button>
-                    <button
-                      onClick={() => handleDeleteJob(job._id)}
-                      className="flex-1 px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white font-medium rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-300 transform"
-                    >
-                      Delete Job
-                    </button>
+                          {isExpanded && (
+                            <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                              {/* Left Side */}
+                              <div className="flex items-center gap-3">
+                                <BsPersonWorkspace className="w-5 h-5 text-zinc-600" />
+                                <div>
+                                  
+                                  <p className="font-medium text-gray-900">
+                                    {job.workType}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <FaUserClock className="w-5 h-5 text-zinc-600" />
+                                <div>
+                                  
+                                  <p className="font-medium text-gray-900">
+                                    {job.jobType}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <GiWallet className="w-5 h-5 text-zinc-600" />
+                                <div>
+                                 
+                                  <p className="font-medium text-gray-900">
+                                    ${job.minPackage} - ${job.maxPackage}
+                                  </p>
+                                </div>
+                              </div>
+
+                              {/* Right Side */}
+                              <div className="flex items-center gap-3">
+                                <FaLocationDot className="w-5 h-5 text-zinc-600" />
+                                <div>
+                                 
+                                  <p className="font-medium text-gray-900">
+                                    {job.location}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <GrUserWorker className="w-5 h-5 text-zinc-600" />
+                                <div>
+                                 
+                                  <p className="font-medium text-gray-900">
+                                    {job.experience}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <TbCategory className="w-5 h-5 text-zinc-600" />
+                                <div>
+                                  
+                                  <p className="font-medium text-gray-900">
+                                    {job.category?.title || "Uncategorized"}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Shortlist Button */}
+                          <div className="flex justify-between w-full mt-4 space-x-4">
+                            <button
+                              onClick={() => handleViewApplicants(job._id)}
+                              className="flex-1 h-10 bg-blue-500 text-white rounded-md font-semibold shadow-md"
+                            >
+                              Applicants
+                            </button>
+                            <button
+                              onClick={() => setSelectedJob(job._id)}
+                              className="flex-1 h-10 bg-red-500 text-white rounded-md font-semibold shadow-md "
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+              {selectedJob && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm p-4">
+                  <div className="bg-white p-8 rounded-xl shadow-xl w-full max-w-md text-center">
+                    <h2 className="text-xl font-semibold text-gray-900">
+                      Are you sure you want to delete this job?
+                    </h2>
+                    <div className="mt-6 flex justify-center gap-6">
+                      <button
+                        onClick={handleDeleteJob}
+                        className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition shadow-md"
+                      >
+                        Delete
+                      </button>
+                      <button
+                        onClick={() => setSelectedJob(null)}
+                        className="bg-gray-300 text-black px-6 py-2 rounded-lg hover:bg-gray-400 transition shadow-md"
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )}
+            </div>
           </div>
-        )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

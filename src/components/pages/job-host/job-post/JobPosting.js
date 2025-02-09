@@ -545,7 +545,7 @@ const JobPosting = () => {
         <label className="block text-sm font-medium text-gray-700">
           Required Skills
         </label>
-        <div className="relative">
+        <div className="">
           <input
             type="text"
             name="skills"
@@ -618,6 +618,7 @@ const JobPosting = () => {
         <HostSidebar />
       </div>
       <div className="p-2 w-full sm:w-3/4 ml-auto sm:p-10">
+      <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-md sm:p-6 p-2">
         <h2 className="text-4xl font-bold mb-6 text-zinc-700 text-center sm:text-left">
           Post Job
         </h2>
@@ -633,6 +634,7 @@ const JobPosting = () => {
           {step === 2 && renderJobDetailsForm()}
           {step === 3 && renderRequirementsForm()}
         </form>
+        </div>
       </div>
     </div>
   );
