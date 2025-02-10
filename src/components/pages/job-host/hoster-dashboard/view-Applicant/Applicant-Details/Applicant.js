@@ -76,10 +76,10 @@ const Applicant = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-blue-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="animate-spin w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-xl text-pink-700">Loading applicant details...</p>
+          <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-white" />
+          {/* <p className="text-white text-2xl mt-4">Loading your jobs...</p> */}
         </div>
       </div>
     );

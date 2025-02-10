@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import SignUpImg from '../../assets/signup.jpg'
+import SignUpImg from "../../assets/signup.png"
 
 
 const Signup = () => {
@@ -16,6 +16,20 @@ const Signup = () => {
     e.preventDefault();
     console.log("Email:", email);
     console.log("Password:", password);
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      setSuccess(null);
+      return;
+    }
+  
+    if (password.length < 5) {
+      setError("Password must be at least 6 characters.");
+      setSuccess(null);
+      return;
+    }
 
     const person = {
       email: email,
@@ -49,19 +63,19 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-r from-pink-100 to-blue-100 sm:px-6 lg:px-8">
-      <div className="flex flex-col w-full max-w-4xl overflow-hidden bg-white rounded-lg shadow-lg md:flex-row">
+    <div className="flex items-center justify-center min-h-screen px-4 bg-gray-50 sm:px-6 lg:px-8">
+      <div className="flex flex-col w-full max-w-6xl overflow-hidden bg-white rounded-lg shadow-lg md:flex-row">
 
         <div className="hidden w-full md:block md:w-1/2">
           <img
             src={SignUpImg}
             alt="Signup"
-            className="object-cover w-auto h-full"
+            className="object-cover w-full h-full"
           />
         </div>
 
         <div className="w-full p-6 space-y-6 md:w-1/2 sm:p-8">
-          <h2 className="text-2xl font-bold text-center bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent sm:text-3xl">
+          <h2 className="text-2xl font-bold text-center bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent sm:text-3xl lg:mt-5">
             Create an Account
           </h2>
           <p className="text-sm text-center text-gray-600 sm:text-base">
@@ -131,6 +145,7 @@ const Signup = () => {
             </Link>
           </p>
         </div>
+        
       </div>
     </div>
   );

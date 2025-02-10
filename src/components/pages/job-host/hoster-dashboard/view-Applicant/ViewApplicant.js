@@ -69,9 +69,10 @@ const ViewApplicant = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-center mt-5 sm:text-5xl text-3xl text-pink-500 font-semibold">
-          Loading Applicants...
-        </p>
+        <div className="text-center">
+          <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-white" />
+          {/* <p className="text-white text-2xl mt-4">Loading your jobs...</p> */}
+        </div>
       </div>
     );
   }

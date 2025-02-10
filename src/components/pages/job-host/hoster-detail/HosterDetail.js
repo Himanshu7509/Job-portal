@@ -98,9 +98,6 @@ const HosterDetail = () => {
     }
   };
 
-  if (loading) {
-    return <p className="text-center mt-5 text-5xl text-pink-500 font-semibold">Loading...</p>;
-  }
 
   return (
     <div className="w-full flex bg-gray-50">

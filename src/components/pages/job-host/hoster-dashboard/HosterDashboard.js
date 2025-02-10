@@ -70,7 +70,7 @@ const JobHostingDashboard = () => {
         <h2 className="text-2xl text-zinc-600 font-semibold mb-4">Posted Jobs</h2>
 
         {loading ? (
-          <p>Loading jobs...</p>
+          <h2>Just a sec...</h2>
         ) : jobs.length === 0 ? (
           <p>No jobs found.</p>
         ) : (

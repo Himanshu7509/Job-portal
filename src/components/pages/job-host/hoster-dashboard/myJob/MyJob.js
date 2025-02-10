@@ -100,15 +100,6 @@ const MyJob = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-center mt-5 text-5xl text-pink-500 font-semibold">
-          Loading...
-        </p>
-      </div>
-    );
-  }
 
   if (error) {
     return (
