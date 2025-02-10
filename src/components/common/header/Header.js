@@ -149,7 +149,7 @@ const Header = () => {
                     }}
                     className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-pink-500 hover:font-semibold px-4 py-2 rounded cursor-pointer flex items-center"
                   >
-                    <FaUserTie className="text-lg text-pink-500 mr-2" />
+                    <FaUserTie className="text-lg text-blue-500 mr-2" />
                     <span className="font-semibold">User</span>
                   </button>
                   {userDropdown && (
@@ -292,7 +292,7 @@ const Header = () => {
                       }}
                       className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-pink-500 hover:font-semibold px-4 py-2 rounded cursor-pointer flex items-center"
                     >
-                      <FaUserTie className="text-lg text-pink-500 mr-2" />
+                      <FaUserTie className="text-lg text-blue-500 mr-2" />
                       <span className="font-semibold">User</span>
                     </button>
                     {userDropdown && (

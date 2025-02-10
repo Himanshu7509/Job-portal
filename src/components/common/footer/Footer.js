@@ -23,6 +23,12 @@ const Footer = () => {
           <h3 className="font-bold text-lg mb-4">Helpful Links </h3>
 
           <div className="space-y-2">
+          <Link
+              to="/"
+              className="block text-sm hover:text-blue-500 transition"
+            >
+              Home
+            </Link>
             <Link
               to="/alljobs"
               className="block text-sm hover:text-blue-500 transition"
@@ -42,15 +48,12 @@ const Footer = () => {
             >
               Contact
             </Link>
-            <Link
-              to="/"
-              className="block text-sm hover:text-blue-500 transition"
-            >
-              Job Hosting
-            </Link>
+            
            
           </div>
         </div>
+
+        
 
         <div>
           <h3 className="font-bold text-lg mb-4">Support</h3>

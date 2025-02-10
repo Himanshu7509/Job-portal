@@ -149,7 +149,7 @@ const ProfilePage = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {[
                       ["Gender", seeker.gender],
-                      ["Company Url", seeker.dateOfBirth],
+                      ["Date Of Birth", seeker.dateOfBirth],
                       ["Phone No", seeker.phoneNumber],
                       ["Github Link", seeker.projectUrl],
                     ].map(([label, value]) => (

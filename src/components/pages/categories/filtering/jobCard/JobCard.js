@@ -44,7 +44,7 @@ const JobCard = ({ job }) => {
             </div>
             <div className="flex items-center mb-3 text-gray-700">
               <GiWallet className="w-5 h-5 mr-2 text-purple-600" />
-              <span className="font-semibold">${job.minPackage} - ${job.maxPackage}</span>
+              <span className="font-semibold">{job.minPackage} - {job.maxPackage}</span>
             </div>
           </div>
           <div>

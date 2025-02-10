@@ -155,7 +155,7 @@ const UserDetails = () => {
     <>
       <div className="space-y-6">
         <h2 className="text-3xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
-          User Detials
+          User Details
         </h2>
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Upload Image
