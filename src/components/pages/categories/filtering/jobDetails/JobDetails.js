@@ -90,7 +90,7 @@ const JobDetails = () => {
         const formattedFields = missingFields.map(field => 
           field.replace(/([A-Z])/g, ' $1').toLowerCase()
         ).join(', ');
-        setModalMessage(`Please complete your profile. Missing fields: ${formattedFields}`);
+        setModalMessage(`Please complete your profile. There are some Missing fields like: ${formattedFields}`);
         return false;
       }
       return true;
