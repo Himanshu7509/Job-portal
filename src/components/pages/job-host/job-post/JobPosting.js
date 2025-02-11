@@ -624,9 +624,12 @@ const JobPosting = () => {
         </h2>
 
         {isLoading && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-          </div>
+          <div className="min-h-screen flex items-center justify-center bg-gray-50">
+              <div className="text-center">
+                <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-white" />
+                {/* <p className="text-white text-2xl mt-4">Loading your jobs...</p> */}
+              </div>
+            </div>          
         )}
 
         <form className="space-y-6 p-4" onSubmit={handlePostJob}>

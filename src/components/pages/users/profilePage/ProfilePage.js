@@ -88,15 +88,6 @@ const ProfilePage = () => {
     );
   }
 
-  if (!seeker) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-center mt-5 text-5xl text-pink-500 font-semibold">
-          Loading...
-        </p>
-      </div>
-    );
-  }
 
   return (
     <>
@@ -271,7 +262,12 @@ const ProfilePage = () => {
           </>
         ) : (
           <>
-            <p className="text-gray-500">Loading...</p>
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+              <div className="text-center">
+                <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-white" />
+                {/* <p className="text-white text-2xl mt-4">Loading your jobs...</p> */}
+              </div>
+            </div>
           </>
         )}
 

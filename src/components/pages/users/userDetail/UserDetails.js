@@ -88,7 +88,7 @@ const UserDetails = () => {
   if (loading) {
     return (
       <p className="text-center mt-5 text-5xl text-pink-500 font-semibold">
-        Loading...
+       
       </p>
     );
   }

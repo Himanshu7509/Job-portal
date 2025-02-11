@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import HostSidebar from "./sidebar/HostSidebar";
 import Statistics from "./statistics/Statistics";
+import LineChart from "./Graph/LineChart";
 
 const JobHostingDashboard = () => {
   const [jobs, setJobs] = useState([]);
@@ -67,7 +68,9 @@ const JobHostingDashboard = () => {
 
         <Statistics stats={stats} />
 
-        <h2 className="text-2xl text-zinc-600 font-semibold mb-4">Posted Jobs</h2>
+        <LineChart jobs={jobs} />
+
+        <h2 className="text-2xl text-zinc-600 font-semibold mb-4 mt-8">Posted Jobs</h2>
 
         {loading ? (
           <h2>Just a sec...</h2>
