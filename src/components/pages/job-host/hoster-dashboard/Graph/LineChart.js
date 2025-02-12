@@ -162,7 +162,7 @@ const LineChart = ({ jobs }) => {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto bg-white rounded-xl shadow-md mb-4 mt-2 p-4 sm:p-6 md:p-8">
+    <div className="w-full max-w-5xl mx-auto bg-white rounded-xl p-2 sm:p-3 md:p-4">
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
@@ -187,7 +187,7 @@ const LineChart = ({ jobs }) => {
           </div>
         </div>
 
-        <div className="relative w-full h-[300px] sm:h-[400px] bg-white rounded-lg">
+        <div className="w-full h-[300px] sm:h-[400px] bg-white rounded-lg">
           {isLoading ? (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="flex flex-col items-center space-y-2">

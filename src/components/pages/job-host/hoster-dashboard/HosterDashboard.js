@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import HostSidebar from "./sidebar/HostSidebar";
 import Statistics from "./statistics/Statistics";
 import LineChart from "./Graph/LineChart";
+import { Plus, Loader2 } from "lucide-react";
 
 const JobHostingDashboard = () => {
   const [jobs, setJobs] = useState([]);
@@ -49,55 +50,73 @@ const JobHostingDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-gray-50">
-      <div className="w-1/4 h-screen fixed top-0 left-0 z-50">
+    <div className="min-h-screen bg-gray-50">
+      <div className="lg:block fixed top-0 left-0 w-64 h-screen">
         <HostSidebar />
       </div>
 
-      <div className="p-2 w-full sm:w-3/4 ml-auto sm:p-10">
-        <div className="flex sm:justify-between justify-center items-center">
-          <h1 className="mt-10 text-4xl font-bold text-zinc-600 mb-6">
-            Dashboard
-          </h1>
-          <Link to="/jobpost">
-            <button className="bg-blue-500 text-white font-semibold px-4 py-2 rounded cursor-pointer sm:block hidden">
-              Post Job
-            </button>
-          </Link>
-        </div>
-
-        <Statistics stats={stats} />
-
-        <LineChart jobs={jobs} />
-
-        <h2 className="text-2xl text-zinc-600 font-semibold mb-4 mt-8">Posted Jobs</h2>
-
-        {loading ? (
-          <h2>Just a sec...</h2>
-        ) : jobs.length === 0 ? (
-          <p>No jobs found.</p>
-        ) : (
-          <div className="w-full grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6">
-            {jobs.map((job) => (
-              <div
-                key={job._id}
-                className="bg-white p-6 rounded-2xl shadow-lg flex flex-col items-start transition-transform duration-300 hover:shadow-xl"
-              >
-                <div className="flex items-center w-full">
-                  <div className="w-14 h-14 bg-sky-200 text-sky-700 font-bold flex items-center justify-center rounded-xl text-2xl uppercase">
-                    {job.title.charAt(0)}
-                  </div>
-                  <div className="ml-4 flex-1">
-                    <h3 className="font-bold text-lg text-gray-800">
-                      {job.title}
-                    </h3>
-                    <p className="text-gray-600 text-md font-semibold">{job.location}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+      <div className="lg:ml-64 p-4 md:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col sm:flex-row items-center gap-4 mb-8 lg:justify-between">
+            <h1 className=" ml-4 text-3xl text-center md:text-3xl mb-4 lg:text-4xl mr-4 font-bold text-zinc-600">
+              Dashboard
+            </h1>
+            <Link to="/jobpost">
+              <button className="hidden sm:block lg:bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200">
+                Post Job
+              </button>
+            </Link>
           </div>
-        )}
+
+          <div className="mb-8">
+            <Statistics stats={stats} />
+          </div>
+
+          <div className="flex flex-col md:flex-col lg:flex-row gap-8 w-full">
+            <div className="lg:w-3/5 w-full shadow-lg p-2 sm:p-4 bg-white rounded-xl">
+              <LineChart jobs={jobs} />
+            </div>
+
+            <div className="lg:w-2/5 w-full bg-white rounded-xl p-4 h-[680px] overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
+              <h2 className="text-xl md:text-2xl text-zinc-600 font-semibold mb-6 text-center md:text-left">
+                Posted Jobs
+              </h2>
+
+              {loading ? (
+                <div className="flex items-center justify-center h-48">
+                  <div className="text-gray-500">Loading...</div>
+                </div>
+              ) : jobs.length === 0 ? (
+                <div className="flex items-center justify-center h-48">
+                  <p className="text-gray-500">No jobs found.</p>
+                </div>
+              ) : (
+                <div className="grid gap-4">
+                  {jobs.map((job) => (
+                    <div
+                      key={job._id}
+                      className="group bg-gray-50 hover:bg-gray-100 p-4 rounded-lg transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 md:w-14 md:h-14 bg-sky-200 text-sky-700 font-bold flex items-center justify-center rounded-lg text-xl md:text-2xl uppercase">
+                          {job.title.charAt(0)}
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-gray-800 text-lg mb-1 group-hover:text-blue-600 transition-colors duration-200">
+                            {job.title}
+                          </h3>
+                          <p className="text-gray-600 text-sm md:text-base">
+                            {job.location}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

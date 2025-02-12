@@ -1,134 +1,109 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useDropzone } from "react-dropzone";
 
 const ATS_Checker = () => {
-  const [resumeText, setResumeText] = useState("");
-  const [score, setScore] = useState(null);
-  const [suggestions, setSuggestions] = useState([]);
+  const [file, setFile] = useState(null);
+  const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      setLoading(true);
-      reader.onload = (event) => {
-        const text = event.target.result;
-        setResumeText(text);
-        analyzeResume(text);
-        setLoading(false);
-      };
-      reader.readAsText(file);
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: ".pdf",
+    onDrop: (acceptedFiles) => {
+      setFile(acceptedFiles[0]);
+    },
+  });
+
+  const handleUpload = async () => {
+    if (!file) return alert("Please upload a resume!");
+
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("resume", file);
+
+    try {
+      const response = await axios.post(
+        "https://ats-score-uv74.onrender.com/upload",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      setResult({
+        ...response.data,
+        feedback: Array.isArray(response.data.feedback)
+          ? response.data.feedback
+          : [response.data.feedback],
+      });
+    } catch (error) {
+      alert("Error analyzing resume!");
     }
-  };
-
-  const analyzeResume = (text) => {
-    let currentScore = 70;
-    const feedback = [];
-
-    if (!text.toLowerCase().includes("work history")) {
-      feedback.push("Your resume is missing a 'Work History' section.");
-      currentScore -= 10;
-    }
-    if (!text.toLowerCase().includes("skills")) {
-      feedback.push("Your resume is missing a 'Skills' section.");
-      currentScore -= 10;
-    }
-
-    const wordCount = text.split(/\s+/).length;
-    if (wordCount < 150) {
-      feedback.push("Your resume is too short. Aim for at least 150 words.");
-      currentScore -= 15;
-    } else if (wordCount > 400) {
-      feedback.push("Your resume is too long. Aim for a concise summary (under 400 words).");
-      currentScore -= 5;
-    }
-
-    const overusedWords = ["responsible for", "team player", "detail-oriented"];
-    overusedWords.forEach((word) => {
-      if (text.toLowerCase().includes(word)) {
-        feedback.push(`Avoid using generic phrases like '${word}'.`);
-        currentScore -= 5;
-      }
-    });
-
-    const randomAdjustment = Math.floor(Math.random() * 10) - 5;
-    currentScore += randomAdjustment;
-
-    currentScore = Math.max(0, Math.min(100, currentScore));
-
-    setScore(currentScore);
-    setSuggestions(feedback);
+    setLoading(false);
   };
 
   return (
-    <div className="bg-gradient-to-br from-white to-gray-100 min-h-screen flex flex-col items-center justify-start text-gray-800 font-sans">
-      <header className="w-full text-center px-6 py-12">
-        <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">
-          ATS Resume Checker
-        </h1>
-        <p className="mt-6 text-lg md:text-xl text-gray-600 leading-relaxed">
-          Enhance your resume with instant analysis and actionable suggestions.
-        </p>
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-start text-gray-900 font-inter px-4 sm:px-8">
+      <header className="w-full text-center py-8 bg-gradient-to-b from-blue-100 to-pink-100 text-zinc-700 shadow-lg rounded-b-3xl">
+        <h1 className="text-2xl sm:text-4xl font-extrabold">ATS Resume Checker</h1>
       </header>
 
-      <main className="w-full px-6 lg:px-20 py-8 grid grid-cols-1 md:grid-cols-2 gap-10">
-        <section className="bg-white rounded-xl p-8 shadow-md border border-gray-200 hover:shadow-lg transition-all">
-          <h2 className="text-3xl font-semibold text-center text-gray-700">
-            Upload Your Resume
-          </h2>
-          <p className="text-center text-gray-500 text-sm mt-2">
-            Supported formats: DOC, DOCX, PDF, TXT.
-          </p>
-          <div className="mt-10 border-2 border-dashed border-gray-300 rounded-lg py-16 text-center hover:border-blue-400 transition">
-            <p className="text-lg font-medium text-gray-600">
-              Drag & Drop your resume here
-            </p>
-            <p className="text-gray-400 text-sm mt-2">or</p>
-            <input
-              type="file"
-              accept=".txt,.doc,.docx,.pdf"
-              className="hidden"
-              id="fileUpload"
-              onChange={handleFileUpload}
-            />
-            <label
-              htmlFor="fileUpload"
-              className="mt-6 inline-block bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:shadow-lg font-semibold cursor-pointer"
-            >
+      <main className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-10 py-12">
+        <section className="bg-white rounded-xl p-2 sm:p-8  shadow-lg border border-gray-200 hover:shadow-xl transition-all flex flex-col items-center">
+          <h2 className="text-2xl font-semibold text-center text-blue-700">Upload Your Resume</h2>
+          <p className="text-center text-gray-500 font-semibold text-sm mt-2">Supported formats: PDF. Max size: 5MB.</p>
+          <div
+            {...getRootProps()}
+            className="mt-6 border-2 border-dashed border-gray-300 rounded-xl py-12 text-center hover:border-indigo-500 transition cursor-pointer w-full max-w-md"
+          >
+            <input {...getInputProps()} />
+            {file ? (
+              <p className="text-sm sm:text-lg font-medium text-gray-700">{file.name}</p>
+            ) : (
+              <p className="text-lg font-medium text-gray-700">Drag & Drop your resume here</p>
+            )}
+            <p className="text-gray-500 text-sm mt-2">or</p>
+            <label className="mt-4 inline-block bg-indigo-600 text-white px-6 py-3 rounded-full shadow-md hover:bg-indigo-700 cursor-pointer">
               Choose a File
             </label>
           </div>
+          <button
+            onClick={handleUpload}
+            className="mt-6 w-full max-w-md px-6 py-3 border border-blue-500 bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent font-semibold rounded-lg shadow-md"
+            disabled={loading}
+          >
+            {loading ? "Analyzing..." : "Analyze"}
+          </button>
         </section>
 
-        <section className="bg-white rounded-xl p-8 shadow-md border border-gray-200 hover:shadow-lg transition-all">
-          {loading ? (
-            <p className="text-center text-gray-500">Analyzing your resume...</p>
-          ) : score !== null ? (
+        <section className="bg-white rounded-xl p-2 sm:p-8 shadow-lg border border-gray-200 hover:shadow-xl transition-all">
+          {result !== null ? (
             <>
-              <div className="mt-6 bg-gradient-to-r from-green-400 to-green-600 p-6 rounded-lg text-center shadow-md">
-                <p className="text-5xl font-extrabold text-white animate-pulse">{score}</p>
-                <p className="text-white font-semibold mt-2">Resume Score</p>
-                <p className="text-sm text-white mt-2">
-                  {score >= 80
-                    ? "Excellent! Your resume is highly competitive!"
-                    : "Your resume could use some improvement."}
+              <div className="mt-4 bg-gradient-to-r from-pink-400 to-blue-500 p-6 rounded-xl text-center shadow-lg">
+                <p className="text-6xl font-extrabold text-white">{result.score}</p>
+                <p className="text-white font-semibold mt-2 text-lg">
+                  {result.score >= 80
+                    ? "Fantastic! Your resume stands out!"
+                    : "Good effort! A few tweaks can make it even better."}
                 </p>
               </div>
-              {suggestions.length > 0 && (
-                <div className="mt-6 bg-yellow-100 p-6 rounded-lg shadow-md">
-                  <h3 className="text-lg font-bold text-yellow-700">
-                    Suggestions for Improvement
-                  </h3>
-                  <ul className="mt-4 list-disc ml-6 text-sm text-yellow-800">
-                    {suggestions.map((suggestion, index) => (
-                      <li key={index}>{suggestion}</li>
-                    ))}
-                  </ul>
+
+              {result.feedback.length > 0 && (
+                <div className="mt-8 bg-sky-50 p-6 rounded-xl shadow-md max-h-64 overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
+                <h3 className="text-lg font-bold text-blue-700">Suggestions for Improvement</h3>
+                <div className="mt-4 border-l-4 border-blue-500 pl-4">
+                  {result.feedback.map((suggestion, index) => {
+                    const formattedSuggestion = suggestion.replace(/(?:\*\*)(.*?)(?:\*\*)/g, "<strong>$1</strong>").replace(/\*/g, "");
+                    return (
+                      <p key={index} className="text-md text-pink-800 mb-2" dangerouslySetInnerHTML={{ __html: formattedSuggestion }}></p>
+                    );
+                  })}
                 </div>
+              </div>
               )}
             </>
           ) : (
-            <p className="text-center text-gray-500">Upload your resume to see your score and suggestions!</p>
+            <p className="text-center text-gray-600 text-md">Upload your resume to see its score and improvement suggestions.</p>
           )}
         </section>
       </main>
