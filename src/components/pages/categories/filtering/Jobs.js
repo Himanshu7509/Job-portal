@@ -197,7 +197,7 @@ const Jobs = () => {
                 />
               </div>
             </div>
-            <div className="flex-1 px-4 sm:px-6 lg:px-8">
+            <div className="flex-1 px-4 sm:px-6 lg:px-2">
               {isLoading && jobListings.length === 0 ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
                   {[1, 2, 3, 4].map((n) => (

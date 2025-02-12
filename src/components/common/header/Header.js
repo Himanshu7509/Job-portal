@@ -166,7 +166,7 @@ const Header = () => {
                           className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                         >
                           <button className="font-semibold text-red-700">
-                            LogOut{" "}
+                            LogOut
                           </button>
                         </li>
                       </ul>

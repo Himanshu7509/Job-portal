@@ -115,7 +115,7 @@ const Applicant = () => {
       <div className="w-1/4 h-screen fixed top-0 left-0">
           <HostSidebar />
         </div>
-        <div className="p-2 w-full sm:w-3/4 ml-auto sm:p-10">
+        <div className="p-2 w-full lg:w-3/4 ml-auto sm:p-10">
           <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-md p-0">
             <div className="p-4 md:p-6">
               <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center sm:items-center gap-4">

@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 const JobCard = ({ job }) => {
   return (
-    <div className="border rounded-lg p-5 flex flex-col justify-between items-start hover:shadow-xl transition-shadow bg-white shadow-md max-w-md mx-auto sm:max-w-full w-11/12">
+    <div className="border rounded-lg p-5 flex flex-col justify-between items-start hover:shadow-xl transition-shadow bg-white shadow-md max-w-md mx-auto sm:max-w-full w-[98%]">
       <div className="flex w-full mb-4 items-center">
         <img
           src="https://thumbs.dreamstime.com/b/building-logo-19190924.jpg"

@@ -57,8 +57,8 @@ const JobHostingDashboard = () => {
 
       <div className="lg:ml-64 p-4 md:p-6 lg:p-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col sm:flex-row items-center gap-4 mb-8 lg:justify-between">
-            <h1 className=" ml-4 text-3xl text-center md:text-3xl mb-4 lg:text-4xl mr-4 font-bold text-zinc-600">
+          <div className="flex flex-col sm:flex-row items-center gap-4 mb-3 lg:justify-between">
+            <h1 className=" ml-4 text-3xl text-center md:text-3xl lg:text-4xl mr-4 font-bold text-zinc-600">
               Dashboard
             </h1>
             <Link to="/jobpost">
@@ -72,12 +72,12 @@ const JobHostingDashboard = () => {
             <Statistics stats={stats} />
           </div>
 
-          <div className="flex flex-col md:flex-col lg:flex-row gap-8 w-full">
+          <div className="flex flex-col md:flex-col lg:flex-row gap-8 w-full ">
             <div className="lg:w-3/5 w-full shadow-lg p-2 sm:p-4 bg-white rounded-xl">
               <LineChart jobs={jobs} />
             </div>
 
-            <div className="lg:w-2/5 w-full bg-white rounded-xl p-4 h-[680px] overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
+            <div className="lg:w-2/5 w-full bg-white rounded-xl p-4 h-auto sm:h-[465px] overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
               <h2 className="text-xl md:text-2xl text-zinc-600 font-semibold mb-6 text-center md:text-left">
                 Posted Jobs
               </h2>
@@ -95,14 +95,15 @@ const JobHostingDashboard = () => {
                   {jobs.map((job) => (
                     <div
                       key={job._id}
-                      className="group bg-gray-50 hover:bg-gray-100 p-4 rounded-lg transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md"
+                      className="group bg-purple-50 hover:bg-purple-100 p-4 rounded-lg transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md"
                     >
+                      <Link to="/host-jobs">
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 md:w-14 md:h-14 bg-sky-200 text-sky-700 font-bold flex items-center justify-center rounded-lg text-xl md:text-2xl uppercase">
                           {job.title.charAt(0)}
                         </div>
                         <div>
-                          <h3 className="font-bold text-gray-800 text-lg mb-1 group-hover:text-blue-600 transition-colors duration-200">
+                          <h3 className="font-bold text-gray-800 text-md sm:text-lg mb-1 group-hover:text-blue-600 transition-colors duration-200">
                             {job.title}
                           </h3>
                           <p className="text-gray-600 text-sm md:text-base">
@@ -110,6 +111,7 @@ const JobHostingDashboard = () => {
                           </p>
                         </div>
                       </div>
+                      </Link>
                     </div>
                   ))}
                 </div>
