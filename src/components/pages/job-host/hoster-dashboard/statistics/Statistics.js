@@ -7,10 +7,10 @@ const Statistics = ({ stats }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
-      <div className="bg-white p-6 rounded-2xl shadow-md flex items-center gap-4 border border-gray-200">
-        <div className="p-4 bg-blue-100 text-blue-600 rounded-full">
-          <FaBriefcase size={24} />
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="bg-white p-4 h-[85px] rounded-2xl shadow-md flex items-center gap-4 border border-gray-200">
+        <div className="p-2 bg-blue-100 text-blue-600 rounded-full">
+          <FaBriefcase size={20} />
         </div>
         <div>
           <h3 className="text-xl font-bold text-blue-800">{stats.totalJobs}</h3>
@@ -18,9 +18,9 @@ const Statistics = ({ stats }) => {
         </div>
       </div>
 
-      <div className="bg-white p-6 rounded-2xl shadow-md flex items-center gap-4 border border-gray-200">
-        <div className="p-4 bg-green-100 text-green-600 rounded-full">
-          <FaUsers size={24} />
+      <div className="bg-white h-[85px] p-4 rounded-2xl shadow-md flex items-center gap-4 border border-gray-200">
+        <div className="p-2 bg-green-100 text-green-600 rounded-full">
+          <FaUsers size={20} />
         </div>
         <div>
           <h3 className="text-xl font-bold text-green-800">{stats.totalApplicants}</h3>
@@ -28,9 +28,9 @@ const Statistics = ({ stats }) => {
         </div>
       </div>
 
-      <div className="bg-white p-6 rounded-2xl shadow-md flex items-center gap-4 border border-gray-200">
-        <div className="p-4 bg-yellow-100 text-yellow-600 rounded-full">
-          <FaUserCheck size={24} />
+      <div className="bg-white h-[85px] p-4 rounded-2xl shadow-md flex items-center gap-4 border border-gray-200">
+        <div className="p-2 bg-yellow-100 text-yellow-600 rounded-full">
+          <FaUserCheck size={20} />
         </div>
         <div>
           <h3 className="text-xl font-bold text-yellow-800">{stats.totalShortlisted}</h3>

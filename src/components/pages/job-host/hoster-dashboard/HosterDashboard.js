@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 import HostSidebar from "./sidebar/HostSidebar";
 import Statistics from "./statistics/Statistics";
 import LineChart from "./Graph/LineChart";
+import PieChart from "./Graph/PieChart";
 import { Plus, Loader2 } from "lucide-react";
 
-const JobHostingDashboard = () => {
+const HosterDashboard = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -34,6 +35,7 @@ const JobHostingDashboard = () => {
         }
       );
       const result = await response.json();
+      console.log(result)
 
       if (!response.ok) {
         throw new Error(result.message || "Failed to fetch jobs");
@@ -41,7 +43,6 @@ const JobHostingDashboard = () => {
 
       setJobs(result.success && result.jobs ? result.jobs : []);
       setStats(result.statistics);
-      console.log(result);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -50,72 +51,99 @@ const JobHostingDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="lg:block fixed top-0 left-0 w-64 h-screen">
+    <div className="min-h-screen flex flex-col lg:flex-row bg-gray-50">
+      {/* Sidebar */}
+      <div className="w-1/4 h-screen fixed top-0 left-0">
         <HostSidebar />
       </div>
 
-      <div className="lg:ml-64 p-4 md:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col sm:flex-row items-center gap-4 mb-3 lg:justify-between">
-            <h1 className=" ml-4 text-3xl text-center md:text-3xl lg:text-4xl mr-4 font-bold text-zinc-600">
+      {/* Main Content */}
+      <div className="p-2 w-full lg:w-[83%] ml-auto sm:p-5">
+        <div className="w-full lg:max-w-7xl mx-auto space-y-6">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xl">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800">
               Dashboard
             </h1>
             <Link to="/jobpost">
-              <button className="hidden sm:block lg:bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200">
-                Post Job
+              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 hidden sm:flex items-center justify-center gap-2">
+                <Plus className="w-5 h-5" />
+                <span>Post Job</span>
               </button>
             </Link>
           </div>
 
-          <div className="mb-8">
-            <Statistics stats={stats} />
-          </div>
+          {/* Main Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            {/* Left Column - Stats & Graph */}
+            <div className="lg:col-span-3 space-y-6">
+              {/* Statistics Cards */}
+              <div className="">
+                <Statistics stats={stats} />
+              </div>
 
-          <div className="flex flex-col md:flex-col lg:flex-row gap-8 w-full ">
-            <div className="lg:w-3/5 w-full shadow-lg p-2 sm:p-4 bg-white rounded-xl">
-              <LineChart jobs={jobs} />
+              {/* Line Chart */}
+              <div className="bg-white rounded-xl shadow-sm p-4">
+                <LineChart jobs={jobs} />
+              </div>
             </div>
 
-            <div className="lg:w-2/5 w-full bg-white rounded-xl p-4 h-auto sm:h-[465px] overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
-              <h2 className="text-xl md:text-2xl text-zinc-600 font-semibold mb-6 text-center md:text-left">
-                Posted Jobs
-              </h2>
+            {/* Right Column - Pie Chart & Jobs List */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Pie Chart */}
+              <div className="bg-white rounded-xl shadow-sm p-4">
+                <PieChart jobs={jobs} />
+              </div>
 
-              {loading ? (
-                <div className="flex items-center justify-center h-48">
-                  <div className="text-gray-500">Loading...</div>
-                </div>
-              ) : jobs.length === 0 ? (
-                <div className="flex items-center justify-center h-48">
-                  <p className="text-gray-500">No jobs found.</p>
-                </div>
-              ) : (
-                <div className="grid gap-4">
-                  {jobs.map((job) => (
-                    <div
-                      key={job._id}
-                      className="group bg-purple-50 hover:bg-purple-100 p-4 rounded-lg transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md"
-                    >
-                      <Link to="/host-jobs">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 md:w-14 md:h-14 bg-sky-200 text-sky-700 font-bold flex items-center justify-center rounded-lg text-xl md:text-2xl uppercase">
-                          {job.title.charAt(0)}
+              {/* Jobs List */}
+              <div className="bg-white rounded-xl shadow-sm p-4">
+                <h2 className="text-xl font-semibold text-gray-800 mb-4">Posted Jobs</h2>
+                
+                {loading ? (
+                  <div className="flex items-center justify-center h-48">
+                    <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+                  </div>
+                ) : error ? (
+                  <div className="flex items-center justify-center h-48">
+                    <p className="text-red-500">{error}</p>
+                  </div>
+                ) : jobs.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center h-48 gap-3">
+                    <p className="text-gray-500">No jobs posted yet</p>
+                    <Link to="/jobpost">
+                      <button className="text-blue-600 hover:text-blue-700 font-medium">
+                        Post your first job
+                      </button>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="grid gap-4 h-auto sm:h-[110px] overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
+                    {jobs.map((job) => (
+                      <Link 
+                        key={job._id} 
+                        to="/host-jobs"
+                        className="block group"
+                      >
+                        <div className="bg-gray-50 hover:bg-blue-50 p-4 rounded-lg transition-all duration-200">
+                          <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 bg-blue-100 text-blue-600 font-bold flex items-center justify-center rounded-lg text-xl uppercase">
+                              {job.title.charAt(0)}
+                            </div>
+                            <div>
+                              <h3 className="font-semibold text-gray-800 group-hover:text-blue-600 transition-colors duration-200">
+                                {job.title}
+                              </h3>
+                              <p className="text-gray-600 text-sm">
+                                {job.location}
+                              </p>
+                            </div>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="font-bold text-gray-800 text-md sm:text-lg mb-1 group-hover:text-purple-600 transition-colors duration-200">
-                            {job.title}
-                          </h3>
-                          <p className="text-gray-600 font-semibold text-sm md:text-base">
-                            {job.location}
-                          </p>
-                        </div>
-                      </div>
                       </Link>
-                    </div>
-                  ))}
-                </div>
-              )}
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -124,4 +152,4 @@ const JobHostingDashboard = () => {
   );
 };
 
-export default JobHostingDashboard;
+export default HosterDashboard;

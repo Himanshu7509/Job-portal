@@ -162,7 +162,7 @@ const LineChart = ({ jobs }) => {
   };
 
   return (
-    <div className="w-full bg-white rounded-xl p-2 sm:p-3 md:p-3 h-auto sm:h-[430px] overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
+    <div className="w-full bg-white rounded-xl p-2 sm:p-3 md:p-3 h-auto sm:h-[450px] overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
       <div className="space-y-2">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">

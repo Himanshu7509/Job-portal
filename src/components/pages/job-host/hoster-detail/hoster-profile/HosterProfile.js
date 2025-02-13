@@ -106,7 +106,7 @@ const HosterProfile = () => {
           </>
         ) : (
           <>
-            <main className="p-2 sm:w-3/4 ml-auto sm:p-10 h-auto sm:h-[690px] overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
+            <main className="p-2 w-full lg:w-3/4 ml-auto sm:p-10 h-auto sm:h-[690px] overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
               <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
                 <h1 className="mt-2 text-4xl font-bold text-center sm:text-left text-transparent text-zinc-600 mb-6">
                   Profile
