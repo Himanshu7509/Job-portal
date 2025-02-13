@@ -103,10 +103,10 @@ const JobHostingDashboard = () => {
                           {job.title.charAt(0)}
                         </div>
                         <div>
-                          <h3 className="font-bold text-gray-800 text-md sm:text-lg mb-1 group-hover:text-blue-600 transition-colors duration-200">
+                          <h3 className="font-bold text-gray-800 text-md sm:text-lg mb-1 group-hover:text-purple-600 transition-colors duration-200">
                             {job.title}
                           </h3>
-                          <p className="text-gray-600 text-sm md:text-base">
+                          <p className="text-gray-600 font-semibold text-sm md:text-base">
                             {job.location}
                           </p>
                         </div>

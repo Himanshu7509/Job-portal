@@ -100,11 +100,11 @@ const HosterDetail = () => {
 
 
   return (
-    <div className="w-full flex bg-gray-50">
+    <div className="min-h-screen flex flex-col lg:flex-row bg-gray-50">
       <div className="w-1/4 h-screen fixed top-0 left-0">
       <HostSidebar/>
       </div>
-      <div className="p-2 sm:w-3/4 ml-auto sm:p-10">
+      <div className="p-2 sm:w-3/4 ml-auto sm:p-10 h-auto sm:h-[690px] overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
     <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-4 sm:p-8">
       <h2 className="mt-2 text-4xl font-bold text-black mb-6 text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
         Employer Details

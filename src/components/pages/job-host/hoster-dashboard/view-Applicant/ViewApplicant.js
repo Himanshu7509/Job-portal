@@ -94,7 +94,7 @@ const ViewApplicant = () => {
         <HostSidebar />
       </div>
 
-      <div className="p-2 w-full sm:w-3/4 ml-auto sm:p-10">
+      <div className="p-2 w-full sm:w-3/4 ml-auto sm:p-10 h-auto sm:h-[690px] overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
         <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-md sm:p-8 p-2">
           {/* Header Section */}
           <h1 className="mt-2 sm:text-4xl text-3xl font-bold text-center sm:text-left text-transparent text-zinc-600 mb-6">
