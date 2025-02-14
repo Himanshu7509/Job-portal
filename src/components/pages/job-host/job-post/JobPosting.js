@@ -12,6 +12,7 @@ const JobPosting = () => {
   const [error, setError] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [skillInput, setSkillInput] = useState("");
+  const [availableSubcategories, setAvailableSubcategories] = useState([]);
   const [formData, setFormData] = useState({
     profileImg: null,
     fullName: "",
@@ -33,6 +34,7 @@ const JobPosting = () => {
     skills: [],
     noOfOpeaning: "",
     location: "",
+    subcategories: [],
     categoryTitle: "",
     createdBy: JobId,
   });
@@ -55,6 +57,7 @@ const JobPosting = () => {
 
         let processedCategories = [];
         const data = response.data;
+        console.log(data);
 
         if (data.categories) {
           processedCategories = data.categories;
@@ -96,18 +99,15 @@ const JobPosting = () => {
     if (type === "file") {
       const file = files[0];
       if (file) {
-        // Check file type
         if (!file.type.startsWith("image/")) {
           setError("Please upload an image file");
           return;
         }
-        // Check file size (e.g., 5MB limit)
         if (file.size > 5 * 1024 * 1024) {
           setError("File size should be less than 5MB");
           return;
         }
 
-        // Create preview URL
         const previewUrl = URL.createObjectURL(file);
         setImagePreview(previewUrl);
         setFormData((prev) => ({ ...prev, [name]: file }));
@@ -115,6 +115,27 @@ const JobPosting = () => {
       return;
     } else if (name === "skills") {
       setSkillInput(value);
+    } else if (name === "categoryTitle") {
+      // Find the selected category
+      const selectedCategory = categories.find((cat) => cat.title === value);
+
+      // Check if subcategories exist and are not empty
+      const subcategories = selectedCategory?.subcategories || [];
+
+      if (subcategories.length === 0) {
+        setError("No subcategories available for this category");
+      } else {
+        setError(null);
+      }
+
+      setAvailableSubcategories(subcategories);
+
+      // Reset form data for category-related fields
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+        subcategories: "", // Reset subcategory selection
+      }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
@@ -174,6 +195,8 @@ const JobPosting = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+
+      console.log(response.data);
 
       if (response.data) {
         navigate("/host-dashboard");
@@ -323,13 +346,13 @@ const JobPosting = () => {
       </div>
 
       <div className="w-full flex justify-end">
-      <button
-        type="button"
-        onClick={handleNext}
-        className="w-1/3 bg-gradient-to-r from-pink-500 to-blue-500 text-white py-3 px-4 rounded-md hover:opacity-90 font-semibold"
-      >
-        Next
-      </button>
+        <button
+          type="button"
+          onClick={handleNext}
+          className="w-1/3 bg-gradient-to-r from-pink-500 to-blue-500 text-white py-3 px-4 rounded-md hover:opacity-90 font-semibold"
+        >
+          Next
+        </button>
       </div>
     </>
   );
@@ -364,33 +387,59 @@ const JobPosting = () => {
         />
       </div>
 
-      <div className="flex-1">
-        <label className="block text-sm font-medium text-gray-700">
-          Category
-        </label>
-        {isLoading ? (
-          <div className="mt-1 block w-full h-10 bg-gray-100 animate-pulse rounded-md" />
-        ) : error ? (
-          <div className="mt-1 text-red-500 text-sm">{error}</div>
-        ) : (
-          <select
-            name="categoryTitle"
-            value={formData.categoryTitle}
-            onChange={handleInputChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          >
-            <option value="" disabled>
-              Select Category
-            </option>
-            {categories.map((category) => (
-              <option
-                key={category._id || category.id || Math.random().toString(36)}
-                value={category.title || category.name || ""}
-              >
-                {category.title || category.name || "Unnamed Category"}
-              </option>
-            ))}
-          </select>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="flex-1">
+          <label className="block text-sm font-medium text-gray-700">
+            Category
+          </label>
+          {isLoading ? (
+            <div className="mt-1 block w-full h-10 bg-gray-100 animate-pulse rounded-md" />
+          ) : error ? (
+            <div className="mt-1 text-red-500 text-sm">{error}</div>
+          ) : (
+            <select
+              name="categoryTitle"
+              value={formData.categoryTitle}
+              onChange={handleInputChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            >
+              <option value="">Select Category</option>
+              {categories.map((category) => (
+                <option key={category._id} value={category.title}>
+                  {category.title}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+
+        {formData.categoryTitle && availableSubcategories.length > 0 && (
+          <div className="flex-1">
+            <label className="block text-sm font-medium text-gray-700">
+              Subcategory
+            </label>
+            <select
+              name="subcategories"
+              value={formData.subcategories}
+              onChange={handleInputChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            >
+              <option value="">Select Subcategory</option>
+              {availableSubcategories.map((subcat, index) => (
+                <option key={index} value={subcat.title}>
+                  {subcat.title}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {formData.categoryTitle && availableSubcategories.length === 0 && (
+          <div className="flex-1">
+            <div className="mt-6 text-sm text-red-500">
+              No subcategories available for this category
+            </div>
+          </div>
         )}
       </div>
 
@@ -617,26 +666,26 @@ const JobPosting = () => {
       <div className="w-1/4 h-screen fixed top-0 left-0">
         <HostSidebar />
       </div>
-      <div className="p-2 w-full sm:w-3/4 ml-auto sm:p-10">
-      <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-md sm:p-6 p-2">
-        <h2 className="text-4xl font-bold mb-6 text-zinc-700 text-center sm:text-left">
-          Post Job
-        </h2>
+      <div className="p-2 w-full lg:w-3/4 ml-auto sm:p-10">
+        <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-md sm:p-6 p-2">
+          <h2 className="text-4xl font-bold mb-6 text-zinc-700 text-center sm:text-left">
+            Post Job
+          </h2>
 
-        {isLoading && (
-          <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          {isLoading && (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
               <div className="text-center">
                 <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-white" />
                 {/* <p className="text-white text-2xl mt-4">Loading your jobs...</p> */}
               </div>
-            </div>          
-        )}
+            </div>
+          )}
 
-        <form className="space-y-6 p-4" onSubmit={handlePostJob}>
-          {step === 1 && renderCompanyForm()}
-          {step === 2 && renderJobDetailsForm()}
-          {step === 3 && renderRequirementsForm()}
-        </form>
+          <form className="space-y-6 p-4" onSubmit={handlePostJob}>
+            {step === 1 && renderCompanyForm()}
+            {step === 2 && renderJobDetailsForm()}
+            {step === 3 && renderRequirementsForm()}
+          </form>
         </div>
       </div>
     </div>

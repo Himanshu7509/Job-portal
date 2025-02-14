@@ -56,7 +56,7 @@ const JobGrid = () => {
   return (
     <div className="bg-gray-50 py-16 px-8">
       <div className="max-w-7xl mx-auto mb-10">
-        <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">
+        <h2 className="text-4xl w-full lg:w-1/3 font-bold mb-4 bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">
           {" "}
           Recent Jobs
         </h2>

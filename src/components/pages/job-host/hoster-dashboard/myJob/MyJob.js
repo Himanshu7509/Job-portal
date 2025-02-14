@@ -100,7 +100,6 @@ const MyJob = () => {
     }
   };
 
-
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-500">
@@ -116,9 +115,12 @@ const MyJob = () => {
           <HostSidebar />
         </div>
 
-        <div className="p-2 w-full lg:w-3/4 ml-auto sm:p-8 h-auto sm:h-[690px] overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
-          <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-md sm:p-8 p-2">
-            <h1 className="mt-2 text-4xl font-bold text-center sm:text-left text-transparent text-zinc-600 mb-6">
+        <div
+          className="p-2 w-full lg:w-[83%] ml-auto sm:p-8 h-auto sm:h-[690px] overflow-y-scroll -ms-overflow-style-none"
+          style={{ scrollbarWidth: "none" }}
+        >
+          <div className="w-full lg:max-w-7xl mx-auto space-y-6 bg-white shadow-lg p-2">
+            <h1 className="mt-2 text-4xl font-bold text-center sm:text-left text-transparent text-zinc-600 mb-4 ml-4">
               My Jobs
             </h1>
 
@@ -128,7 +130,7 @@ const MyJob = () => {
                   <p className="text-xl text-gray-500">No jobs found</p>
                 </div>
               ) : (
-                <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
                   {jobs.map((job) => {
                     const isExpanded = expandedId === job?._id;
 
@@ -145,7 +147,7 @@ const MyJob = () => {
                               {job.companyName.charAt(0)}
                             </div>
                             <div className="w-full">
-                              <p className="font-semibold text-zinc-700 sm:text-lg text-md">
+                              <p className="font-semibold text-zinc-700 sm:text-lg md:text-sm lg:text-xl">
                                 {job.companyName}
                               </p>
                               <p className="text-sm text-gray-500 truncate max-w-full overflow-hidden whitespace-nowrap font-semibold">
@@ -176,7 +178,6 @@ const MyJob = () => {
                               <div className="flex items-center gap-3">
                                 <BsPersonWorkspace className="w-5 h-5 text-zinc-600" />
                                 <div>
-                                  
                                   <p className="font-medium text-gray-900">
                                     {job.workType}
                                   </p>
@@ -185,7 +186,6 @@ const MyJob = () => {
                               <div className="flex items-center gap-3">
                                 <FaUserClock className="w-5 h-5 text-zinc-600" />
                                 <div>
-                                  
                                   <p className="font-medium text-gray-900">
                                     {job.jobType}
                                   </p>
@@ -194,7 +194,6 @@ const MyJob = () => {
                               <div className="flex items-center gap-3">
                                 <GiWallet className="w-5 h-5 text-zinc-600" />
                                 <div>
-                                 
                                   <p className="font-medium text-gray-900">
                                     ${job.minPackage} - ${job.maxPackage}
                                   </p>
@@ -205,7 +204,6 @@ const MyJob = () => {
                               <div className="flex items-center gap-3">
                                 <FaLocationDot className="w-5 h-5 text-zinc-600" />
                                 <div>
-                                 
                                   <p className="font-medium text-gray-900">
                                     {job.location}
                                   </p>
@@ -214,7 +212,6 @@ const MyJob = () => {
                               <div className="flex items-center gap-3">
                                 <GrUserWorker className="w-5 h-5 text-zinc-600" />
                                 <div>
-                                 
                                   <p className="font-medium text-gray-900">
                                     {job.experience}
                                   </p>
@@ -223,7 +220,6 @@ const MyJob = () => {
                               <div className="flex items-center gap-3">
                                 <TbCategory className="w-5 h-5 text-zinc-600" />
                                 <div>
-                                  
                                   <p className="font-medium text-gray-900">
                                     {job.category?.title || "Uncategorized"}
                                   </p>

@@ -18,7 +18,6 @@ const JobDetails = () => {
   const [profile, setProfile] = useState(null);
   const [modalMessage, setModalMessage] = useState("");
 
-
   const jobToken = Cookies.get("Token");
   const userId = Cookies.get("Id");
   const jobDetailsAPI = `https://jobquick.onrender.com/job/${id}`;
@@ -41,7 +40,7 @@ const JobDetails = () => {
         }
 
         const data = await response.json();
-        console.log(data)
+        console.log(data);
         setJobData(data);
       } catch (error) {
         console.error("Error fetching host jobs:", error);
@@ -52,91 +51,93 @@ const JobDetails = () => {
     fetchAllJobDetails();
   }, [id]);
 
-   useEffect(() => {
-      const fetchUserProfile = async () => {
-        try {
-          const response = await fetch(userProfileApi, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${jobToken}`,
-            },
-          });
-  
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-  
-          const data = await response.json();
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await fetch(userProfileApi, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jobToken}`,
+          },
+        });
 
-          console.log(data)
-          setProfile(data);
-        } catch (error) {
-          console.error("Error fetching host profile:", error);
-          setError("Failed to load seeker details.");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-      };
-  
-      fetchUserProfile();
-    }, [userProfileApi, jobToken]);
 
-    const isProfileComplete = () => {
-      if (!profile) return false;
-      
-      const requiredFields = ['fullName', 'city', 'phoneNumber', 'gender'];
-      const missingFields = requiredFields.filter(field => !profile[field]);
-      
-      if (missingFields.length > 0) {
-        const formattedFields = missingFields.map(field => 
-          field.replace(/([A-Z])/g, ' $1').toLowerCase()
-        ).join(', ');
-        setModalMessage(`Please complete your profile. There are some Missing fields like: ${formattedFields}`);
-        return false;
+        const data = await response.json();
+
+        console.log(data);
+        setProfile(data);
+      } catch (error) {
+        console.error("Error fetching host profile:", error);
+        setError("Failed to load seeker details.");
       }
-      return true;
     };
 
-    const handleApplynow = async () => {
-      if (!isProfileComplete()) {
-        setShowProfileModal(true);
-        return;
-      }
-    
-      try {
-        const response = await axios.post(
-          jobApplyAPI,
-          {
-            jobId: id,
-            applicantId: userId,
+    fetchUserProfile();
+  }, [userProfileApi, jobToken]);
+
+  const isProfileComplete = () => {
+    if (!profile) return false;
+
+    const requiredFields = ["fullName", "city", "phoneNumber", "gender"];
+    const missingFields = requiredFields.filter((field) => !profile[field]);
+
+    if (missingFields.length > 0) {
+      const formattedFields = missingFields
+        .map((field) => field.replace(/([A-Z])/g, " $1").toLowerCase())
+        .join(", ");
+      setModalMessage(
+        `Please complete your profile. Missing fields: ${formattedFields}`
+      );
+      return false;
+    }
+    return true;
+  };
+
+  const handleApplynow = async () => {
+    if (!isProfileComplete()) {
+      setShowProfileModal(true);
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        jobApplyAPI,
+        {
+          jobId: id,
+          applicantId: userId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jobToken}`,
           },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${jobToken}`,
-            },
-          }
-        );
-    
-        if (response && response.data) {
-          console.log(response.data);
-          if (hasApplied) {
-            setShowModal(true);
-            return;
-          }
-          setShowSuccessModal(true);
-          setHasApplied(true);
-        } else {
-          console.error("Error applying for job: No response data");
-          setShowModal(true);
         }
-      } catch (error) {
-        console.error(
-          "Error applying for job:",
-          error.response?.data || error.message
-        );
+      );
+
+      if (response && response.data) {
+        console.log(response.data);
+        if (hasApplied) {
+          setShowModal(true);
+          return;
+        }
+        setShowSuccessModal(true);
+        setHasApplied(true);
+      } else {
+        console.error("Error applying for job: No response data");
         setShowModal(true);
       }
-    };
+    } catch (error) {
+      console.error(
+        "Error applying for job:",
+        error.response?.data || error.message
+      );
+      setShowModal(true);
+    }
+  };
 
   if (error) {
     return (
@@ -250,8 +251,11 @@ const JobDetails = () => {
                       ["Openings", jobData.noOfOpeaning],
                       ["Min Package", jobData.minPackage],
                       ["Max Package", jobData.maxPackage],
-                      ["Categories",jobData.category.title],
-                      ["Posted Date", new Date(jobData.dateCreated).toLocaleDateString()]
+                      [
+                        "Posted Date",
+                        new Date(jobData.dateCreated).toLocaleDateString(),
+                      ],
+                      ["Categories", jobData.category.title],
                     ].map(([label, value]) => (
                       <div key={label} className="bg-pink-50 rounded-xl p-4">
                         <p className="text-gray-600 text-sm">{label}</p>
@@ -260,6 +264,22 @@ const JobDetails = () => {
                         </p>
                       </div>
                     ))}
+
+                    <section>
+                      <div className="bg-pink-50 rounded-xl p-4">
+                        <p className="text-gray-600 text-sm mb-1">
+                          SubCategory
+                        </p>
+                        {jobData.subcategories.map((subcategories, index) => (
+                          <span
+                            key={index}
+                            className="font-semibold text-gray-900"
+                          >
+                            {subcategories}
+                          </span>
+                        ))}
+                      </div>
+                    </section>
                   </div>
                 </section>
 
@@ -302,7 +322,9 @@ const JobDetails = () => {
       {showProfileModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-xl max-w-md">
-            <h2 className="text-xl font-bold mb-4 text-red-600">Incomplete Profile</h2>
+            <h2 className="text-xl font-bold mb-4 text-red-600">
+              Incomplete Profile
+            </h2>
             <p className="text-gray-700">{modalMessage}</p>
             <div className="mt-6 flex justify-between">
               <button
@@ -338,8 +360,13 @@ const JobDetails = () => {
       {showSuccessModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-xl">
-            <h2 className="text-xl font-bold mb-4">Application submitted successfully!</h2>
-            <p>Thank you for applying for this job. We will review your application and get back to you soon.</p>
+            <h2 className="text-xl font-bold mb-4">
+              Application submitted successfully!
+            </h2>
+            <p>
+              Thank you for applying for this job. We will review your
+              application and get back to you soon.
+            </p>
             <button
               className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg"
               onClick={() => setShowSuccessModal(false)}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const FAQSection = () => {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -40,13 +41,15 @@ const FAQSection = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Left Section */}
         <div>
-          <h1 className="text-3xl font-bold mb-4 bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">FAQs</h1>
+          <h1 className="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-500 to-pink-500 text-transparent bg-clip-text w-20">FAQs</h1>
           <p className="text-gray-600 mb-6">
             Find answers to your questions about job searching and using Job Quick effectively.
           </p>
+          <Link to="/contact">
           <button className="border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-100">
             Contact
           </button>
+          </Link>
         </div>
 
         {/* Right Section */}

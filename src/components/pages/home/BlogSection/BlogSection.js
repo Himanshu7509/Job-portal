@@ -32,7 +32,7 @@ const BlogSection = () => {
   return (
     <section className="py-12">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">Our Blog</h2>
+        <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-500 to-pink-500 text-transparent bg-clip-text">Our Blog</h2>
         <p className="text-gray-600 mb-8">
           See how you can up your career status
         </p>
