@@ -112,11 +112,11 @@ const MyJob = () => {
   return (
     <>
       <div className="min-h-screen flex flex-col lg:flex-row bg-gray-50">
-        <div className="w-1/4 h-screen fixed top-0 left-0">
+        <div className="w-[10px] lg:w-1/4 h-screen fixed top-0 left-0">
           <HostSidebar />
         </div>
 
-        <div className="p-2 w-full sm:w-3/4 ml-auto sm:p-8 h-auto sm:h-[690px] overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
+        <div className="p-2 w-full lg:w-3/4 ml-auto sm:p-8 h-auto sm:h-[690px] overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
           <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-md sm:p-8 p-2">
             <h1 className="mt-2 text-4xl font-bold text-center sm:text-left text-transparent text-zinc-600 mb-6">
               My Jobs

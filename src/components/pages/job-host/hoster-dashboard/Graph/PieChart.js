@@ -150,7 +150,7 @@ const PieChart = ({ jobs }) => {
           </select>
         </div>
 
-        <div className="w-full h-[300px] relative">
+        <div className="w-full h-[280px]">
           {isLoading ? (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="flex flex-col items-center space-y-2">
@@ -184,7 +184,7 @@ const PieChart = ({ jobs }) => {
               </p>
             </div>
             <div className="p-4 bg-orange-50 rounded-lg">
-              <p className="text-sm text-gray-600">Top Posted Job</p>
+              <p className="text-[12px] sm:text-sm text-gray-600">Top Applied Job</p>
               <p className="text-md font-semibold text-orange-600">
                 {chartData.length > 0 ? chartData.reduce((max, item) => 
                   item.applicants > max.applicants ? item : max

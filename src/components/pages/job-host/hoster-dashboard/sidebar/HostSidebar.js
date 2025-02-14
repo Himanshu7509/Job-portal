@@ -52,7 +52,7 @@ const HostSidebar = () => {
   };
 
   return (
-    <div className="relative h-screen flex w-full">
+    <div className="relative h-screen flex w-1/3">
       <button
         className="lg:hidden text-blue-800 p-3 rounded-md fixed top-4 left-4 z-50"
         onClick={() => setIsOpen(!isOpen)}
