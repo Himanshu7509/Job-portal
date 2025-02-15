@@ -7,6 +7,8 @@ import Blog from './components/pages/Blogs/Blog';
 import FilterPage from './components/pages/categories/FilterPage';
 import Contact from './components/pages/contact/Contact';
 import ATS from './components/pages/AI-Tools/ATS/ATS';
+import MockTest from './components/pages/AI-Tools/AI-MockTest/MockTest';
+import QuestionComponent from './components/pages/AI-Tools/AI-MockTest/Test/QuestionComponent';
 import ResumePage from './components/pages/AI-Tools/Resume-Builder/ResumePage';
 import Salaries from './components/pages/Salaries/Salaries';
 import UserDetails from './components/pages/users/userDetail/UserDetails';
@@ -64,6 +66,22 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path='/mocktest'
+            element={
+              <ProtectedRoute>
+                <MockTest />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+          path='/questions/:category/:subcategory'
+          element={
+            <ProtectedRoute>
+              <QuestionComponent/>
+            </ProtectedRoute>
+            }
+            />
           <Route
             path='/user-detail'
             element={

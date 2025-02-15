@@ -94,6 +94,11 @@ const Header = () => {
                         Resume Checker
                       </li>
                     </Link>
+                    <Link to="/mocktest">
+                      <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                        AI Mock Test
+                      </li>
+                    </Link>
                   </ul>
                 </div>
               )}
@@ -237,6 +242,11 @@ const Header = () => {
                     <Link to="/atschk">
                       <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
                         Resume Checker
+                      </li>
+                    </Link>
+                    <Link to="/mocktest">
+                      <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                        AI Mock Test
                       </li>
                     </Link>
                   </ul>
