@@ -15,7 +15,7 @@ const QuestionComponent = () => {
   const [score, setScore] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [error, setError] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(120);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const QuestionComponent = () => {
     setUserAnswers({});
     setScore(null);
     setShowResults(false);
-    setTimeLeft(60);
+    setTimeLeft(120);
     setIsTimerRunning(false);
     await fetchQuestions();
   };

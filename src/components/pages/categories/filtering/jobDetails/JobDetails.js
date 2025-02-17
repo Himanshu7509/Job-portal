@@ -12,66 +12,81 @@ const JobDetails = () => {
   const [jobData, setJobData] = useState(null);
   const [error, setError] = useState(null);
   const [hasApplied, setHasApplied] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [profile, setProfile] = useState(null);
   const [modalMessage, setModalMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const jobToken = Cookies.get("Token");
   const userId = Cookies.get("Id");
   const jobDetailsAPI = `https://jobquick.onrender.com/job/${id}`;
   const jobApplyAPI = `https://jobquick.onrender.com/applicants`;
   const userProfileApi = `https://jobquick.onrender.com/seekuser/${userId}`;
+  const checkApplicationAPI = `https://jobquick.onrender.com/applicants/check/${id}/${userId}`;
+
+  // Separate function to check application status
+  const checkApplicationStatus = async () => {
+    try {
+      const response = await axios.get(checkApplicationAPI, {
+        headers: {
+          Authorization: `Bearer ${jobToken}`,
+        },
+      });
+      
+      if (response.data && response.data.hasApplied) {
+        setHasApplied(true);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Error checking application status:", error);
+      return false;
+    }
+  };
 
   useEffect(() => {
-    const fetchAllJobDetails = async () => {
+    const fetchAllData = async () => {
+      setIsLoading(true);
       try {
-        const response = await fetch(jobDetailsAPI, {
-          method: "GET",
+        // First check if user has already applied
+        await checkApplicationStatus();
+
+        // Then fetch job details
+        const response = await axios.get(jobDetailsAPI, {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${jobToken}`,
           },
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        if (response.data) {
+          setJobData(response.data);
         }
-
-        const data = await response.json();
-        console.log(data);
-        setJobData(data);
       } catch (error) {
-        console.error("Error fetching host jobs:", error);
-        setError("Failed to load hoster job details.");
+        console.error("Error fetching data:", error);
+        setError("Failed to load job details.");
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchAllJobDetails();
-  }, [id]);
+    fetchAllData();
+  }, [id, jobToken]);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch(userProfileApi, {
-          method: "GET",
+        const response = await axios.get(userProfileApi, {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${jobToken}`,
           },
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        if (response.data) {
+          setProfile(response.data);
         }
-
-        const data = await response.json();
-
-        console.log(data);
-        setProfile(data);
       } catch (error) {
-        console.error("Error fetching host profile:", error);
+        console.error("Error fetching profile:", error);
         setError("Failed to load seeker details.");
       }
     };
@@ -81,17 +96,15 @@ const JobDetails = () => {
 
   const isProfileComplete = () => {
     if (!profile) return false;
-
-    const requiredFields = ["fullName", "city", "phoneNumber", "gender"];
-    const missingFields = requiredFields.filter((field) => !profile[field]);
-
+    
+    const requiredFields = ['fullName', 'city', 'phoneNumber', 'gender'];
+    const missingFields = requiredFields.filter(field => !profile[field]);
+    
     if (missingFields.length > 0) {
-      const formattedFields = missingFields
-        .map((field) => field.replace(/([A-Z])/g, " $1").toLowerCase())
-        .join(", ");
-      setModalMessage(
-        `Please complete your profile. Missing fields: ${formattedFields}`
-      );
+      const formattedFields = missingFields.map(field => 
+        field.replace(/([A-Z])/g, ' $1').toLowerCase()
+      ).join(', ');
+      setModalMessage(`Please complete your profile. Missing fields: ${formattedFields}`);
       return false;
     }
     return true;
@@ -102,8 +115,9 @@ const JobDetails = () => {
       setShowProfileModal(true);
       return;
     }
-
+  
     try {
+      setIsLoading(true);
       const response = await axios.post(
         jobApplyAPI,
         {
@@ -112,32 +126,36 @@ const JobDetails = () => {
         },
         {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${jobToken}`,
           },
         }
       );
-
-      if (response && response.data) {
-        console.log(response.data);
-        if (hasApplied) {
-          setShowModal(true);
-          return;
-        }
-        setShowSuccessModal(true);
+  
+      if (response.data) {
         setHasApplied(true);
-      } else {
-        console.error("Error applying for job: No response data");
-        setShowModal(true);
+        setShowSuccessModal(true);
+        
+        // Store the application status in localStorage
+        localStorage.setItem(`job-${id}-applied`, 'true');
       }
     } catch (error) {
-      console.error(
-        "Error applying for job:",
-        error.response?.data || error.message
-      );
-      setShowModal(true);
+      if (error.response?.status === 400) {
+        setHasApplied(true);
+        localStorage.setItem(`job-${id}-applied`, 'true');
+      } else {
+        console.error("Error applying for job:", error);
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const hasAppliedLocally = localStorage.getItem(`job-${id}-applied`) === 'true';
+    if (hasAppliedLocally) {
+      setHasApplied(true);
+    }
+  }, [id]);
 
   if (error) {
     return (
@@ -147,10 +165,10 @@ const JobDetails = () => {
     );
   }
 
-  if (!jobData) {
+  if (!jobData || isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <p className="text-gray-600 text-lg">Loading hoster job details...</p>
+        <p className="text-gray-600 text-lg">Loading job details...</p>
       </div>
     );
   }
@@ -180,17 +198,19 @@ const JobDetails = () => {
                     </p>
                   </div>
                   <div className="mt-6 sm:mt-0">
-                    <button
-                      onClick={handleApplynow}
-                      disabled={hasApplied}
-                      className={`px-8 py-3 ${
-                        hasApplied
-                          ? "bg-gray-400 cursor-not-allowed"
-                          : "bg-gradient-to-r from-pink-500 to-blue-500 hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 text-white"
-                      } rounded-xl font-semibold shadow-lg`}
-                    >
-                      {hasApplied ? "Applied" : "Apply Now"}
-                    </button>
+                  <button
+                    onClick={handleApplynow}
+                    disabled={hasApplied || isLoading}
+                    className={`px-8 py-3 rounded-xl font-semibold shadow-lg ${
+                      hasApplied
+                        ? "bg-gray-400 cursor-not-allowed opacity-75"
+                        : isLoading
+                        ? "bg-gray-300 cursor-wait"
+                        : "bg-gradient-to-r from-pink-500 to-blue-500 hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 text-white"
+                    }`}
+                  >
+                    {hasApplied ? "Applied" : isLoading ? "Processing..." : "Apply Now"}
+                  </button>
                   </div>
                 </div>
               </div>
@@ -236,6 +256,7 @@ const JobDetails = () => {
                   </div>
                 </section>
 
+
                 <section>
                   <h2 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent mb-6">
                     Job Details
@@ -251,11 +272,8 @@ const JobDetails = () => {
                       ["Openings", jobData.noOfOpeaning],
                       ["Min Package", jobData.minPackage],
                       ["Max Package", jobData.maxPackage],
-                      [
-                        "Posted Date",
-                        new Date(jobData.dateCreated).toLocaleDateString(),
-                      ],
-                      ["Categories", jobData.category.title],
+                      ["Posted Date", new Date(jobData.dateCreated).toLocaleDateString()],
+                      ["Categories", jobData.category.title]
                     ].map(([label, value]) => (
                       <div key={label} className="bg-pink-50 rounded-xl p-4">
                         <p className="text-gray-600 text-sm">{label}</p>
@@ -266,10 +284,9 @@ const JobDetails = () => {
                     ))}
 
                     <section>
+
                       <div className="bg-pink-50 rounded-xl p-4">
-                        <p className="text-gray-600 text-sm mb-1">
-                          SubCategory
-                        </p>
+                        <p className="text-gray-600 text-sm mb-1">SubCategory</p>
                         {jobData.subcategories.map((subcategories, index) => (
                           <span
                             key={index}
@@ -279,7 +296,9 @@ const JobDetails = () => {
                           </span>
                         ))}
                       </div>
+
                     </section>
+
                   </div>
                 </section>
 
@@ -322,9 +341,7 @@ const JobDetails = () => {
       {showProfileModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-xl max-w-md">
-            <h2 className="text-xl font-bold mb-4 text-red-600">
-              Incomplete Profile
-            </h2>
+            <h2 className="text-xl font-bold mb-4 text-red-600">Incomplete Profile</h2>
             <p className="text-gray-700">{modalMessage}</p>
             <div className="mt-6 flex justify-between">
               <button
@@ -343,30 +360,12 @@ const JobDetails = () => {
           </div>
         </div>
       )}
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-xl">
-            <h2 className="text-xl font-bold mb-4">You have already applied</h2>
-            <p>You have already submitted your application for this job.</p>
-            <button
-              className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg"
-              onClick={() => setShowModal(false)}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+
       {showSuccessModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-xl">
-            <h2 className="text-xl font-bold mb-4">
-              Application submitted successfully!
-            </h2>
-            <p>
-              Thank you for applying for this job. We will review your
-              application and get back to you soon.
-            </p>
+            <h2 className="text-xl font-bold mb-4">Application submitted successfully!</h2>
+            <p>Thank you for applying for this job. We will review your application and get back to you soon.</p>
             <button
               className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg"
               onClick={() => setShowSuccessModal(false)}

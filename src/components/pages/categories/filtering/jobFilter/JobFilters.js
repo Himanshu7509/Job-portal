@@ -1,14 +1,18 @@
-import React from 'react'
-
 const JobFilters = ({
   filters,
   onFilterChange,
   categories,
   isLoading,
-  onApplyFilters,
+  searchInput,
+  handleSearch,
+  selectedCategory,
+  selectedSubcategory,
+  handleCategoryChange,
+  handleSubcategoryChange,
+  onApplyFilters
 }) => {
   return (
-    <div className="sticky rounded-lg p-4 bg-white shadow-lg w-90 max-w-md mx-auto sm:w-90 z-50">
+    <div className="sticky top-0 rounded-lg p-4 bg-white shadow-lg w-full max-w-md mx-auto z-50">
       <div className="mb-4 mt-4">
         <label className="text-xl sm:text-2xl font-bold text-center block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
           Search by Job Title
@@ -18,8 +22,8 @@ const JobFilters = ({
             type="text"
             placeholder="Job title ex: frontend"
             className="w-full p-2 border border-gray-300 rounded-md text-sm"
-            value={filters.title}
-            onChange={(e) => onFilterChange("title", e.target.value)}
+            value={searchInput}
+            onChange={(e) => handleSearch(e.target.value)}
           />
         </div>
       </div>
@@ -29,22 +33,38 @@ const JobFilters = ({
           Categories
         </label>
         <select
-          value={filters.categories}
-          onChange={(e) => onFilterChange("categories", e.target.value)}
+          value={selectedCategory?._id || ""}
+          onChange={(e) => handleCategoryChange(e.target.value)}
           className="mt-2 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
         >
           <option value="">All Categories</option>
-          <option value="IT & Networking">IT & Networking</option>
-          <option value="Sales & Marketing">Sales & Marketing</option>
-          <option value="Data Science">Data Science</option>
-          <option value="Customer Service">Customer Service</option>
-          <option value="Digital Marketing">Digital Marketing</option>
-          <option value="Human Resource">Human Resource</option>
-          <option value="Project Manager">Project Manager</option>
-          <option value="Accounting">Accounting</option>
-          <option value="Other">Other</option>
+          {categories.map((category) => (
+            <option key={category._id} value={category._id}>
+              {category.title}
+            </option>
+          ))}
         </select>
       </div>
+
+      {selectedCategory?.subcategories?.length > 0 && (
+        <div className="mb-6">
+          <label className="text-xl font-semibold text-black mb-6">
+            Subcategories
+          </label>
+          <select
+            value={selectedSubcategory}
+            onChange={(e) => handleSubcategoryChange(e.target.value)}
+            className="mt-2 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+          >
+            <option value="">All Subcategories</option>
+            {selectedCategory.subcategories.map((subcategory) => (
+              <option key={subcategory.title} value={subcategory.title}>
+                {subcategory.title}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <div className="mb-6">
         <label className="text-xl sm:text-2xl font-bold block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
@@ -105,15 +125,15 @@ const JobFilters = ({
           ))}
         </div>
       </div>
-
       <button
         onClick={onApplyFilters}
-        className="w-full h-12 bg-gradient-to-r from-pink-500 to-blue-500 text-white rounded-md font-medium hover:opacity-90 transition-opacity"
+        disabled={isLoading}
+        className="w-full h-12 bg-gradient-to-r from-pink-500 to-blue-500 text-white rounded-md font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        Apply Filters
+        {isLoading ? "Applying..." : "Apply Filters"}
       </button>
     </div>
   );
 };
 
-export default JobFilters
+export default JobFilters;

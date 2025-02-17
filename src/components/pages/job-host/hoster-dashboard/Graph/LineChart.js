@@ -54,7 +54,7 @@ const LineChart = ({ jobs }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
-
+        console.log(data);
       if (data.success && data.data) {
         const orderedDays = getOrderedDays();
         const dataPoints = orderedDays.map(day => {

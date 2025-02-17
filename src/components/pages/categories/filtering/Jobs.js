@@ -5,28 +5,27 @@ import { Link } from "react-router-dom";
 import JobCard from "./jobCard/JobCard";
 import JobFilters from "./jobFilter/JobFilters";
 
-
-const Jobs = () => {
+const Jobs = ({ initialTitle = "", initialCategory = "" }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [jobListings, setJobListings] = useState([]);
-  const [totalJobs, setTotalJobs] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [page, setPage] = useState();
-  const jobsPerPage = 10;
 
   const [filters, setFilters] = useState({
-    categories: "",
-    title: "",
+    categories: initialCategory,
+    title: initialTitle,
     jobType: "",
     workType: "",
     experience: "",
+    subcategories: "",
+    search: ""
   });
 
-  const [pendingFilters, setPendingFilters] = useState(filters);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
 
   const JobToken = Cookies.get("Token");
   const userId = Cookies.get("Id");
@@ -35,15 +34,15 @@ const Jobs = () => {
     return !!JobToken && !!userId;
   };
 
-  const buildFilterUrl = (pageNum) => {
+  const buildFilterUrl = (pageNum = 1) => {
     const queryParams = new URLSearchParams();
-    Object.entries(pendingFilters).forEach(([key, value]) => {
+    Object.entries(filters).forEach(([key, value]) => {
       if (value) {
         queryParams.append(key, value);
       }
     });
-    queryParams.append("page", pageNum);
-    queryParams.append("limit", jobsPerPage);
+    queryParams.append('page', pageNum);
+    queryParams.append('limit', '10');
     return `https://jobquick.onrender.com/job/filter?${queryParams.toString()}`;
   };
 
@@ -79,7 +78,7 @@ const Jobs = () => {
     fetchCategories();
   }, [JobToken]);
 
-  const fetchJobs = async (pageNum, isLoadMore = false) => {
+  const fetchJobs = async (pageNum = 1, isLoadMore = false) => {
     if (!isAuthenticated()) return;
 
     setIsLoading(true);
@@ -97,13 +96,13 @@ const Jobs = () => {
       const data = await response.json();
 
       if (isLoadMore) {
-        setJobListings((prevJobs) => [...prevJobs, ...data.jobs]);
+        setJobListings(prevJobs => [...prevJobs, ...(data.jobs || [])]);
       } else {
         setJobListings(data.jobs || []);
       }
 
-      setTotalJobs(data.pagination.total);
-      setTotalPages(data.pagination.totalPages);
+      setTotalPages(data.pagination?.totalPages || 1);
+      setCurrentPage(pageNum);
     } catch (error) {
       console.error("Error fetching jobs:", error);
       setError("Failed to load jobs");
@@ -113,23 +112,39 @@ const Jobs = () => {
   };
 
   const handleFilterChange = (name, value) => {
-    setPendingFilters((prev) => ({
+    setFilters(prev => ({
       ...prev,
-      [name]: value,
+      [name]: value
     }));
   };
 
   const handleApplyFilters = () => {
-    setPage(1); // Reset page when applying new filters
-    setJobListings([]); // Clear existing jobs
-    setFilters(pendingFilters);
+    setCurrentPage(1);
+    setJobListings([]);
     fetchJobs(1, false);
   };
 
   const handleLoadMore = () => {
     const nextPage = currentPage + 1;
-    setCurrentPage(nextPage);
     fetchJobs(nextPage, true);
+  };
+
+  const handleCategoryChange = (categoryId) => {
+    const selectedCat = categories.find((cat) => cat._id === categoryId);
+    setSelectedCategory(selectedCat);
+    setSelectedSubcategory("");
+    handleFilterChange("categories", selectedCat?.title || "");
+    handleFilterChange("subcategories", "");
+  };
+
+  const handleSubcategoryChange = (subcategory) => {
+    setSelectedSubcategory(subcategory);
+    handleFilterChange("subcategories", subcategory);
+  };
+
+  const handleSearch = (value) => {
+    handleFilterChange("title", value);
+    handleFilterChange("search", value);
   };
 
   useEffect(() => {
@@ -137,15 +152,6 @@ const Jobs = () => {
       fetchJobs(1, false);
     }
   }, []);
-
-  useEffect(() => {
-    if (page === 1) {
-      fetchJobs(false);
-    }
-  }, [filters]);
-
-  // Show load more button only if there are more jobs to load
-  const showLoadMore = currentPage < totalPages;
 
   if (!isAuthenticated()) {
     return (
@@ -170,9 +176,9 @@ const Jobs = () => {
     <div className="min-h-screen bg-white">
       <div className="max-w-8xl px-4 py-8">
         <div className="flex flex-col space-y-8">
-        <div className="flex gap-6">
-            <div>
-              <span
+          <div className="flex gap-6">
+            <div className="relative">
+              <button
                 className="fixed top-16 p-1 left-4 text-pink-500 font-semibold z-10 rounded-lg lg:hidden"
                 onClick={() => setIsOpen(!isOpen)}
               >
@@ -181,22 +187,29 @@ const Jobs = () => {
                 ) : (
                   <Menu className="h-6 w-7" />
                 )}
-              </span>
+              </button>
 
               <div
-                className={`fixed top-4 left-0 h-full w-full sm:w-96 p-4 transition-transform duration-300 ease-in-out transform overflow-y-auto
+                className={`fixed top-4 left-0 h-full w-full sm:w-96 p-4 transition-transform duration-300 ease-in-out transform bg-white overflow-y-auto z-50
                 ${isOpen ? "translate-x-0" : "-translate-x-full"} 
                 lg:relative lg:translate-x-0 lg:w-90 lg:flex-shrink-0`}
               >
                 <JobFilters
-                filters={pendingFilters}
-                onFilterChange={handleFilterChange}
-                categories={categories}
-                isLoading={isLoading}
-                onApplyFilters={handleApplyFilters}
+                  filters={filters}
+                  onFilterChange={handleFilterChange}
+                  categories={categories}
+                  isLoading={isLoading}
+                  searchInput={filters.title}
+                  handleSearch={handleSearch}
+                  selectedCategory={selectedCategory}
+                  selectedSubcategory={selectedSubcategory}
+                  handleCategoryChange={handleCategoryChange}
+                  handleSubcategoryChange={handleSubcategoryChange}
+                  onApplyFilters={handleApplyFilters}
                 />
               </div>
             </div>
+
             <div className="flex-1 px-4 sm:px-6 lg:px-2">
               {isLoading && jobListings.length === 0 ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
@@ -229,55 +242,21 @@ const Jobs = () => {
                 </div>
               )}
 
-              {/* Load More Button */}
-              {showLoadMore && !isLoading && jobListings.length > 0 && (
+              {currentPage < totalPages && !isLoading && jobListings.length > 0 && (
                 <div className="flex justify-center mt-8">
                   <button
                     onClick={handleLoadMore}
-                    className="w-60 h-10 bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 rounded-lg text-base font-semibold shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-pink-400 sm:h-12 md:h-14 lg:h-12"
+                    className="w-60 h-10 bg-gradient-to-r from-pink-500 to-blue-500 text-white rounded-lg text-base font-semibold shadow-md hover:scale-105 hover:shadow-lg transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-pink-400 sm:h-12 md:h-14 lg:h-12"
                   >
-                    {isLoading ? (
-                      <span className="flex items-center justify-center">
-                        <svg
-                          className="animate-spin h-5 w-5 mr-3"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                        Loading...
-                      </span>
-                    ) : (
-                      "Show More"
-                    )}
+                    {isLoading ? "Loading..." : "Show More"}
                   </button>
-                </div>
-              )}
-
-              {/* Loading indicator for load more */}
-              {isLoading && jobListings.length > 0 && (
-                <div className="flex justify-center mt-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
                 </div>
               )}
             </div>
           </div>
-
         </div>
       </div>
     </div>
   );
 };
-
 export default Jobs;

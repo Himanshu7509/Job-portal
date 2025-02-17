@@ -9,12 +9,12 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
 const HeroSection = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const navigate = useNavigate();
 
   const handleSearch = () => {
-    if (searchQuery.trim()) {
-      navigate(`/alljobs`);
+    if (searchInput.trim()) {
+      navigate(`/alljobs?title=${encodeURIComponent(searchInput)}`);
     }
   };
 
@@ -43,13 +43,7 @@ const HeroSection = () => {
               type="text"
               placeholder="What are you looking for?"
               className="flex-1 px-4 py-3 text-gray-800 focus:outline-none"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyPress={(e) => {
-                if (e.key === "Enter") {
-                  handleSearch();
-                }
-              }}
+              onChange={(e) => setSearchInput(e.target.value)}
             />
             <button
               onClick={handleSearch}
