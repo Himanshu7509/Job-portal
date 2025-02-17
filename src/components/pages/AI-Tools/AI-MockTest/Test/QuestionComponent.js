@@ -1,7 +1,13 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
 import { useParams, useNavigate } from "react-router-dom";
-import { RefreshCcw, Clock, ArrowLeft, CheckCircle, XCircle } from "lucide-react";
+import {
+  RefreshCcw,
+  Clock,
+  ArrowLeft,
+  CheckCircle,
+  XCircle,
+} from "lucide-react";
 import Header from "../../../../common/header/Header";
 import Footer from "../../../../common/footer/Footer";
 import { useEffect } from "react";
@@ -21,54 +27,53 @@ const QuestionComponent = () => {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [startTime, setStartTime] = useState(null);
 
+  useEffect(() => {
+    fetchQuestions();
+  }, [category, subcategory]);
 
-   useEffect(() => {
-     fetchQuestions();
-   }, [category, subcategory]);
+  useEffect(() => {
+    let timer;
+    if (isTimerRunning && timeLeft > 0) {
+      timer = setInterval(() => {
+        setTimeLeft((prevTime) => {
+          if (prevTime <= 1) {
+            clearInterval(timer);
+            setIsTimerRunning(false);
+            calculateScore();
+            return 0;
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [isTimerRunning, timeLeft]);
 
-   useEffect(() => {
-     let timer;
-     if (isTimerRunning && timeLeft > 0) {
-       timer = setInterval(() => {
-         setTimeLeft((prevTime) => {
-           if (prevTime <= 1) {
-             clearInterval(timer);
-             setIsTimerRunning(false);
-             calculateScore();
-             return 0;
-           }
-           return prevTime - 1;
-         });
-       }, 1000);
-     }
-     return () => clearInterval(timer);
-   }, [isTimerRunning, timeLeft]);
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+  };
 
-   const formatTime = (seconds) => {
-     const minutes = Math.floor(seconds / 60);
-     const remainingSeconds = seconds % 60;
-     return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
-   };
+  const startTimer = () => {
+    setIsTimerRunning(true);
+  };
 
-   const startTimer = () => {
-     setIsTimerRunning(true);
-   };
+  const handleGoBack = () => {
+    navigate("/mocktest");
+  };
 
-   const handleGoBack = () => {
-     navigate("/mocktest");  
-   };
+  const resetQuiz = async () => {
+    setCurrentQuestionIndex(0);
+    setUserAnswers({});
+    setScore(null);
+    setShowResults(false);
+    setTimeLeft(60);
+    setIsTimerRunning(false);
+    await fetchQuestions();
+  };
 
-   const resetQuiz = async () => {
-     setCurrentQuestionIndex(0);
-     setUserAnswers({});
-     setScore(null);
-     setShowResults(false);
-     setTimeLeft(60);
-     setIsTimerRunning(false);
-     await fetchQuestions();
-   };
-
-   const fetchQuestions = async () => {
+  const fetchQuestions = async () => {
     try {
       const token = Cookies.get("Token");
       const response = await fetch(QuestionApi, {
@@ -80,11 +85,11 @@ const QuestionComponent = () => {
         body: JSON.stringify({ category, subcategory }),
       });
       const data = await response.json();
-  
+
       if (data.success && Array.isArray(data.questions)) {
         processQuestionsData(data.questions);
         setStartTime(Date.now()); // Store the start time
-        startTimer(); 
+        startTimer();
       } else {
         setError("Invalid data format received from server");
       }
@@ -94,75 +99,71 @@ const QuestionComponent = () => {
     }
   };
 
-   const processQuestionsData = (rawQuestions) => {
-     try {
-       const processed = [];
-       let currentQuestion = null;
-       let options = [];
+  const processQuestionsData = (rawQuestions) => {
+    try {
+      const processed = [];
+      let currentQuestion = null;
+      let options = [];
 
-       rawQuestions.forEach((item) => {
-         
-         if (item.startsWith("**")) return;
+      rawQuestions.forEach((item) => {
+        if (item.startsWith("**")) return;
 
-          
-         if (item.startsWith("Q:")) {
-           if (currentQuestion && options.length > 0) {
-             processed.push(currentQuestion);
-           }
+        if (item.startsWith("Q:")) {
+          if (currentQuestion && options.length > 0) {
+            processed.push(currentQuestion);
+          }
 
-           currentQuestion = {
-             question: item.substring(2).trim(),
-             options: [],
-             correctAnswer: "",
-           };
-           options = [];
-         }
-         else if (item.match(/^[A-D]\)/)) {
-           const letter = item[0].toLowerCase();
-           const text = item.substring(2).trim();
-           options.push({ letter, text });
+          currentQuestion = {
+            question: item.substring(2).trim(),
+            options: [],
+            correctAnswer: "",
+          };
+          options = [];
+        } else if (item.match(/^[A-D]\)/)) {
+          const letter = item[0].toLowerCase();
+          const text = item.substring(2).trim();
+          options.push({ letter, text });
 
-           if (currentQuestion) {
-             currentQuestion.options = options;
-           }
-         }
-         else if (item.startsWith("Correct:")) {
-           const correctAnswer = item.split(":")[1].trim().toLowerCase();
-           if (currentQuestion) {
-             currentQuestion.correctAnswer = correctAnswer;
-           }
-         }
-       });
+          if (currentQuestion) {
+            currentQuestion.options = options;
+          }
+        } else if (item.startsWith("Correct:")) {
+          const correctAnswer = item.split(":")[1].trim().toLowerCase();
+          if (currentQuestion) {
+            currentQuestion.correctAnswer = correctAnswer;
+          }
+        }
+      });
 
-       if (currentQuestion && options.length > 0) {
-         processed.push(currentQuestion);
-       }
+      if (currentQuestion && options.length > 0) {
+        processed.push(currentQuestion);
+      }
 
-       console.log("Processed questions:", processed);
-       setQuestions(processed);
-     } catch (error) {
-       console.error("Error processing questions:", error);
-       setError("Error processing questions data");
-     }
-   };
+      console.log("Processed questions:", processed);
+      setQuestions(processed);
+    } catch (error) {
+      console.error("Error processing questions:", error);
+      setError("Error processing questions data");
+    }
+  };
 
-   const handleAnswerSelection = (answer) => {
-     setUserAnswers((prev) => ({ ...prev, [currentQuestionIndex]: answer }));
-   };
+  const handleAnswerSelection = (answer) => {
+    setUserAnswers((prev) => ({ ...prev, [currentQuestionIndex]: answer }));
+  };
 
-   const handleNext = () => {
-     if (currentQuestionIndex < questions.length - 1) {
-       setCurrentQuestionIndex((prev) => prev + 1);
-     }
-   };
+  const handleNext = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex((prev) => prev + 1);
+    }
+  };
 
-   const handlePrevious = () => {
-     if (currentQuestionIndex > 0) {
-       setCurrentQuestionIndex((prev) => prev - 1);
-     }
-   };
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex((prev) => prev - 1);
+    }
+  };
 
-   const calculateScore = () => {
+  const calculateScore = () => {
     let correctAnswers = 0;
     questions.forEach((question, index) => {
       if (userAnswers[index] === question.correctAnswer) {
@@ -171,17 +172,15 @@ const QuestionComponent = () => {
     });
     const percentage = (correctAnswers / questions.length) * 100;
     setScore(percentage.toFixed(2));
-  
+
     // Calculate total time taken
     if (startTime) {
       const timeTaken = Math.floor((Date.now() - startTime) / 1000); // in seconds
       setTotalTimeTaken(timeTaken);
     }
-  
+
     setShowResults(true);
   };
-  
-
 
   if (error) {
     return (
@@ -207,29 +206,28 @@ const QuestionComponent = () => {
       <>
         <Header />
         <div className="min-h-screen bg-gray-50 py-8 px-4">
-
           <div className="max-w-4xl mx-auto space-y-6">
-
             <div className="bg-white shadow-xl rounded-lg p-6">
+              <h2 className="text-4xl font-bold text-center sm:flex-1 mb-4">
+                Test Results
+              </h2>
 
-            <h2 className="text-4xl font-bold text-center sm:flex-1 mb-4">Test Results</h2>
-
-            <div className="flex flex-row sm:flex-row justify-between items-center gap-4 mb-6 mt-2">
-              <button
-                onClick={handleGoBack}
-                className=" sm:w-auto  flex items-center gap-2 px-4 py-2 bg-gray-500 text-white rounded-full hover:bg-gray-600 transition-colors"
-              >
-                <ArrowLeft size={16} />
-              <span className="hidden sm:block"> Go Back </span>
-              </button>
-              <button
-                onClick={resetQuiz}
-                className=" sm:w-auto  flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
-              >
-                <RefreshCcw size={16} />
-                <span className="hidden sm:block"> Reset Quiz </span>
-              </button>
-            </div>
+              <div className="flex flex-row sm:flex-row justify-between items-center gap-4 mb-6 mt-2">
+                <button
+                  onClick={handleGoBack}
+                  className=" sm:w-auto  flex items-center gap-2 px-4 py-2 bg-gray-500 text-white rounded-full hover:bg-gray-600 transition-colors"
+                >
+                  <ArrowLeft size={16} />
+                  <span className="hidden sm:block"> Go Back </span>
+                </button>
+                <button
+                  onClick={resetQuiz}
+                  className=" sm:w-auto  flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+                >
+                  <RefreshCcw size={16} />
+                  <span className="hidden sm:block"> Reset Quiz </span>
+                </button>
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg p-6 text-center">
@@ -238,54 +236,56 @@ const QuestionComponent = () => {
                 </div>
                 <div className="bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-lg p-6 text-center">
                   <p className="text-lg">Time Taken</p>
-                  <p className="text-4xl font-bold">{formatTime(totalTimeTaken)}</p>
+                  <p className="text-4xl font-bold">
+                    {formatTime(totalTimeTaken)}
+                  </p>
                 </div>
               </div>
-                <div className="space-y-4">
-                  {questions.map((question, index) => (
-                    <div key={index} className="border p-4 rounded">
-                      <p className="font-semibold">
-                        {index + 1}. {question.question}
-                      </p>
-                      <div className="mt-2 space-y-1">
-                        {question.options.map((option) => (
-                          <div
-                            key={option.letter}
-                            className={`p-2 rounded ${
-                              option.letter === question.correctAnswer
-                                ? "bg-green-100 border-green-500"
-                                : option.letter === userAnswers[index]
-                                ? "bg-red-100 border-red-500"
-                                : "bg-gray-50"
-                            }`}
-                          >
-                            {option.letter.toUpperCase()}) {option.text}
-                          </div>
-                        ))}
-                      </div>
-                      <div className="mt-2 text-sm">
-                        {userAnswers[index] !== question.correctAnswer && (
-                          <p className="text-red-500">
-                            Your answer: {userAnswers[index]?.toUpperCase()}){" "}
-                            {
-                              question.options.find(
-                                (opt) => opt.letter === userAnswers[index]
-                              )?.text
-                            }
-                          </p>
-                        )}
-                        <p className="text-green-500">
-                          Correct answer: {question.correctAnswer.toUpperCase()}){" "}
+              <div className="space-y-4">
+                {questions.map((question, index) => (
+                  <div key={index} className="border p-4 rounded">
+                    <p className="font-semibold">
+                      {index + 1}. {question.question}
+                    </p>
+                    <div className="mt-2 space-y-1">
+                      {question.options.map((option) => (
+                        <div
+                          key={option.letter}
+                          className={`p-2 rounded ${
+                            option.letter === question.correctAnswer
+                              ? "bg-green-100 border-green-500"
+                              : option.letter === userAnswers[index]
+                              ? "bg-red-100 border-red-500"
+                              : "bg-gray-50"
+                          }`}
+                        >
+                          {option.letter.toUpperCase()}) {option.text}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-2 text-sm">
+                      {userAnswers[index] !== question.correctAnswer && (
+                        <p className="text-red-500">
+                          Your answer: {userAnswers[index]?.toUpperCase()}){" "}
                           {
                             question.options.find(
-                              (opt) => opt.letter === question.correctAnswer
+                              (opt) => opt.letter === userAnswers[index]
                             )?.text
                           }
                         </p>
-                      </div>
+                      )}
+                      <p className="text-green-500">
+                        Correct answer: {question.correctAnswer.toUpperCase()}){" "}
+                        {
+                          question.options.find(
+                            (opt) => opt.letter === question.correctAnswer
+                          )?.text
+                        }
+                      </p>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -317,10 +317,10 @@ const QuestionComponent = () => {
                     {formatTime(timeLeft)}
                   </div>
                   <div className="text-gray-600">
-                {userAnswers[currentQuestionIndex]
-                  ? "Answered"
-                  : "Not answered"}
-              </div>
+                    {userAnswers[currentQuestionIndex]
+                      ? "Answered"
+                      : "Not answered"}
+                  </div>
                 </div>
               </div>
 
@@ -329,14 +329,18 @@ const QuestionComponent = () => {
                   <div
                     className="bg-blue-500 h-2 rounded-full transition-all"
                     style={{
-                      width: `${((currentQuestionIndex + 1) / questions.length) * 100}%`,
+                      width: `${
+                        ((currentQuestionIndex + 1) / questions.length) * 100
+                      }%`,
                     }}
                   />
                 </div>
               </div>
 
               <div className="space-y-6">
-                <p className="text-lg font-medium">{currentQuestion.question}</p>
+                <p className="text-lg font-medium">
+                  {currentQuestion.question}
+                </p>
                 <div className="space-y-3">
                   {currentQuestion.options.map((option) => (
                     <label
@@ -352,7 +356,9 @@ const QuestionComponent = () => {
                           type="radio"
                           name={`question-${currentQuestionIndex}`}
                           value={option.letter}
-                          checked={userAnswers[currentQuestionIndex] === option.letter}
+                          checked={
+                            userAnswers[currentQuestionIndex] === option.letter
+                          }
                           onChange={() => handleAnswerSelection(option.letter)}
                           className="w-4 h-4 text-blue-500"
                         />
@@ -396,10 +402,23 @@ const QuestionComponent = () => {
               </div>
             </div>
           ) : (
-            <div className="min-h-[50vh] flex justify-center items-center">
+            <div className="bg-white shadow-xl rounded-lg p-6">
               <div className="text-center space-y-4">
-                <div className="w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin mx-auto" />
-                <p className="text-2xl text-pink-500">Loading questions...</p>
+                <p className="text-2xl text-zinc-500">
+                  Test will be starting soon...
+                </p>
+                <div className="text-lg text-gray-600 text-left">
+                  <p className="font-semibold text-2xl text-red-500">Instructions:</p>
+                  <ul className="list-disc pl-4 text-lg mb-3 text-left font-semibold">
+                    <li className="mb-2">This test consists of 15 questions.</li>
+                    <li className="mb-2">The time limit for this test is 2 minutes.</li>
+                    <li className="mb-2">Please select one answer for each question.</li>
+                    <li className="mb-2">
+                      Once you've answered all questions, click the "Submit
+                      Test" button to see your results.
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           )}

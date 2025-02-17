@@ -120,7 +120,7 @@ const HostSidebar = () => {
           ))}
         </nav>
 
-        <div className="mt-auto p-4">
+        <div className="fixed bottom-10 p-4">
           <div
             className="flex items-center space-x-2 text-gray-700 cursor-pointer hover:text-red-600"
             onClick={handleLogout}
