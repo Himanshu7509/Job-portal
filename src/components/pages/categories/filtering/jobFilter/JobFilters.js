@@ -1,3 +1,5 @@
+import { FaSearch } from "react-icons/fa";
+
 const JobFilters = ({
   filters,
   onFilterChange,
@@ -9,37 +11,27 @@ const JobFilters = ({
   selectedSubcategory,
   handleCategoryChange,
   handleSubcategoryChange,
-  onApplyFilters
+  onApplyFilters,
 }) => {
   return (
-    <div className="sticky top-0 rounded-lg p-4 bg-white shadow-lg w-full max-w-md mx-auto z-50">
-      <div className="mb-4 mt-4">
-  <label className="text-xl sm:text-2xl font-bold text-center block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
-    Search by Job Title
-  </label>
-  <div className="relative mt-2">
-    <div className="flex items-center border border-gray-300 rounded-md">
-      <input
-        type="text"
-        placeholder="Job title"
-        className="w-full p-2 text-sm"
-        value={searchInput}
-        onChange={(e) => handleSearch(e.target.value)}
-      />
-      <select
-        className="p-2 border-gray-300"
-        value={filters.companyName}
-        onChange={(e) => onFilterChange("companyName", e.target.value)}
-      >
-        <option value=""></option>
-        <option value="DataGenix AI">DataGenix AI</option>
-        <option value="Amazon">Amazon</option>
-        <option value="Microsoft">Microsoft</option>
-        <option value="Facebook">Facebook</option>
-      </select>
-    </div>
-  </div>
-</div>
+    <div className="sticky rounded-lg p-4 bg-white shadow-lg w-full max-w-md mx-auto sm:w-90 z-50">
+      <div className="mb-4 mt-6">
+        <label className="text-xl sm:text-2xl font-bold text-center block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
+          Search by Job Title
+        </label>
+        <div className="relative mt-2">
+          <div className="flex items-center border border-gray-300 rounded-md overflow-hidden px-3">
+            <FaSearch className="text-gray-500 mr-2" />
+            <input
+              type="text"
+              placeholder="Job title"
+              className="w-full p-3 text-sm outline-none"
+              value={searchInput}
+              onChange={(e) => handleSearch(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
 
       <div className="mb-6">
         <label className="text-xl sm:text-2xl font-bold block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
@@ -48,7 +40,7 @@ const JobFilters = ({
         <select
           value={selectedCategory?._id || ""}
           onChange={(e) => handleCategoryChange(e.target.value)}
-          className="mt-2 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+          className="mt-2 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-white"
         >
           <option value="">All Categories</option>
           {categories.map((category) => (
@@ -59,15 +51,16 @@ const JobFilters = ({
         </select>
       </div>
 
+      {/* Subcategories */}
       {selectedCategory?.subcategories?.length > 0 && (
         <div className="mb-6">
-          <label className="text-xl font-semibold text-black mb-6">
+          <label className="text-xl sm:text-2xl font-bold block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
             Subcategories
           </label>
           <select
             value={selectedSubcategory}
             onChange={(e) => handleSubcategoryChange(e.target.value)}
-            className="mt-2 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+            className="mt-2 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 bg-white"
           >
             <option value="">All Subcategories</option>
             {selectedCategory.subcategories.map((subcategory) => (
@@ -79,32 +72,36 @@ const JobFilters = ({
         </div>
       )}
 
+      {/* Experience Level */}
       <div className="mb-6">
         <label className="text-xl sm:text-2xl font-bold block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
           Experience Level
         </label>
         <div className="mt-2 flex flex-col space-y-2">
-          {['Fresher', '1 to 3 years', '3 to 5 years', 'More than 5 years'].map((level) => (
-            <label key={level} className="flex items-center space-x-2">
-              <input
-                type="radio"
-                name="experience"
-                value={level}
-                checked={filters.experience === level}
-                onChange={(e) => onFilterChange("experience", e.target.value)}
-              />
-              <span>{level}</span>
-            </label>
-          ))}
+          {["Fresher", "1 to 3 years", "3 to 5 years", "More than 5 years"].map(
+            (level) => (
+              <label key={level} className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  name="experience"
+                  value={level}
+                  checked={filters.experience === level}
+                  onChange={(e) => onFilterChange("experience", e.target.value)}
+                />
+                <span>{level}</span>
+              </label>
+            )
+          )}
         </div>
       </div>
 
+      {/* Job Type */}
       <div className="mb-6">
         <label className="text-xl sm:text-2xl font-bold block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
           Job Type
         </label>
         <div className="mt-2 flex flex-col space-y-2">
-          {['Full-Time', 'Part-Time'].map((type) => (
+          {["Full-Time", "Part-Time"].map((type) => (
             <label key={type} className="flex items-center space-x-2">
               <input
                 type="radio"
@@ -119,12 +116,13 @@ const JobFilters = ({
         </div>
       </div>
 
+      {/* Work Type */}
       <div className="mb-6">
         <label className="text-xl sm:text-2xl font-bold block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
           Work Type
         </label>
         <div className="mt-2 flex flex-col space-y-2">
-          {['Remote', 'OnSite', 'Hybrid'].map((work) => (
+          {["Remote", "OnSite", "Hybrid"].map((work) => (
             <label key={work} className="flex items-center space-x-2">
               <input
                 type="radio"
@@ -138,6 +136,8 @@ const JobFilters = ({
           ))}
         </div>
       </div>
+
+      {/* Apply Button */}
       <button
         onClick={onApplyFilters}
         disabled={isLoading}

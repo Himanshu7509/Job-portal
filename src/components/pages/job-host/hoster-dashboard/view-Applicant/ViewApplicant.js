@@ -94,16 +94,14 @@ const ViewApplicant = () => {
       </div>
 
       <div
-        className="p-2 w-full lg:w-[83%] ml-auto sm:p-8 h-auto sm:h-[690px] overflow-y-scroll -ms-overflow-style-none"
+        className="w-full  lg:ml-72 xl:ml-80 p-3 sm:p-4 lg:p-6 xl:p-4 h-auto sm:h-[690px] overflow-y-scroll -ms-overflow-style-none"
         style={{ scrollbarWidth: "none" }}
       >
-        <div className="w-full lg:max-w-7xl mx-auto space-y-6 bg-white shadow-lg p-4">
-          {/* Header Section */}
-          <h1 className="mt-2 sm:text-4xl text-3xl font-bold text-center sm:text-left text-transparent text-zinc-600 mb-6">
+        <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6 bg-white p-4 rounded-lg shadow-md">
+          <h1 className="mt-4 sm:text-4xl text-3xl font-bold text-center sm:text-left text-transparent text-zinc-600 mb-6">
             Job Applicants
           </h1>
 
-          {/* Tab Navigation */}
           <div className="flex items-center justify-center sm:justify-start gap-4 sm:pt-4 p-2">
             <button
               className={`py-2 sm:text-lg text-md font-semibold ${

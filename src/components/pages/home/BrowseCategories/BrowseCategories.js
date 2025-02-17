@@ -8,7 +8,7 @@ import { GrResources } from "react-icons/gr";
 import { FaProjectDiagram } from "react-icons/fa";
 import { FaChartLine } from "react-icons/fa6";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const categories = [
   {
@@ -33,25 +33,25 @@ const categories = [
     title: "Customer Service",
     services: 1,
     description: "Involves assisting customers with inquiries, complaints, and support",
-    icon: <RiCustomerService2Fill/>,
+    icon: <RiCustomerService2Fill />,
   },
   {
     title: "Digital Marketing",
     services: 0,
     description: "Promotes businesses online through social media paid advertising",
-    icon: <SiCoinmarketcap/>,
+    icon: <SiCoinmarketcap />,
   },
   {
     title: "Human Resource",
     services: 0,
     description: "Manages recruitment, employee relations, and organizational policies",
-    icon: <GrResources/>,
+    icon: <GrResources />,
   },
   {
     title: "Project Manager",
     services: 1,
     description: "Oversees projects from initiation to completion and budgets are met",
-    icon: <FaProjectDiagram/>,
+    icon: <FaProjectDiagram />,
   },
   {
     title: "Accounting",
@@ -61,31 +61,37 @@ const categories = [
   },
 ];
 
-const CategoryCard = ({ title, services, description, icon }) => (
-  <Link to={"/alljobs"}>
-    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 ease-in-out">
-      <div className="flex items-center space-x-4 mb-4">
-        <div className="text-4xl text-purple-500">{icon}</div>
-        <div>
-          <h3 className="text-lg font-semibold">{title}</h3>
-          <p className="text-sm text-gray-500">{services} Services</p>
-        </div>
+const CategoryCard = ({ title, services, description, icon, onClick }) => (
+  <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300 ease-in-out cursor-pointer" onClick={onClick}>
+    <div className="flex items-center space-x-4 mb-4">
+      <div className="text-4xl text-purple-500">{icon}</div>
+      <div>
+        <h3 className="text-lg font-semibold">{title}</h3>
+        <p className="text-sm text-gray-500">{services} Services</p>
       </div>
-      <p className="text-gray-600 text-sm">{description}</p>
     </div>
-  </Link>
-);
-
-const BrowseCategories = () => (
-  <div className="max-w-7xl mx-auto p-6 md:p-12 lg:p-10">
-    <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">Browse talent by category</h1>
-    <p className="text-gray-600 mb-8">Get some inspirations from differnet skills</p>
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 cursor-pointer">
-      {categories.map((category, index) => (
-        <CategoryCard key={index} {...category} />
-      ))}
-    </div>
+    <p className="text-gray-600 text-sm">{description}</p>
   </div>
 );
+
+const BrowseCategories = () => {
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (categoryName) => {
+    navigate(`/alljobs?categories=${encodeURIComponent(categoryName)}`);
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto p-6 md:p-12 lg:p-10">
+      <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">Browse talent by category</h1>
+      <p className="text-gray-600 mb-8">Get some inspirations from different skills</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {categories.map((category, index) => (
+          <CategoryCard key={index} {...category} onClick={() => handleCategoryClick(category.title)} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default BrowseCategories;

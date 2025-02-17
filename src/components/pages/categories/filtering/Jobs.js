@@ -175,11 +175,14 @@ const Jobs = ({ initialTitle = "", initialCategory = "" }) => {
 
   return (
     <div className="min-h-screen bg-white">
+
       <div className="max-w-8xl px-4 py-8">
-        <div className="flex flex-col space-y-8">
-          <div className="flex gap-6">
-            <div className="relative">
-              <button
+
+        <div className="flex flex-col space-y-8"
+        >
+          <div className="flex gap-4">
+            <div>
+            <span
                 className="fixed top-16 p-1 left-4 text-pink-500 font-semibold z-10 rounded-lg lg:hidden"
                 onClick={() => setIsOpen(!isOpen)}
               >
@@ -188,10 +191,10 @@ const Jobs = ({ initialTitle = "", initialCategory = "" }) => {
                 ) : (
                   <Menu className="h-6 w-7" />
                 )}
-              </button>
+              </span>
 
               <div
-                className={`fixed top-4 left-0 h-full w-full sm:w-96 p-4 transition-transform duration-300 ease-in-out transform bg-white overflow-y-auto z-50
+                className={`fixed top-4 left-0 h-full w-full sm:w-96 p-4 transition-transform duration-300 ease-in-out transform overflow-y-auto
                 ${isOpen ? "translate-x-0" : "-translate-x-full"} 
                 lg:relative lg:translate-x-0 lg:w-90 lg:flex-shrink-0`}
               >
@@ -211,7 +214,7 @@ const Jobs = ({ initialTitle = "", initialCategory = "" }) => {
               </div>
             </div>
 
-            <div className="flex-1 px-4 sm:px-6 lg:px-2">
+            <div className="flex-1 sm:px-2 lg:px-2">
               {isLoading && jobListings.length === 0 ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
                   {[1, 2, 3, 4].map((n) => (

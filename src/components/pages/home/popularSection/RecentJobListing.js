@@ -99,7 +99,7 @@ const JobSection = () => {
         <div className="flex justify-between items-center">
           <div>
             <h2 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">
-            Popular Job Listings
+            Recent Job Listings
             </h2>
             <p className="text-gray-600 mt-2">
               Discover top opportunities for your next career move.

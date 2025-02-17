@@ -19,6 +19,7 @@ const QuestionComponent = () => {
   const [timeLeft, setTimeLeft] = useState(60);
   const [totalTimeTaken, setTotalTimeTaken] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [startTime, setStartTime] = useState(null);
 
 
    useEffect(() => {
@@ -68,29 +69,30 @@ const QuestionComponent = () => {
    };
 
    const fetchQuestions = async () => {
-     try {
-       const token = Cookies.get("Token");
-       const response = await fetch(QuestionApi, {
-         method: "POST",
-         headers: {
-           Authorization: `Bearer ${token}`,
-           "Content-Type": "application/json",
-         },
-         body: JSON.stringify({ category, subcategory }),
-       });
-       const data = await response.json();
-
-       if (data.success && Array.isArray(data.questions)) {
-         processQuestionsData(data.questions);
-         startTimer(); 
-       } else {
-         setError("Invalid data format received from server");
-       }
-     } catch (error) {
-       console.error("Error fetching questions:", error);
-       setError("Failed to fetch questions");
-     }
-   };
+    try {
+      const token = Cookies.get("Token");
+      const response = await fetch(QuestionApi, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ category, subcategory }),
+      });
+      const data = await response.json();
+  
+      if (data.success && Array.isArray(data.questions)) {
+        processQuestionsData(data.questions);
+        setStartTime(Date.now()); // Store the start time
+        startTimer(); 
+      } else {
+        setError("Invalid data format received from server");
+      }
+    } catch (error) {
+      console.error("Error fetching questions:", error);
+      setError("Failed to fetch questions");
+    }
+  };
 
    const processQuestionsData = (rawQuestions) => {
      try {
@@ -169,9 +171,16 @@ const QuestionComponent = () => {
     });
     const percentage = (correctAnswers / questions.length) * 100;
     setScore(percentage.toFixed(2));
-    setTotalTimeTaken(1800 - timeLeft); // Calculate total time taken
+  
+    // Calculate total time taken
+    if (startTime) {
+      const timeTaken = Math.floor((Date.now() - startTime) / 1000); // in seconds
+      setTotalTimeTaken(timeTaken);
+    }
+  
     setShowResults(true);
   };
+  
 
 
   if (error) {

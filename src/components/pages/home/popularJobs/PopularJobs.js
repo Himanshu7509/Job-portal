@@ -58,7 +58,7 @@ const JobGrid = () => {
       <div className="max-w-7xl mx-auto mb-10">
         <h2 className="text-4xl w-full lg:w-1/3 font-bold mb-4 bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">
           {" "}
-          Recent Jobs
+          Popular Jobs
         </h2>
         <p className="text-gray-600">Discover the job related to your field.</p>
       </div>

@@ -115,12 +115,9 @@ const MyJob = () => {
           <HostSidebar />
         </div>
 
-        <div
-          className="p-2 w-full lg:w-[83%] ml-auto sm:p-8 h-auto sm:h-[690px] overflow-y-scroll -ms-overflow-style-none"
-          style={{ scrollbarWidth: "none" }}
-        >
-          <div className="w-full lg:max-w-7xl mx-auto space-y-6 bg-white shadow-lg p-2">
-            <h1 className="mt-2 text-4xl font-bold text-center sm:text-left text-transparent text-zinc-600 mb-4 ml-4">
+        <div className="w-full  lg:ml-72 xl:ml-80 p-3 sm:p-4 lg:p-6 xl:p-4 overflow-y-auto">
+          <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
+            <h1 className="text-2xl text-center sm:text-3xl lg:text-4xl font-bold text-zinc-600 px-2">
               My Jobs
             </h1>
 
@@ -174,7 +171,6 @@ const MyJob = () => {
 
                           {isExpanded && (
                             <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-4">
-                              {/* Left Side */}
                               <div className="flex items-center gap-3">
                                 <BsPersonWorkspace className="w-5 h-5 text-zinc-600" />
                                 <div>
@@ -200,7 +196,6 @@ const MyJob = () => {
                                 </div>
                               </div>
 
-                              {/* Right Side */}
                               <div className="flex items-center gap-3">
                                 <FaLocationDot className="w-5 h-5 text-zinc-600" />
                                 <div>
@@ -228,7 +223,6 @@ const MyJob = () => {
                             </div>
                           )}
 
-                          {/* Shortlist Button */}
                           <div className="flex justify-between w-full mt-4 space-x-4">
                             <button
                               onClick={() => handleViewApplicants(job._id)}
