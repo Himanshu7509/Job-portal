@@ -38,8 +38,8 @@ const AiMockTest = () => {
   };
 
   return (
-    <div className=" bg-gray-50 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto mt-6">
+    <div className="min-h-screen flex flex-col items-center justify-center m-auto bg-gray-50 p-4 md:p-8">
+      <div className="max-w-7xl m-auto ">
         <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
           <div className="hidden lg:block w-full lg:w-1/2">
             <div className="overflow-hidden rounded-2xl ">

@@ -139,7 +139,7 @@ const App = () => {
           }
           />
           <Route
-          path='/job-detials/:id'
+          path='/job-details/:id'
           element={
             <ProtectedRoute>
               <JobDetails/>

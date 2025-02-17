@@ -1,13 +1,7 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  RefreshCcw,
-  Clock,
-  ArrowLeft,
-  CheckCircle,
-  XCircle,
-} from "lucide-react";
+import { RefreshCcw, Clock, ArrowLeft, XCircle } from "lucide-react";
 import Header from "../../../../common/header/Header";
 import Footer from "../../../../common/footer/Footer";
 import { useEffect } from "react";
@@ -22,10 +16,16 @@ const QuestionComponent = () => {
   const [score, setScore] = useState(null);
   const [showResults, setShowResults] = useState(false);
   const [error, setError] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(120);
   const [totalTimeTaken, setTotalTimeTaken] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [startTime, setStartTime] = useState(null);
+
+  const getDifficulty = (index) => {
+    if (index < 5) return { text: "Easy", color: "text-green-500" };
+    if (index < 10) return { text: "Medium", color: "text-yellow-500" };
+    return { text: "Hard", color: "text-red-500" };
+  };
 
   useEffect(() => {
     fetchQuestions();
@@ -307,7 +307,7 @@ const QuestionComponent = () => {
                 <h2 className="text-xl font-bold">
                   Question {currentQuestionIndex + 1} of {questions.length}
                 </h2>
-                <div className="flex items-center gap-4">
+                <div className="flex justify-between items-center gap-4">
                   <div
                     className={`flex items-center gap-2 font-medium ${
                       timeLeft < 10 ? "text-red-500" : "text-gray-600"
@@ -316,6 +316,7 @@ const QuestionComponent = () => {
                     <Clock size={20} />
                     {formatTime(timeLeft)}
                   </div>
+                  
                   <div className="text-gray-600">
                     {userAnswers[currentQuestionIndex]
                       ? "Answered"
@@ -403,24 +404,33 @@ const QuestionComponent = () => {
             </div>
           ) : (
             <div className="bg-white shadow-xl rounded-lg p-6">
-              <div className="text-center space-y-4">
-                <p className="text-2xl text-zinc-500">
-                  Test will be starting soon...
-                </p>
-                <div className="text-lg text-gray-600 text-left">
-                  <p className="font-semibold text-2xl text-red-500">Instructions:</p>
-                  <ul className="list-disc pl-4 text-lg mb-3 text-left font-semibold">
-                    <li className="mb-2">This test consists of 15 questions.</li>
-                    <li className="mb-2">The time limit for this test is 2 minutes.</li>
-                    <li className="mb-2">Please select one answer for each question.</li>
-                    <li className="mb-2">
-                      Once you've answered all questions, click the "Submit
-                      Test" button to see your results.
-                    </li>
-                  </ul>
-                </div>
+            <div className="text-center space-y-4">
+              <p className="text-2xl text-zinc-500">
+                Test will be starting soon...
+              </p>
+              <div className="text-lg text-gray-600 text-left">
+                <p className="font-semibold text-2xl text-red-500">Instructions:</p>
+                <ul className="list-disc pl-4 text-lg mb-5 text-left font-semibold">
+                  <li className="mb-2">This test consists of 15 questions:</li>
+                  <li className="ml-6 mb-2">
+                    <span className="text-green-500">5 Easy questions</span>
+                  </li>
+                  <li className="ml-6 mb-2">
+                    <span className="text-yellow-500">5 Medium questions</span>
+                  </li>
+                  <li className="ml-6 mb-2">
+                    <span className="text-red-500">5 Hard questions</span>
+                  </li>
+                  <li className="mb-2">The time limit for this test is 2 minutes.</li>
+                  <li className="mb-2">Please select one answer for each question.</li>
+                  <li className="mb-2">
+                    Once you've answered all questions, click the "Submit
+                    Test" button to see your results.
+                  </li>
+                </ul>
               </div>
             </div>
+          </div>
           )}
         </div>
       </div>
