@@ -14,19 +14,32 @@ const JobFilters = ({
   return (
     <div className="sticky top-0 rounded-lg p-4 bg-white shadow-lg w-full max-w-md mx-auto z-50">
       <div className="mb-4 mt-4">
-        <label className="text-xl sm:text-2xl font-bold text-center block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
-          Search by Job Title
-        </label>
-        <div className="relative mt-2">
-          <input
-            type="text"
-            placeholder="Job title ex: frontend"
-            className="w-full p-2 border border-gray-300 rounded-md text-sm"
-            value={searchInput}
-            onChange={(e) => handleSearch(e.target.value)}
-          />
-        </div>
-      </div>
+  <label className="text-xl sm:text-2xl font-bold text-center block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
+    Search by Job Title
+  </label>
+  <div className="relative mt-2">
+    <div className="flex items-center border border-gray-300 rounded-md">
+      <input
+        type="text"
+        placeholder="Job title"
+        className="w-full p-2 text-sm"
+        value={searchInput}
+        onChange={(e) => handleSearch(e.target.value)}
+      />
+      <select
+        className="p-2 border-gray-300"
+        value={filters.companyName}
+        onChange={(e) => onFilterChange("companyName", e.target.value)}
+      >
+        <option value=""></option>
+        <option value="DataGenix AI">DataGenix AI</option>
+        <option value="Amazon">Amazon</option>
+        <option value="Microsoft">Microsoft</option>
+        <option value="Facebook">Facebook</option>
+      </select>
+    </div>
+  </div>
+</div>
 
       <div className="mb-6">
         <label className="text-xl sm:text-2xl font-bold block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">

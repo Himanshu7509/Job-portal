@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from "js-cookie";
@@ -39,44 +38,117 @@ const AiMockTest = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
-            <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-4 text-center">AI Mock Test</h2>
 
-                <select
-                    className="w-full p-2 border rounded mb-4"
-                    onChange={(e) => setSelectedCategory(categories.find(cat => cat._id === e.target.value))}
-                >
-                    <option value="">Select Category</option>
-                    {categories.map(category => (
-                        <option key={category._id} value={category._id}>{category.title}</option>
-                    ))}
-                </select>
+    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
 
-                {selectedCategory && (
-                    <select
-                        className="w-full p-2 border rounded mb-4"
-                        onChange={(e) => setSelectedSubcategory(e.target.value)}
-                    >
-                        <option value="">Select Subcategory</option>
-                        {selectedCategory.subcategories.map((sub, index) => (
-                            <option key={index} value={sub.title}>{sub.title}</option>
-                        ))}
-                    </select>
-                )}
+    <div className="max-w-4xl mx-auto text-center my-8 md:my-12">
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-800 mb-4">
+        Prepare for Success with AI-Powered Testing
+      </h1>
+      <p className="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto">
+        Access personalized assessments designed to help you excel in your studies and career path
+      </p>
+    </div>
 
-                {selectedSubcategory && (
-                    <button 
-                        className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-                        onClick={handleStartTest}
-                    >
-                        Start Test
-                    </button>
-                )}
+    <div className="max-w-7xl mx-auto mt-6">
+
+      <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
+
+
+        <div className="hidden lg:block w-full lg:w-1/2">
+            <div className="overflow-hidden rounded-2xl ">
+            <img
+                src='https://i.pinimg.com/736x/83/28/24/832824bc2d34803c747977a4e4207d0f.jpg'
+                alt="AI Mock Test Platform"
+                className="object-cover w-full"
+            />
             </div>
         </div>
+        
+        <div className="w-full lg:w-1/2">
+          <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-6 md:p-8 w-full">
+            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4 text-center">
+              AI Mock Test
+            </h2>
+            
+            <p className="text-gray-700 text-center mb-6">
+              Tailored assessments to measure and improve your skills
+            </p>
+            
+            <div className="space-y-6">
+            
+        
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2 text-lg">
+                  Select Category
+                </label>
+                <select
+                  className="w-full p-4 border border-gray-300 rounded-xl bg-white/80 
+                           shadow-inner text-gray-700 focus:ring-2 focus:ring-blue-400 
+                           focus:border-transparent outline-none transition-all duration-300
+                           hover:bg-white"
+                  onChange={(e) => setSelectedCategory(categories.find(cat => cat._id === e.target.value))}
+                  value={selectedCategory?._id || ""}
+                >
+                  <option value="">-- Choose a category --</option>
+                  {categories.map((category) => (
+                    <option key={category._id} value={category._id}>
+                      {category.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              {selectedCategory && (
+                <div className="transition-all duration-300 animate-fadeIn">
+                  <label className="block text-gray-700 font-semibold mb-2 text-lg">
+                    Select Subcategory
+                  </label>
+                  <select
+                    className="w-full p-4 border border-gray-300 rounded-xl bg-white/80 
+                              shadow-inner text-gray-700 focus:ring-2 focus:ring-blue-400 
+                              focus:border-transparent outline-none transition-all duration-300
+                              hover:bg-white"
+                    onChange={(e) => setSelectedSubcategory(e.target.value)}
+                    value={selectedSubcategory}
+                  >
+                    <option value="">-- Choose a subcategory --</option>
+                    {selectedCategory.subcategories.map((sub) => (
+                      <option key={sub._id} value={sub._id}>
+                        {sub.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              
+          
+              {selectedSubcategory && (
+                <div className="mt-8 transition-all duration-300 animate-fadeIn">
+                  <button
+                    className="w-full bg-gradient-to-r from-pink-600 to-blue-600 text-white 
+                            py-4 rounded-xl font-bold text-lg shadow-lg transform transition 
+                            duration-300 hover:scale-[1.02] hover:shadow-blue-500/30 
+                            active:scale-[0.98] outline-none"
+                    onClick={handleStartTest}
+                  >
+                    Start Your Test
+                  </button>
+                </div>
+              )}
+            </div>
+            
+            <p className="text-gray-600 text-center mt-6 text-sm">
+              Select your preferred category and subcategory to begin the test.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
     );
 };
 
 export default AiMockTest;
-

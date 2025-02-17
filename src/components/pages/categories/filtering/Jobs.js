@@ -21,7 +21,8 @@ const Jobs = ({ initialTitle = "", initialCategory = "" }) => {
     workType: "",
     experience: "",
     subcategories: "",
-    search: ""
+    search: "",
+    companyName: "",
   });
 
   const [selectedCategory, setSelectedCategory] = useState(null);
