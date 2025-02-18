@@ -21,11 +21,7 @@ const QuestionComponent = () => {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [startTime, setStartTime] = useState(null);
 
-  const getDifficulty = (index) => {
-    if (index < 5) return { text: "Easy", color: "text-green-500" };
-    if (index < 10) return { text: "Medium", color: "text-yellow-500" };
-    return { text: "Hard", color: "text-red-500" };
-  };
+  
 
   useEffect(() => {
     fetchQuestions();
@@ -373,11 +369,11 @@ const QuestionComponent = () => {
                 </div>
               </div>
 
-              <div className="mt-8 flex flex-col sm:flex-row justify-between gap-4">
+              <div className="mt-8 flex flex-row sm:flex-row justify-between gap-4">
                 <button
                   onClick={handlePrevious}
                   disabled={currentQuestionIndex === 0}
-                  className={`px-6 py-3 rounded-lg transition-colors w-full sm:w-auto ${
+                  className={`px-6 py-3 rounded-lg transition-colors w-full  ${
                     currentQuestionIndex === 0
                       ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                       : "bg-gray-500 text-white hover:bg-gray-600"
@@ -388,14 +384,14 @@ const QuestionComponent = () => {
                 {currentQuestionIndex === questions.length - 1 ? (
                   <button
                     onClick={calculateScore}
-                    className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors w-full sm:w-auto"
+                    className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors w-full "
                   >
                     Submit Test
                   </button>
                 ) : (
                   <button
                     onClick={handleNext}
-                    className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors w-full sm:w-auto"
+                    className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors w-full "
                   >
                     Next
                   </button>

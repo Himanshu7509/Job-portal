@@ -2,12 +2,13 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaRegUser } from "react-icons/fa";
 import { IoLogOutOutline } from "react-icons/io5";
-import { LuLayoutDashboard  } from "react-icons/lu";
+import { LuLayoutDashboard } from "react-icons/lu";
 import { MdOutlinePostAdd } from "react-icons/md";
 import { RiBriefcase2Line } from "react-icons/ri";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Cookies from "js-cookie";
+import { FaEdit } from "react-icons/fa";
 
 const HostSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -75,11 +76,23 @@ const HostSidebar = () => {
         </div>
 
         <div className="flex flex-col items-center justify-center p-4 mb-6 mt-4 space-y-3">
-          <img
-            src="https://static.vecteezy.com/system/resources/thumbnails/020/911/740/small_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png"
-            className="w-28 rounded-full border-blackorange-500 border-2 shadow-md"
-            alt="Profile"
-          />
+          <div className="grid">
+            <div className="col-start-1 row-start-1">
+              <img
+                src="https://static.vecteezy.com/system/resources/thumbnails/020/911/740/small_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png"
+                alt="Profile"
+                className="rounded-full w-32 h-32 sm:w-40 sm:h-40 border-4 border-white shadow-xl"
+              />
+            </div>
+            <div className="col-start-1 row-start-1 flex items-end justify-end">
+              <Link to={"/host-detail"}>
+                <button className="rounded-full p-2" aria-label="Edit profile">
+                  <FaEdit className="w-5 h-5 text-blue-500" />
+                </button>
+              </Link>
+            </div>
+          </div>
+
           <div className="text-center">
             <div className="text-lg font-bold text-transparent bg-gradient-to-r from-zinc-500 to-zinc-800 bg-clip-text">
               {hoster.fullName}
@@ -106,7 +119,7 @@ const HostSidebar = () => {
               path: "/host-jobs",
             },
             {
-              icon: <MdOutlinePostAdd  className="w-5 h-5 text-red-600" />,
+              icon: <MdOutlinePostAdd className="w-5 h-5 text-red-600" />,
               label: "Post Job",
               path: "/jobpost",
             },
@@ -120,7 +133,7 @@ const HostSidebar = () => {
           ))}
         </nav>
 
-        <div className="fixed bottom-10 p-4">
+        <div className="fixed bottom-5">
           <div
             className="flex items-center space-x-2 text-gray-700 cursor-pointer hover:text-red-600"
             onClick={handleLogout}

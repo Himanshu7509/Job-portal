@@ -8,7 +8,6 @@ import { useLocation } from "react-router-dom";
 const Categories = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  console.log(queryParams);
   const initialTitle = queryParams.get("title") || "";
   const initialCategory = queryParams.get("categories") || "";
   return (

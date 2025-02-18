@@ -6,6 +6,7 @@ import Statistics from "./statistics/Statistics";
 import LineChart from "./Graph/LineChart";
 import PieChart from "./Graph/PieChart";
 import { Plus, Loader2 } from "lucide-react";
+import JobApplications from "./table/JobApplications";
 
 const HosterDashboard = () => {
   const [jobs, setJobs] = useState([]);
@@ -143,10 +144,14 @@ const HosterDashboard = () => {
                     ))}
                   </div>
                 )}
+              
               </div>
+              
             </div>
+            
           </div>
         </div>
+        <JobApplications/>
       </div>
     </div>
   );

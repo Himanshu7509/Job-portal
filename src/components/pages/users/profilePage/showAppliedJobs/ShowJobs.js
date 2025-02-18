@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { FaBuilding, FaMapMarkerAlt, FaBriefcase, FaUserTie, FaDollarSign, FaUsers } from "react-icons/fa";
+import {
+  FaBuilding,
+  FaMapMarkerAlt,
+  FaBriefcase,
+  FaUserTie,
+  FaDollarSign,
+  FaUsers,
+} from "react-icons/fa";
 
 const ShowJobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -54,45 +61,69 @@ const ShowJobs = () => {
   const displayedJobs = showAllJobs ? jobs : jobs.slice(0, visibleJobs);
   return (
     <>
-      <div className="max-w-7xl mx-auto px-0 sm:px-4">
-        <h2 className="text-2xl lg:text-4xl md:text-5xl font-bold text-center mt-6 mb-8">
-          <span className="text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
-            Jobs you've applied to
-          </span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-12">
+          <span className="inline-block">Jobs you've applied to</span>
         </h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           {displayedJobs.map((job) => (
             <div
               key={job._id}
-              className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
+              className="group bg-white rounded-3xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
             >
-              <div className="p-6">
-                <h3 className="text-2xl md:text-3xl font-bold mb-4">
-                  <span className="text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
+              <div className="p-4 sm:p-6 space-y-6">
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold transition-transform duration-300">
+                  <span className="text-transparent text-zinc-500">
                     {job.title}
                   </span>
                 </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
-                    { label: "Company", value: job.companyName, icon: <FaBuilding /> },
-                    { label: "Location", value: job.location, icon: <FaMapMarkerAlt /> },
-                    { label: "Type", value: job.jobType, icon: <FaBriefcase /> },
-                    { label: "Experience", value: job.experience, icon: <FaUserTie /> },
-                    { label: "Package", value: job.minPackage, icon: <FaDollarSign /> },
-                    { label: "Openings", value: job.noOfOpeaning, icon: <FaUsers /> },
+                    {
+                      label: "Company",
+                      value: job.companyName,
+                      icon: <FaBuilding className="text-pink-500" />,
+                    },
+                    {
+                      label: "Location",
+                      value: job.location,
+                      icon: <FaMapMarkerAlt className="text-blue-500" />,
+                    },
+                    {
+                      label: "Type",
+                      value: job.jobType,
+                      icon: <FaBriefcase className="text-purple-500" />,
+                    },
+                    {
+                      label: "Experience",
+                      value: job.experience,
+                      icon: <FaUserTie className="text-indigo-500" />,
+                    },
+                    {
+                      label: "Package",
+                      value: job.minPackage,
+                      icon: <FaDollarSign className="text-green-500" />,
+                    },
+                    {
+                      label: "Openings",
+                      value: job.noOfOpeaning,
+                      icon: <FaUsers className="text-cyan-500" />,
+                    },
                   ].map((item, index) => (
                     <div
                       key={index}
-                      className="bg-gradient-to-r from-blue-50 to-blue-50 rounded-xl p-4 transform hover:scale-102 transition-transform duration-200 flex items-center gap-3"
+                      className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-4 transition-all duration-300 flex items-center gap-4 group/item"
                     >
-                      <span className="text-2xl">{item.icon}</span>
+                      <span className="text-2xl  transition-transform duration-300">
+                        {item.icon}
+                      </span>
                       <div className="flex flex-col">
-                        <span className="text-gray-500 font-semibold text-sm whitespace-nowrap">
+                        <span className="text-gray-500 font-medium text-sm">
                           {item.label}
                         </span>
-                        <span className="text-gray-800 text-lg font-semibold break-words mt-1">
+                        <span className="text-gray-800 text-base sm:text-lg font-semibold break-words">
                           {item.value}
                         </span>
                       </div>
@@ -100,31 +131,39 @@ const ShowJobs = () => {
                   ))}
                 </div>
 
-                <section className="bg-gradient-to-r from-sky-50 to-blue-50 rounded-xl p-4 transform hover:scale-102 transition-transform duration-200 mt-4">
-                  <span className="text-gray-500 font-semibold text-sm whitespace-nowrap">
+                <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-4  transition-all duration-300">
+                  <span className="text-gray-500 font-medium text-sm">
                     Skills
                   </span>
-                  <div className="flex flex-wrap mt-2 gap-3">
+                  <div className="flex flex-wrap gap-2 mt-3">
                     {job.skills.slice(0, 3).map((skill, index) => (
-                      <span key={index} className="bg-transparent text-gray-800 text-lg font-semibold px-3 py-1 rounded-md">
+                      <span
+                        key={index}
+                        className="bg-white/100 text-gray-800 text-sm font-medium px-4 py-2 rounded-lg shadow-sm hover:shadow transition-all duration-300"
+                      >
                         {skill}
                       </span>
                     ))}
-                    {job.skills.length > 3 && <span className="text-gray-600">...</span>}
+                    {job.skills.length > 3 && (
+                      <span className="text-gray-600 px-2 py-1">...</span>
+                    )}
                   </div>
-                </section>
+                </div>
               </div>
             </div>
           ))}
         </div>
 
         {jobs.length > visibleJobs && (
-          <div className="flex justify-center mt-6">
+          <div className="flex justify-center mt-10">
             <button
               onClick={handleSeeMoreJobs}
-              className="mb-4 mt-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-blue-500 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-lg"
+              className="group px-6 py-3 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 text-lg relative overflow-hidden"
             >
-              {showAllJobs ? "Show Less" : "See More Jobs"}
+              <span className="relative z-10  inline-block transition-transform duration-300">
+                {showAllJobs ? "Show Less" : "See More Jobs"}
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </button>
           </div>
         )}

@@ -23,29 +23,37 @@ const LineChart = ({ jobs }) => {
   const [isLoading, setIsLoading] = useState(false);
   const token = Cookies.get("jwtToken");
 
+  // Demo data for new users
+  const demoData = {
+    labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    dataPoints: [1, 2, 3, 1, 2, 2, 4]
+  };
+
   // Function to get ordered days ending with today
   const getOrderedDays = () => {
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const today = new Date().getDay(); // 0 = Sunday, 1 = Monday, etc.
-    
-    // Start from tomorrow (relative to last week) and end with today
+    const today = new Date().getDay();
     const orderedDays = [];
     for (let i = 1; i <= 7; i++) {
       const index = (today + i) % 7;
       orderedDays.push(days[index]);
     }
-    // Move the last day (which is today) to the end
-    orderedDays.pop(); // Remove today from its current position
-    orderedDays.push(days[today]); // Add today at the end
-    
+    orderedDays.pop();
+    orderedDays.push(days[today]);
     return orderedDays;
   };
 
   useEffect(() => {
-    if (selectedJob) {
+    if (jobs.length === 0) {
+      // Show demo data for new users
+      setGraphData(demoData);
+    } else if (!selectedJob) {
+      // Automatically select first job when jobs are available
+      setSelectedJob(jobs[0]._id);
+    } else {
       fetchGraphData(selectedJob);
     }
-  }, [selectedJob]);
+  }, [jobs, selectedJob]);
 
   const fetchGraphData = async (jobId) => {
     setIsLoading(true);
@@ -54,14 +62,12 @@ const LineChart = ({ jobs }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
-        console.log(data);
       if (data.success && data.data) {
         const orderedDays = getOrderedDays();
         const dataPoints = orderedDays.map(day => {
           const dayData = data.data.find(d => d.day === day);
           return dayData ? dayData.applicants : 0;
         });
-
         setGraphData({ labels: orderedDays, dataPoints });
       }
     } catch (error) {
@@ -86,7 +92,7 @@ const LineChart = ({ jobs }) => {
     labels: graphData.labels,
     datasets: [
       {
-        label: selectedJob ? "Applicants" : "Select a job to view applications",
+        label: jobs.length === 0 ? "Sample Applications" : (selectedJob ? "Applicants" : "Select a job to view applications"),
         data: graphData.dataPoints,
         borderColor: "#3b82f6",
         backgroundColor: "rgba(59, 130, 246, 0.1)",
@@ -162,45 +168,46 @@ const LineChart = ({ jobs }) => {
   };
 
   return (
-    <div className="w-full bg-white rounded-xl p-2 sm:p-3 md:p-3 h-auto sm:h-[450px] overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
+    <div className="w-full bg-white rounded-xl p-2 sm:p-3 md:p-3 h-auto">
       <div className="space-y-2">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
-            Applicants Per Day
+            {jobs.length === 0 ? "Sample Applicants Data" : "Applicants Per Day"}
           </h2>
           
-          <div className="w-full sm:w-64">
-            <select
-              value={selectedJob}
-              onChange={(e) => setSelectedJob(e.target.value)}
-              className="w-full px-4 py-2 bg-white border border-gray-200 rounded-lg 
-                         text-sm text-gray-700 focus:border-blue-500 focus:ring-2 
-                         focus:ring-blue-200 outline-none transition-colors duration-200"
-            >
-              <option value="">Select a job</option>
-              {jobs.map((job) => (
-                <option key={job._id} value={job._id}>
-                  {job.title}
-                </option>
-              ))}
-            </select>
-          </div>
+          {jobs.length > 0 && (
+            <div className="w-full sm:w-64">
+              <select
+                value={selectedJob}
+                onChange={(e) => setSelectedJob(e.target.value)}
+                className="w-full px-4 py-2 bg-white border border-gray-200 rounded-lg 
+                           text-sm text-gray-700 focus:border-blue-500 focus:ring-2 
+                           focus:ring-blue-200 outline-none transition-colors duration-200"
+              >
+                <option value="">Select a job</option>
+                {jobs.map((job) => (
+                  <option key={job._id} value={job._id}>
+                    {job.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
 
         <div className="w-full h-[300px] sm:h-[400px] bg-white rounded-lg">
           {isLoading ? (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex flex-col items-center space-y-2">
-                <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                <p className="text-sm text-gray-500">Loading chart data...</p>
-              </div>
+            <div className="flex items-center justify-center">
+            <div className="flex flex-col justify-center items-center space-y-2">
+              <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
             </div>
+          </div>
           ) : (
             <Line data={chartData} options={options} />
           )}
         </div>
 
-        {selectedJob && graphData && (
+        {(selectedJob || jobs.length === 0) && graphData && (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="p-4 bg-blue-50 rounded-lg">
               <p className="text-sm text-gray-600">Total Applicants</p>

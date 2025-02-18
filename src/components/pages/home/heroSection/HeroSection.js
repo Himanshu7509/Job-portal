@@ -18,6 +18,12 @@ const HeroSection = () => {
     }
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <div className="bg-white py-16">
       <div className="max-w-7xl mx-auto px-6 lg:flex lg:items-center lg:space-x-10">
@@ -44,6 +50,7 @@ const HeroSection = () => {
               placeholder="What are you looking for?"
               className="flex-1 px-4 py-3 text-gray-800 focus:outline-none"
               onChange={(e) => setSearchInput(e.target.value)}
+              onKeyPress={handleKeyPress}
             />
             <button
               onClick={handleSearch}
