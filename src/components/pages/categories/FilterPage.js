@@ -10,6 +10,7 @@ const Categories = () => {
   const queryParams = new URLSearchParams(location.search);
   const initialTitle = queryParams.get("title") || "";
   const initialCategory = queryParams.get("categories") || "";
+
   return (
     <div>
         <Header/>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import LoginImg from "../../assets/login.png";
-import { Eye, EyeOff } from "lucide-react"
+import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -60,7 +60,7 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4 bg-gray-50 sm:px-6 lg:px-8">
-      <div className="flex flex-col items-center w-full max-w-6xl overflow-hidden bg-white rounded-lg shadow-lg md:flex-row">
+      <div className="flex flex-col w-full max-w-6xl overflow-hidden bg-white rounded-lg shadow-lg md:flex-row">
         <div className="w-full p-6 space-y-6 md:w-1/2 sm:p-8">
           <h2 className="text-2xl font-bold text-center bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent sm:text-3xl lg:mt-8">
             Welcome to Job Quick
@@ -94,15 +94,25 @@ const Login = () => {
               >
                 Password
               </label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400"
-                placeholder="Enter your password"
-              />
+
+              <div className="relative w-full">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400"
+                  placeholder="Enter your password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800"
+                >
+                  {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+                </button>
+              </div>
             </div>
 
             <button

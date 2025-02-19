@@ -11,19 +11,22 @@ import {
 
 const ShowJobs = () => {
   const [jobs, setJobs] = useState([]);
-  const [showAllJobs, setShowAllJobs] = useState(false);
-  const [visibleJobs, setVisibleJobs] = useState(2);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasNextPage, setHasNextPage] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    showJobs();
-  }, []);
+    showJobs(currentPage);
+  }, []); // Load first page on mount
 
-  const showJobs = async () => {
+  const showJobs = async (page) => {
     const userId = Cookies.get("Id");
     const userToken = Cookies.get("Token");
 
-    const userJobs = `https://jobquick.onrender.com/applicants?applicantId=${userId}`;
+    const userJobs = `https://jobquick.onrender.com/applicants?applicantId=${userId}&page=${page}&limit=2`;
+    setIsLoading(true);
+
     try {
       const response = await fetch(userJobs, {
         headers: {
@@ -42,23 +45,33 @@ const ShowJobs = () => {
         );
       }
 
-      // Extract just the jobId details from each application
-      if (Array.isArray(result)) {
-        const jobDetails = result.map((application) => application.jobId);
-        setJobs(jobDetails);
-      } else {
-        setJobs([]);
+      // Extract job details and update pagination state
+      if (result.success && Array.isArray(result.applicants)) {
+        const jobDetails = result.applicants.map((application) => application.jobId);
+        
+        // Append new jobs to existing ones if loading more
+        if (page > 1) {
+          setJobs((prevJobs) => [...prevJobs, ...jobDetails]);
+        } else {
+          setJobs(jobDetails);
+        }
+        
+        // Update pagination state
+        setHasNextPage(result.pagination.hasNextPage);
       }
     } catch (error) {
       setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleSeeMoreJobs = () => {
-    setShowAllJobs(!showAllJobs);
+  const handleLoadMore = () => {
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    showJobs(nextPage);
   };
 
-  const displayedJobs = showAllJobs ? jobs : jobs.slice(0, visibleJobs);
   return (
     <>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -67,7 +80,7 @@ const ShowJobs = () => {
         </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-          {displayedJobs.map((job) => (
+          {jobs.map((job) => (
             <div
               key={job._id}
               className="group bg-white rounded-3xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
@@ -116,7 +129,7 @@ const ShowJobs = () => {
                       key={index}
                       className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-4 transition-all duration-300 flex items-center gap-4 group/item"
                     >
-                      <span className="text-2xl  transition-transform duration-300">
+                      <span className="text-2xl transition-transform duration-300">
                         {item.icon}
                       </span>
                       <div className="flex flex-col">
@@ -131,7 +144,7 @@ const ShowJobs = () => {
                   ))}
                 </div>
 
-                <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-4  transition-all duration-300">
+                <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-4 transition-all duration-300">
                   <span className="text-gray-500 font-medium text-sm">
                     Skills
                   </span>
@@ -154,17 +167,24 @@ const ShowJobs = () => {
           ))}
         </div>
 
-        {jobs.length > visibleJobs && (
+        {hasNextPage && (
           <div className="flex justify-center mt-10">
             <button
-              onClick={handleSeeMoreJobs}
-              className="group px-6 py-3 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 text-lg relative overflow-hidden"
+              onClick={handleLoadMore}
+              disabled={isLoading}
+              className="group px-6 py-3 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 text-lg relative overflow-hidden disabled:opacity-50"
             >
-              <span className="relative z-10  inline-block transition-transform duration-300">
-                {showAllJobs ? "Show Less" : "See More Jobs"}
+              <span className="relative z-10 inline-block transition-transform duration-300">
+                {isLoading ? "Loading..." : "Load More Jobs"}
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </button>
+          </div>
+        )}
+
+        {error && (
+          <div className="text-red-500 text-center mt-4">
+            Error: {error}
           </div>
         )}
       </div>

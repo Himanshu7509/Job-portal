@@ -5,7 +5,7 @@ import Header from "../../../common/header/Header";
 import Footer from "../../../common/footer/Footer";
 import ProfileImg from "../../../../assets/profile.png";
 import ShowJobs from "./showAppliedJobs/ShowJobs";
-import { FaUserEdit, FaTrashAlt, FaTimes, FaCheck } from "react-icons/fa";
+import { FaTimes, FaCheck } from "react-icons/fa";
 
 const ProfilePage = () => {
   const [seeker, setSeeker] = useState(null);
@@ -91,8 +91,8 @@ const ProfilePage = () => {
   if (!seeker) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-center mt-5 text-5xl text-pink-500 font-semibold">
-          Loading...
+        <p className="text-center mt-5 text-3xl text-zinc-700 font-semibold">
+          Just a moment...
         </p>
       </div>
     );

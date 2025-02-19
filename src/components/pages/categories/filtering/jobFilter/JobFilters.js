@@ -17,7 +17,7 @@ const JobFilters = ({
     <div className="sticky rounded-lg p-4 bg-white shadow-lg w-full max-w-md mx-auto sm:w-90 z-50">
       <div className="mb-4 mt-6">
         <label className="text-xl sm:text-2xl font-bold text-center block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
-          Search by Job Title
+          Search 
         </label>
         <div className="relative mt-2">
           <div className="flex items-center border border-gray-300 rounded-md overflow-hidden px-3">

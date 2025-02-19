@@ -18,11 +18,14 @@ const ViewApplicant = () => {
   const [applicants, setApplicants] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [viewMode, setViewMode] = useState("all"); // 'all' or 'shortlisted'
+  const [viewMode, setViewMode] = useState("all");
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const token = Cookies.get("jwtToken");
 
-  const fetchApplicants = async (mode) => {
+  const fetchApplicants = async (mode, pageNum, append = false) => {
     if (!token) {
       setError("Authentication required");
       setIsLoading(false);
@@ -30,9 +33,13 @@ const ViewApplicant = () => {
     }
 
     try {
-      const url = `https://jobquick.onrender.com/applicants?jobId=${id}${
+      const url = `https://jobquick.onrender.com/applicants?jobId=${id}&page=${pageNum}&limit=2${
         mode === "shortlisted" ? "&shortListed=true" : ""
       }`;
+      
+      const loadingState = append ? setIsLoadingMore : setIsLoading;
+      loadingState(true);
+
       const response = await fetch(url, {
         method: "GET",
         headers: {
@@ -46,21 +53,32 @@ const ViewApplicant = () => {
       }
 
       const data = await response.json();
-      console.log(data);
-      setApplicants(Array.isArray(data) ? data : []);
+      
+      if (data.success) {
+        const newApplicants = Array.isArray(data.applicants) ? data.applicants : [];
+        setApplicants(prev => append ? [...prev, ...newApplicants] : newApplicants);
+        setHasMore(data.pagination.hasNextPage);
+      }
     } catch (err) {
       setError(err.message);
     } finally {
       setIsLoading(false);
+      setIsLoadingMore(false);
     }
   };
 
   useEffect(() => {
     if (id) {
-      setIsLoading(true);
-      fetchApplicants(viewMode);
+      setPage(1);
+      fetchApplicants(viewMode, 1, false);
     }
   }, [id, token, viewMode]);
+
+  const handleLoadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchApplicants(viewMode, nextPage, true);
+  };
 
   const handleViewProfile = (application) => {
     navigate(`/applicant/${application._id}`, { state: { application } });
@@ -94,7 +112,7 @@ const ViewApplicant = () => {
       </div>
 
       <div
-        className="w-full  lg:ml-72 xl:ml-80 p-3 sm:p-4 lg:p-6 xl:p-4 h-auto sm:h-[690px] overflow-y-scroll -ms-overflow-style-none"
+        className="w-full lg:ml-72 xl:ml-80 p-3 sm:p-4 lg:p-6 xl:p-4 h-auto sm:h-[690px] overflow-y-scroll -ms-overflow-style-none"
         style={{ scrollbarWidth: "none" }}
       >
         <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6 bg-white p-4 rounded-lg shadow-md">
@@ -140,113 +158,127 @@ const ViewApplicant = () => {
                   : "No applicants yet."}
               </p>
             ) : (
-              <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-                {applicants.map((application) => (
-                  <div
-                    key={application._id}
-                    className="bg-white border border-gray-200 shadow-lg sm:p-6 p-3"
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-4">
-                      <div className="flex items-center gap-4">
-                        <div className="p-3 bg-gradient-to-r from-pink-100 to-blue-100 ">
-                          <FaUserAlt className="text-blue-500 w-6 h-6" />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-bold text-gray-800 md:text-sm">
-                            {application?.applicantId?.fullName || "N/A"}
-                          </h3>
+              <>
+                <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                  {applicants.map((application) => (
+                    <div
+                      key={application._id}
+                      className="bg-white border border-gray-200 shadow-lg sm:p-6 p-3"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 bg-gradient-to-r from-pink-100 to-blue-100 ">
+                            <FaUserAlt className="text-blue-500 w-6 h-6" />
+                          </div>
                           <div>
-                            {application.shortListed ? (
-                              <span className=" text-green-500 rounded-full text-sm font-semibold">
-                                ✅ Shortlisted
-                              </span>
-                            ) : (
-                              <span className=" text-gray-700 rounded-full text-sm font-semibold">
-                                🔄 Under Review
-                              </span>
-                            )}
+                            <h3 className="text-xl font-bold text-gray-800 md:text-sm">
+                              {application?.applicantId?.fullName || "N/A"}
+                            </h3>
+                            <div>
+                              {application.shortListed ? (
+                                <span className="text-green-500 rounded-full text-sm font-semibold">
+                                  ✅ Shortlisted
+                                </span>
+                              ) : (
+                                <span className="text-gray-700 rounded-full text-sm font-semibold">
+                                  🔄 Under Review
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="mt-6 text-gray-700">
-                      <div className="space-y-4 mt-4">
-                        <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
-                          <Mail className="w-6 h-6 text-blue-500" />
-                          <p className="text-md text-gray-600 font-semibold">
-                            {application?.applicantId?.email || "N/A"}
-                          </p>
-                        </div>
-
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                          <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
-                            <Phone className="w-6 h-6 text-green-500" />
-                            <span className="text-gray-600 font-medium">
-                              {application?.applicantId?.phoneNumber || "N/A"}
-                            </span>
+                      <div className="mt-6 text-gray-700">
+                        <div className="space-y-4 mt-4">
+                          <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
+                            <Mail className="w-6 h-6 text-blue-500" />
+                            <p className="text-md text-gray-600 font-semibold">
+                              {application?.applicantId?.email || "N/A"}
+                            </p>
                           </div>
 
-                          <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
-                            <MapPin className="w-6 h-6 text-red-500" />
-                            <span className="text-gray-600 font-medium">
-                              {application?.applicantId?.city || "N/A"}
-                            </span>
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
+                              <Phone className="w-6 h-6 text-green-500" />
+                              <span className="text-gray-600 font-medium">
+                                {application?.applicantId?.phoneNumber || "N/A"}
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
+                              <MapPin className="w-6 h-6 text-red-500" />
+                              <span className="text-gray-600 font-medium">
+                                {application?.applicantId?.city || "N/A"}
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
+                              <GraduationCap className="w-6 h-6 text-purple-500" />
+                              <span className="text-gray-600 font-medium">
+                                {application?.applicantId?.eduDegree || "N/A"}
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
+                              <Briefcase className="w-6 h-6 text-yellow-500" />
+                              <span className="text-gray-600 font-medium">
+                                {application?.applicantId?.expPosition || "N/A"}
+                              </span>
+                            </div>
                           </div>
 
-                          <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
-                            <GraduationCap className="w-6 h-6 text-purple-500" />
-                            <span className="text-gray-600 font-medium">
-                              {application?.applicantId?.eduDegree || "N/A"}
-                            </span>
-                          </div>
-
-                          <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
-                            <Briefcase className="w-6 h-6 text-yellow-500" />
-                            <span className="text-gray-600 font-medium">
-                              {application?.applicantId?.expPosition || "N/A"}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="p-4 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
-                          <div className="flex items-center gap-4">
-                            <Star className="w-6 h-6 text-indigo-500" />
-                            <span className="text-gray-600 font-semibold">
-                              Skills
-                            </span>
-                          </div>
-                          <div className="flex flex-wrap gap-2 mt-2">
-                            {application?.applicantId?.skills?.length > 0 ? (
-                              application.applicantId.skills.map(
-                                (skill, index) => (
-                                  <span
-                                    key={index}
-                                    className="px-4 py-2 text-sm font-medium bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 transition"
-                                  >
-                                    {skill}
-                                  </span>
+                          <div className="p-4 bg-gray-50 rounded-lg hover:shadow-md transition-shadow">
+                            <div className="flex items-center gap-4">
+                              <Star className="w-6 h-6 text-indigo-500" />
+                              <span className="text-gray-600 font-semibold">
+                                Skills
+                              </span>
+                            </div>
+                            <div className="flex flex-wrap gap-2 mt-2">
+                              {application?.applicantId?.skills?.length > 0 ? (
+                                application.applicantId.skills.map(
+                                  (skill, index) => (
+                                    <span
+                                      key={index}
+                                      className="px-4 py-2 text-sm font-medium bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 transition"
+                                    >
+                                      {skill}
+                                    </span>
+                                  )
                                 )
-                              )
-                            ) : (
-                              <span className="text-gray-500">N/A</span>
-                            )}
+                              ) : (
+                                <span className="text-gray-500">N/A</span>
+                              )}
+                            </div>
                           </div>
-                        </div>
 
-                        <div className="mt-4 w-full flex justify-center sm:justify-end">
-                          <button
-                            onClick={() => handleViewProfile(application)}
-                            className="h-10 bg-blue-500 text-white rounded-md font-semibold shadow-md px-4 hover:bg-blue-600 transition"
-                          >
-                            View Profile
-                          </button>
+                          <div className="mt-4 w-full flex justify-center sm:justify-end">
+                            <button
+                              onClick={() => handleViewProfile(application)}
+                              className="h-10 bg-blue-500 text-white rounded-md font-semibold shadow-md px-4 hover:bg-blue-600 transition"
+                            >
+                              View Profile
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
+                  ))}
+                </div>
+                
+                {hasMore && (
+                  <div className="mt-8 flex justify-center">
+                    <button
+                      onClick={handleLoadMore}
+                      disabled={isLoadingMore}
+                      className="px-6 py-2 bg-blue-500 text-white rounded-md font-semibold shadow-md hover:bg-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isLoadingMore ? "Loading..." : "Load More"}
+                    </button>
                   </div>
-                ))}
-              </div>
+                )}
+              </>
             )}
           </div>
         </div>

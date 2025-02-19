@@ -16,13 +16,13 @@ const Jobs = ({ initialTitle = "", initialCategory = "" }) => {
 
   const [filters, setFilters] = useState({
     categories: initialCategory,
-    title: initialTitle,
+    search: initialTitle,
     jobType: "",
     workType: "",
     experience: "",
     subcategories: "",
-    search: "",
-    companyName: "",
+    
+    
   });
 
   const [selectedCategory, setSelectedCategory] = useState(null);

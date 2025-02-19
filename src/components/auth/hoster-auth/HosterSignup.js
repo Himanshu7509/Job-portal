@@ -1,8 +1,9 @@
 import React from "react";
-import SignUpImg from "../../../assets/signup.png";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import SignUpImg from "../../../assets/signup.png";
 
 const HosterSignup = () => {
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ const HosterSignup = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const signupApi = "https://jobquick.onrender.com/hostuser/signup";
 
@@ -17,20 +19,6 @@ const HosterSignup = () => {
     e.preventDefault();
     console.log("Email:", email);
     console.log("Password:", password);
-
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  
-    if (!emailRegex.test(email)) {
-      setError("Please enter a valid email address.");
-      setSuccess(null);
-      return;
-    }
-  
-    if (password.length < 5) {
-      setError("Password must be at least 6 characters.");
-      setSuccess(null);
-      return;
-    }
 
     const person = {
       email: email,
@@ -65,8 +53,8 @@ const HosterSignup = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4 bg-gray-50 sm:px-6 lg:px-8">
-      <div className="flex flex-col items-center w-full max-w-6xl overflow-hidden bg-white rounded-lg shadow-lg md:flex-row">
-        <div className="w-full p-6 space-y-6 md:w-1/2 sm:p-8">
+      <div className="flex flex-col items-center justify-center w-full max-w-6xl overflow-hidden bg-white rounded-lg shadow-lg md:flex-row">
+        <div className="w-full p-6 space-y-6 md:w-10/12 lg:w-1/2 sm:p-8">
           <h2 className="text-2xl md:text-4xl font-bold text-center bg-gradient-to-r from-pink-500 to-indigo-500 bg-clip-text text-transparent lg:mt-6">
             Create an Account
           </h2>
@@ -98,15 +86,25 @@ const HosterSignup = () => {
               >
                 Password
               </label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="Enter your password"
-                className="w-full px-4 py-3 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              />
+
+              <div className="relative w-full">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="Enter your password"
+                  className="w-full px-4 py-3 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800"
+                >
+                  {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
+                </button>
+              </div>
             </div>
             <button
               type="submit"
@@ -136,7 +134,7 @@ const HosterSignup = () => {
           </p>
         </div>
 
-        <div className="hidden w-full md:block md:w-1/2">
+        <div className="hidden w-full lg:block md:w-1/2">
           <img
             src={SignUpImg}
             alt="Signup Illustration"

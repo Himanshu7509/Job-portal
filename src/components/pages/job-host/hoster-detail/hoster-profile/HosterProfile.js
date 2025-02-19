@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import HostSidebar from "../../hoster-dashboard/sidebar/HostSidebar";
 import { Link, useNavigate } from "react-router-dom";
 import ProfileImg from "../../../../../assets/profile.png";
-import { FaUserEdit, FaTrashAlt, FaTimes, FaCheck } from "react-icons/fa";
+import { FaTimes, FaCheck } from "react-icons/fa";
 
 const HosterProfile = () => {
   const [hoster, setHoster] = useState(null);
@@ -80,7 +80,7 @@ const HosterProfile = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-500">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <p className="text-red-600 text-5xl">{error}</p>
       </div>
     );
