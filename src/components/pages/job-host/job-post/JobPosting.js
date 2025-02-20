@@ -231,7 +231,7 @@ const JobPosting = () => {
             name="profileImg"
             accept="image/*"
             onChange={handleInputChange}
-            className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 text-sm"
+            className="block w-full border border-gray-300 rounded-lg shadow-sm py-1 px-3 focus:ring-blue-500 focus:border-blue-500 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-gradient-to-r from-pink-500 to-blue-500 file:text-white hover:file:opacity-90"
           />
           {imagePreview && (
             <img
@@ -637,7 +637,7 @@ const JobPosting = () => {
           name="jobDescription"
           value={formData.jobDescription}
           onChange={handleInputChange}
-          rows="5"
+          rows="3"
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           placeholder="Describe the job responsibilities and requirements"
         ></textarea>
@@ -666,9 +666,9 @@ const JobPosting = () => {
       <div className="w-1/4 h-screen fixed top-0 left-0">
         <HostSidebar />
       </div>
-      <div className="p-2 w-full lg:w-3/4 ml-auto sm:p-10">
-        <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-md sm:p-6 p-2">
-          <h2 className="text-4xl font-bold mb-6 text-zinc-700 text-center sm:text-left">
+      <div className="w-full  lg:ml-72 xl:ml-60 p-3 sm:p-4 lg:p-6 xl:p-4 overflow-y-auto">
+        <div className="max-w-5xl mx-auto p-4 bg-white rounded-lg">
+          <h2 className="text-4xl font-bold mb-6 text-zinc-700 text-center lg:text-left">
             Post Job
           </h2>
 

@@ -6,7 +6,7 @@ import Statistics from "./statistics/Statistics";
 import LineChart from "./Graph/LineChart";
 import PieChart from "./Graph/PieChart";
 import { Loader2 } from "lucide-react";
-import JobApplications from "./table/JobApplications";
+import JobApplications from "../hoster-dashboard/table/JobApplications";
 import { FaBriefcase } from "react-icons/fa";
 
 const HosterDashboard = () => {
@@ -14,10 +14,17 @@ const HosterDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [stats, setStats] = useState(null);
+  const [applicantsData, setApplicantsData] = useState({});
 
   useEffect(() => {
     fetchJobs();
   }, []);
+
+  useEffect(() => {
+    if (jobs.length > 0) {
+      fetchAllApplicantsData();
+    }
+  }, [jobs]);
 
   const fetchJobs = async () => {
     const userId = Cookies.get("userId");
@@ -37,7 +44,6 @@ const HosterDashboard = () => {
         }
       );
       const result = await response.json();
-      console.log(result);
 
       if (!response.ok) {
         throw new Error(result.message || "Failed to fetch jobs");
@@ -47,10 +53,49 @@ const HosterDashboard = () => {
       setStats(result.statistics);
     } catch (error) {
       setError(error.message);
+    }
+  };
+
+  const fetchAllApplicantsData = async () => {
+    const token = Cookies.get("jwtToken");
+    try {
+      const data = {};
+      await Promise.all(
+        jobs.map(async (job) => {
+          const response = await fetch(
+            `https://jobquick.onrender.com/applicants/graph/${job._id}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          const result = await response.json();
+          data[job._id] = result.data || [];
+        })
+      );
+      setApplicantsData(data);
+    } catch (error) {
+      console.error("Error fetching applicants data:", error);
     } finally {
       setLoading(false);
     }
   };
+
+  const renderDashboardContent = () => {
+    if (loading) {
+      return (
+        <div className="flex items-center justify-center h-screen">
+          <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="flex items-center justify-center h-screen">
+          <p className="text-red-500">{error}</p>
+        </div>
+      );
+    }
 
   const lineGraphs = () => {
     if (loading) return null;
@@ -59,8 +104,8 @@ const HosterDashboard = () => {
 
     return (
       <>
-        <div className="bg-white rounded-xl shadow-sm p-2">
-          <LineChart jobs={jobs} />
+        <div className="bg-white rounded-xl shadow-sm p-2 lg:mt-8">
+        <LineChart jobs={jobs} applicantsData={applicantsData} />
         </div>
       </>
     );
@@ -74,7 +119,7 @@ const HosterDashboard = () => {
     return (
       <>
         <div className="bg-white rounded-xl shadow-sm p-4 mb-4">
-          <PieChart jobs={jobs} />
+        <PieChart jobs={jobs} applicantsData={applicantsData} />
         </div>
       </>
     );
@@ -86,12 +131,12 @@ const HosterDashboard = () => {
         <HostSidebar />
       </div>
 
-      <div className="w-full  lg:ml-72 xl:ml-78 p-3 sm:p-4 lg:p-6 xl:p-4 overflow-y-auto">
+      <div className="w-full lg:ml-72 xl:ml-76 p-3 sm:p-4 lg:p-2 mt-2 xl:p-4 overflow-y-auto">
         <div className="max-w-7xl mx-auto space-y-4 sm:space-y-4">
           <div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 lg:mt-0">
               <div>
-                <div className="mb-2">
+                <div className="mb-4">
                   <Statistics stats={stats} />
                 </div>
 
@@ -126,8 +171,14 @@ const HosterDashboard = () => {
                       </div>
                     ) : (
                       <div
-                        className="grid gap-4 h-auto overflow-y-scroll -ms-overflow-style-none"
-                        style={{ scrollbarWidth: "none" }}
+                        className={`grid gap-4 ${
+                          jobs.length > 3
+                            ? "h-auto lg:h-[345px] overflow-y-scroll -ms-overflow-style-none"
+                            : "h-auto"
+                        }`}
+                        style={
+                          jobs.length > 3 ? { scrollbarWidth: "none" } : {}
+                        }
                       >
                         {jobs.map((job) => (
                           <Link
@@ -165,6 +216,18 @@ const HosterDashboard = () => {
       </div>
     </div>
   );
+};
+
+return (
+  <div className="min-h-screen flex flex-col lg:flex-row bg-gray-50">
+    <div className="w-[10px] lg:w-1/4 h-screen fixed top-0 left-0">
+      <HostSidebar />
+    </div>
+    <div className="w-full">
+      {renderDashboardContent()}
+    </div>
+  </div>
+);
 };
 
 export default HosterDashboard;

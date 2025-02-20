@@ -5,22 +5,43 @@ import Cookies from "js-cookie";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const PieChart = ({ jobs }) => {
+const PieChart = ({ jobs, applicantsData }) => {
   const [chartData, setChartData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [hasApplicants, setHasApplicants] = useState(false);
 
   useEffect(() => {
-    if (jobs && jobs.length > 0) {
-      fetchAllCompaniesData();
+    if (jobs && jobs.length > 0 && Object.keys(applicantsData).length > 0) {
+      processChartData();
     } else {
       setChartData([]);
       setHasApplicants(false);
     }
-  }, [jobs]);
+  }, [jobs, applicantsData]);
+
+  const processChartData = () => {
+    const jobTotals = {};
+    let totalApplicantsCount = 0;
+
+    jobs.forEach((job) => {
+      const jobData = applicantsData[job._id] || [];
+      const applicants = jobData.reduce((sum, day) => sum + day.applicants, 0);
+
+      if (applicants > 0) {
+        jobTotals[job.title] = (jobTotals[job.title] || 0) + applicants;
+        totalApplicantsCount += applicants;
+      }
+    });
+    setHasApplicants(totalApplicantsCount > 0);
+
+    const data = Object.entries(jobTotals).map(([job, total]) => ({
+      name: job,
+      applicants: total,
+    }));
+
+    setChartData(data);
+  };
 
   const fetchAllCompaniesData = async () => {
-    setIsLoading(true);
     try {
       const jobTotals = {};
       let totalApplicantsCount = 0;
@@ -47,7 +68,7 @@ const PieChart = ({ jobs }) => {
 
       // Only set chart data if there are any applicants
       setHasApplicants(totalApplicantsCount > 0);
-      
+
       const data = Object.entries(jobTotals).map(([job, total]) => ({
         name: job,
         applicants: total,
@@ -56,8 +77,6 @@ const PieChart = ({ jobs }) => {
       setChartData(data);
     } catch (error) {
       console.error("Error fetching jobs data:", error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -149,13 +168,7 @@ const PieChart = ({ jobs }) => {
       <div className="flex flex-col lg:flex-row gap-4">
         <div className="w-full lg:w-1/2 flex justify-center items-center mb-4 lg:mb-0">
           <div className="w-full h-48 sm:h-56 md:h-64">
-            {isLoading ? (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
-              </div>
-            ) : (
-              <Pie data={pieChartData} options={options} />
-            )}
+            <Pie data={pieChartData} options={options} />
           </div>
         </div>
 

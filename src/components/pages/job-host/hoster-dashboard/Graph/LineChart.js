@@ -22,7 +22,7 @@ ChartJS.register(
   Legend
 );
 
-const LineChart = ({ jobs }) => {
+const LineChart = ({ jobs, applicantsData }) => {
   const [selectedJob, setSelectedJob] = useState("");
   const [graphData, setGraphData] = useState({
     labels: [],
@@ -58,13 +58,23 @@ const LineChart = ({ jobs }) => {
       if (!selectedJob) {
         setSelectedJob(jobs[0]._id);
       } else {
-        fetchGraphData(selectedJob);
+        processGraphData(selectedJob);
       }
     } else {
       setSelectedJob("");
       setGraphData({ labels: [], dataPoints: [] });
     }
-  }, [jobs, selectedJob]);
+  }, [jobs, selectedJob, applicantsData]);
+
+  const processGraphData = (jobId) => {
+    const jobData = applicantsData[jobId] || [];
+    const orderedDays = getOrderedDays();
+    const dataPoints = orderedDays.map((day) => {
+      const dayData = jobData.find((d) => d.day === day);
+      return dayData ? dayData.applicants : 0;
+    });
+    setGraphData({ labels: orderedDays, dataPoints });
+  };
 
   const fetchGraphData = async (jobId) => {
     setIsLoading(true);

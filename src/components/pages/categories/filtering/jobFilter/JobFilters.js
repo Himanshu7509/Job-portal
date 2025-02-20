@@ -17,14 +17,14 @@ const JobFilters = ({
     <div className="sticky rounded-lg p-4 bg-white shadow-lg w-full max-w-md mx-auto sm:w-90 z-50">
       <div className="mb-4 mt-6">
         <label className="text-xl sm:text-2xl font-bold text-center block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
-          Search 
+          
         </label>
         <div className="relative mt-2">
           <div className="flex items-center border border-gray-300 rounded-md overflow-hidden px-3">
             <FaSearch className="text-gray-500 mr-2" />
             <input
               type="text"
-              placeholder="Job title"
+              placeholder="Search by Job Title or Company Name"
               className="w-full p-3 text-sm outline-none"
               value={searchInput}
               onChange={(e) => handleSearch(e.target.value)}

@@ -67,7 +67,7 @@ const HostSidebar = () => {
             isOpen ? "translate-x-0" : "-translate-x-full"
           } lg:relative lg:translate-x-0 lg:w-64 flex-shrink-0`}
       >
-        <div className="flex justify-center mb-6">
+        <div className="flex justify-center">
           <Link to="/">
             <span className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">
               Job Quick
@@ -75,13 +75,13 @@ const HostSidebar = () => {
           </Link>
         </div>
 
-        <div className="flex flex-col items-center justify-center p-4 mb-6 mt-4 space-y-3">
+        <div className="flex flex-col items-center justify-center p-4  mt-4 space-y-3">
           <div className="grid">
             <div className="col-start-1 row-start-1">
               <img
                 src="https://static.vecteezy.com/system/resources/thumbnails/020/911/740/small_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png"
                 alt="Profile"
-                className="rounded-full w-32 h-32 sm:w-40 sm:h-40 border-4 border-white shadow-xl"
+                className="rounded-full w-32 h-32 sm:w-36 sm:h-36 border-4 border-white shadow-xl"
               />
             </div>
             <div className="col-start-1 row-start-1 flex items-end justify-end">
@@ -93,7 +93,7 @@ const HostSidebar = () => {
             </div>
           </div>
 
-          <div className="text-center">
+          <div className="text-center mb-2">
             <div className="text-lg font-bold text-transparent bg-gradient-to-r from-zinc-500 to-zinc-800 bg-clip-text">
               {hoster.fullName}
             </div>
@@ -133,7 +133,7 @@ const HostSidebar = () => {
           ))}
         </nav>
 
-        <div className="fixed bottom-5">
+        <div className="fixed bottom-10">
           <div
             className="flex items-center space-x-2 text-gray-700 cursor-pointer hover:text-red-600"
             onClick={handleLogout}

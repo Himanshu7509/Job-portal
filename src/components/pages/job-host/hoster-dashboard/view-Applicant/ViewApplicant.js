@@ -84,15 +84,7 @@ const ViewApplicant = () => {
     navigate(`/applicant/${application._id}`, { state: { application } });
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-center mt-5 sm:text-5xl text-3xl text-pink-500 font-semibold">
-          Loading Applicants...
-        </p>
-      </div>
-    );
-  }
+
 
   if (error) {
     return (
@@ -112,10 +104,20 @@ const ViewApplicant = () => {
       </div>
 
       <div
-        className="w-full lg:ml-72 xl:ml-80 p-3 sm:p-4 lg:p-6 xl:p-4 h-auto sm:h-[690px] overflow-y-scroll -ms-overflow-style-none"
+        className="w-full lg:ml-72 xl:ml-80 p-3 sm:p-4 lg:p-6 xl:p-4 h-auto overflow-y-scroll -ms-overflow-style-none"
         style={{ scrollbarWidth: "none" }}
       >
-        <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6 bg-white p-4 rounded-lg shadow-md">
+        {!applicants? (
+          <>
+            <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
+              <div className="text-center">
+                <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-white" />
+              </div>
+            </div>
+          </>
+        ):(
+          <>
+            <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6 bg-white p-4 rounded-lg shadow-md">
           <h1 className="mt-4 sm:text-4xl text-3xl font-bold text-center sm:text-left text-transparent text-zinc-600 mb-6">
             Job Applicants
           </h1>
@@ -282,6 +284,9 @@ const ViewApplicant = () => {
             )}
           </div>
         </div>
+          </>
+        ) }
+        
       </div>
     </div>
   );

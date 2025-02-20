@@ -9,7 +9,7 @@ import { GrUserWorker } from "react-icons/gr";
 import { BsPersonWorkspace } from "react-icons/bs";
 import { FaLocationDot } from "react-icons/fa6";
 import HostSidebar from "../sidebar/HostSidebar";
-import { FaBriefcase } from "react-icons/fa";
+import { FaBuildingUser } from "react-icons/fa6";
 
 const MyJob = () => {
   const [jobs, setJobs] = useState([]);
@@ -142,7 +142,7 @@ const MyJob = () => {
                         <div className="space-y-4">
                           <div className="flex items-center gap-4">
                             <div className="w-12 h-10 bg-blue-100 text-blue-600 font-bold flex items-center justify-center rounded-lg text-xl uppercase">
-                              <FaBriefcase />
+                              <FaBuildingUser />
                             </div>
                             <div className="w-full">
                               <p className="font-semibold text-zinc-700 sm:text-lg md:text-sm lg:text-xl">

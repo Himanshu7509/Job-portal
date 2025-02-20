@@ -78,16 +78,7 @@ const Applicant = () => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-blue-50">
-        <div className="text-center">
-          <div className="animate-spin w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-xl text-pink-700">Loading applicant details...</p>
-        </div>
-      </div>
-    );
-  }
+
 
   if (error) {
     return (
@@ -120,9 +111,10 @@ const Applicant = () => {
       </div>
 
       <div
-        className="w-full  lg:ml-72 xl:ml-80 p-3 sm:p-4 lg:p-6 xl:p-4 h-auto sm:h-[690px] overflow-y-scroll -ms-overflow-style-none"
+        className="w-full  lg:ml-72 xl:ml-80 p-3 sm:p-4 lg:p-6 xl:p-4 h-auto overflow-y-scroll -ms-overflow-style-none"
         style={{ scrollbarWidth: "none" }}
       >
+        
         <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6 bg-white p-4 rounded-lg shadow-md">
           <div className="w-full rounded-lg mb-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-2 sm:p-4">
