@@ -12,26 +12,36 @@ import {
 } from "chart.js";
 import Cookies from "js-cookie";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const LineChart = ({ jobs }) => {
   const [selectedJob, setSelectedJob] = useState("");
   const [graphData, setGraphData] = useState({
     labels: [],
-    dataPoints: []
+    dataPoints: [],
   });
   const [isLoading, setIsLoading] = useState(false);
   const token = Cookies.get("jwtToken");
 
-  // Demo data for new users
-  const demoData = {
-    labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-    dataPoints: [1, 2, 3, 1, 2, 2, 4]
-  };
-
   // Function to get ordered days ending with today
   const getOrderedDays = () => {
-    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
     const today = new Date().getDay();
     const orderedDays = [];
     for (let i = 1; i <= 7; i++) {
@@ -44,28 +54,32 @@ const LineChart = ({ jobs }) => {
   };
 
   useEffect(() => {
-    if (jobs.length === 0) {
-      // Show demo data for new users
-      setGraphData(demoData);
-    } else if (!selectedJob) {
-      // Automatically select first job when jobs are available
-      setSelectedJob(jobs[0]._id);
+    if (jobs.length > 0) {
+      if (!selectedJob) {
+        setSelectedJob(jobs[0]._id);
+      } else {
+        fetchGraphData(selectedJob);
+      }
     } else {
-      fetchGraphData(selectedJob);
+      setSelectedJob("");
+      setGraphData({ labels: [], dataPoints: [] });
     }
   }, [jobs, selectedJob]);
 
   const fetchGraphData = async (jobId) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`https://jobquick.onrender.com/applicants/graph/${jobId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetch(
+        `https://jobquick.onrender.com/applicants/graph/${jobId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const data = await response.json();
       if (data.success && data.data) {
         const orderedDays = getOrderedDays();
-        const dataPoints = orderedDays.map(day => {
-          const dayData = data.data.find(d => d.day === day);
+        const dataPoints = orderedDays.map((day) => {
+          const dayData = data.data.find((d) => d.day === day);
           return dayData ? dayData.applicants : 0;
         });
         setGraphData({ labels: orderedDays, dataPoints });
@@ -78,7 +92,7 @@ const LineChart = ({ jobs }) => {
   };
 
   const getYAxisMax = () => {
-    if (!graphData) return 8;
+    if (!graphData.dataPoints.length) return 8;
     const maxApplicants = Math.max(...graphData.dataPoints);
     return maxApplicants <= 8 ? 8 : Math.ceil(maxApplicants / 4) * 4;
   };
@@ -92,7 +106,7 @@ const LineChart = ({ jobs }) => {
     labels: graphData.labels,
     datasets: [
       {
-        label: jobs.length === 0 ? "Sample Applications" : (selectedJob ? "Applicants" : "Select a job to view applications"),
+        label: selectedJob ? "Applicants" : "Select a job to view applications",
         data: graphData.dataPoints,
         borderColor: "#3b82f6",
         backgroundColor: "rgba(59, 130, 246, 0.1)",
@@ -137,10 +151,10 @@ const LineChart = ({ jobs }) => {
         },
         displayColors: false,
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             return `${context.parsed.y} Applicants`;
-          }
-        }
+          },
+        },
       },
     },
     scales: {
@@ -163,74 +177,77 @@ const LineChart = ({ jobs }) => {
     },
     interaction: {
       intersect: false,
-      mode: 'index',
+      mode: "index",
     },
   };
 
   return (
-    <div className="w-full bg-white rounded-xl p-2 sm:p-3 md:p-3 h-auto">
-      <div className="space-y-2">
+    <div className="w-full bg-white rounded-xl p-2 sm:p-3 md:p-4 lg:p-4 h-auto">
+      <div className="space-y-1">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
-            {jobs.length === 0 ? "Sample Applicants Data" : "Applicants Per Day"}
+          <h2 className="text-lg sm:text-xl md:text-xl font-semibold text-gray-800">
+            Applicants Per Day
           </h2>
-          
-          {jobs.length > 0 && (
-            <div className="w-full sm:w-64">
-              <select
-                value={selectedJob}
-                onChange={(e) => setSelectedJob(e.target.value)}
-                className="w-full px-4 py-2 bg-white border border-gray-200 rounded-lg 
-                           text-sm text-gray-700 focus:border-blue-500 focus:ring-2 
-                           focus:ring-blue-200 outline-none transition-colors duration-200"
-              >
-                <option value="">Select a job</option>
-                {jobs.map((job) => (
-                  <option key={job._id} value={job._id}>
-                    {job.title}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+
+          <div className="w-full sm:w-64 md:w-72 lg:w-80">
+            <select
+              value={selectedJob}
+              onChange={(e) => setSelectedJob(e.target.value)}
+              className="w-full px-2 py-2 md:px-2 md:py-2 bg-white border border-gray-200 rounded-lg 
+                         text-sm md:text-base text-gray-700 focus:border-blue-500 focus:ring-2 
+                         focus:ring-blue-200 outline-none transition-colors duration-200"
+            >
+              {jobs.map((job) => (
+                <option key={job._id} value={job._id}>
+                  {job.title}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
-        <div className="w-full h-[300px] sm:h-[400px] bg-white rounded-lg">
+        <div className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] bg-white rounded-lg">
           {isLoading ? (
-            <div className="flex items-center justify-center">
-            <div className="flex flex-col justify-center items-center space-y-2">
-              <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+            <div className="flex items-center justify-center h-full">
+              <div className="flex flex-col justify-center items-center space-y-2">
+                <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+              </div>
             </div>
-          </div>
           ) : (
             <Line data={chartData} options={options} />
           )}
         </div>
 
-        {(selectedJob || jobs.length === 0) && graphData && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {selectedJob && graphData.dataPoints.length > 0 && (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
             <div className="p-4 bg-blue-50 rounded-lg">
               <p className="text-sm text-gray-600">Total Applicants</p>
-              <p className="text-xl font-semibold text-blue-600">
+              <p className="text-lg md:text-xl font-semibold text-blue-600">
                 {graphData.dataPoints.reduce((a, b) => a + b, 0)}
               </p>
             </div>
             <div className="p-4 bg-green-50 rounded-lg">
               <p className="text-sm text-gray-600">Peak Day</p>
-              <p className="text-xl font-semibold text-green-600">
-                {graphData.labels[graphData.dataPoints.indexOf(Math.max(...graphData.dataPoints))]}
+              <p className="text-lg md:text-xl font-semibold text-green-600">
+                {
+                  graphData.labels[
+                    graphData.dataPoints.indexOf(
+                      Math.max(...graphData.dataPoints)
+                    )
+                  ]
+                }
               </p>
             </div>
             <div className="p-4 bg-purple-50 rounded-lg">
               <p className="text-sm text-gray-600">Average/Day</p>
-              <p className="text-xl font-semibold text-purple-600">
+              <p className="text-lg md:text-xl font-semibold text-purple-600">
                 {(graphData.dataPoints.reduce((a, b) => a + b, 0) / 7).toFixed(1)}
               </p>
             </div>
             <div className="p-4 bg-orange-50 rounded-lg">
               <p className="text-sm text-gray-600">Active Days</p>
-              <p className="text-xl font-semibold text-orange-600">
-                {graphData.dataPoints.filter(x => x > 0).length}
+              <p className="text-lg md:text-xl font-semibold text-orange-600">
+                {graphData.dataPoints.filter((x) => x > 0).length}
               </p>
             </div>
           </div>

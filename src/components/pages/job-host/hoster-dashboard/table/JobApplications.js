@@ -25,15 +25,14 @@ const JobApplications = () => {
         year: "numeric",
         month: "short",
         day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
+        
       }),
-      company: "TechCorp",
-      position: "Frontend Developer",
-      type: "Full-time",
-      contact: "+1 (555) 000-0000",
-      status: "Shortlisted",
-      applicantName: "John Smith",
+      company: "---",
+      position: "---",
+      type: "---",
+      contact: "---",
+      status: "---",
+      applicantName: "---",
       logo: "blue",
     },
     {
@@ -41,33 +40,17 @@ const JobApplications = () => {
         year: "numeric",
         month: "short",
         day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
+        
       }),
-      company: "DataSystems",
-      position: "Data Analyst",
-      type: "Remote",
-      contact: "+1 (555) 000-0001",
-      status: "Under Review",
-      applicantName: "Emma Wilson",
+      company: "---",
+      position: "---",
+      type: "---",
+      contact: "---",
+      status: "---",
+      applicantName: "---",
       logo: "purple",
     },
-    {
-      date: new Date().toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-      company: "DesignHub",
-      position: "UI/UX Designer",
-      type: "Part-time",
-      contact: "+1 (555) 000-0002",
-      status: "Shortlisted",
-      applicantName: "Michael Brown",
-      logo: "emerald",
-    },
+    
   ];
 
   const fetchApplications = async (page = 1) => {
@@ -93,7 +76,7 @@ const JobApplications = () => {
       });
 
       const data = await response.json();
-      console.log("table", data);
+ 
 
       if (
         data.success &&
@@ -105,8 +88,6 @@ const JobApplications = () => {
             year: "numeric",
             month: "short",
             day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
           }),
           company: app.jobId.companyName,
           position: app.jobId.title,
@@ -195,7 +176,7 @@ const JobApplications = () => {
         <button
           onClick={() => handlePageChange(pagination.currentPage - 1)}
           disabled={!pagination.hasPrevPage}
-          className={`relative inline-flex items-center rounded-md px-4 py-2 text-sm font-medium ${
+          className={` inline-flex items-center rounded-md px-4 py-2 text-sm font-medium ${
             pagination.hasPrevPage
               ? "text-gray-700 hover:bg-gray-50"
               : "text-gray-300 cursor-not-allowed"
@@ -206,7 +187,7 @@ const JobApplications = () => {
         <button
           onClick={() => handlePageChange(pagination.currentPage + 1)}
           disabled={!pagination.hasNextPage}
-          className={`relative ml-3 inline-flex items-center rounded-md px-4 py-2 text-sm font-medium ${
+          className={` ml-3 inline-flex items-center rounded-md px-4 py-2 text-sm font-medium ${
             pagination.hasNextPage
               ? "text-gray-700 hover:bg-gray-50"
               : "text-gray-300 cursor-not-allowed"
@@ -294,7 +275,7 @@ const JobApplications = () => {
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto bg-white rounded-xl shadow-md">
+    <div className="w-full max-w-7xl mx-auto bg-white rounded-xl shadow-md">
       <div className="p-6">
         <div className="mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
@@ -304,12 +285,12 @@ const JobApplications = () => {
               </h2>
               {!hasRealData && (
                 <p className="text-sm text-gray-500 mt-1">
-                  Sample data shown. Your actual applications will appear here
+                  Your actual applications will appear here
                   once you receive them.
                 </p>
               )}
             </div>
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
@@ -319,8 +300,8 @@ const JobApplications = () => {
                 <option value="shortlisted">Shortlisted</option>
                 <option value="underReview">Under Review</option>
               </select>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <div className=" w-full sm:w-auto">
+               
                 <input
                   type="text"
                   placeholder="Search applications..."
@@ -334,10 +315,11 @@ const JobApplications = () => {
         </div>
 
         <div className="overflow-x-auto rounded-lg border border-gray-200">
-          <table className="w-full">
+          <table className="w-full min-w-max">
             <thead className="bg-gray-50">
               <tr>
                 {[
+                  "Sr.No",
                   "Date",
                   "Company",
                   "Applicant",
@@ -346,11 +328,11 @@ const JobApplications = () => {
                   "Contact",
                   "Status",
                 ].map((header) => (
-                  <th key={header} className="text-left py-4 px-4">
-                    <div className="flex items-center gap-2 text-sm font-medium text-gray-600">
-                      {header}
-                      <ChevronDown className="h-4 w-4 text-gray-400" />
-                    </div>
+                  <th
+                    key={header}
+                    className="text-left py-4 px-4 text-sm font-medium text-gray-600 whitespace-nowrap"
+                  >
+                    {header}
                   </th>
                 ))}
               </tr>
@@ -359,28 +341,31 @@ const JobApplications = () => {
               {filteredApplications.map((app, index) => (
                 <tr key={index} className="hover:bg-gray-50 transition-colors">
                   <td className="py-4 px-4 text-sm text-gray-600 whitespace-nowrap">
+                    {index + 1}
+                  </td>
+                  <td className="py-4 px-4 text-sm text-gray-600 whitespace-nowrap">
                     {app.date}
                   </td>
                   <td className="py-4 px-4">
                     <div className="flex items-center gap-3">
                       <LogoIcon color={app.logo} company={app.company} />
                       <div>
-                        <span className="font-medium text-gray-900">
+                        <span className="font-medium text-gray-900 lg:text-sm">
                           {app.company}
                         </span>
                       </div>
                     </div>
                   </td>
-                  <td className="py-4 px-4 text-sm text-gray-600">
+                  <td className="py-4 px-4 text-sm text-gray-600 whitespace-nowrap">
                     {app.applicantName}
                   </td>
-                  <td className="py-4 px-4 text-sm text-gray-600">
+                  <td className="py-4 px-4 text-sm text-gray-600 whitespace-nowrap">
                     {app.position}
                   </td>
-                  <td className="py-4 px-4 text-sm text-gray-600">
+                  <td className="py-4 px-4 text-sm text-gray-600 whitespace-nowrap">
                     {app.type}
                   </td>
-                  <td className="py-4 px-4 text-sm text-gray-600">
+                  <td className="py-4 px-4 text-sm text-gray-600 whitespace-nowrap">
                     {app.contact}
                   </td>
                   <td className="py-4 px-4">
