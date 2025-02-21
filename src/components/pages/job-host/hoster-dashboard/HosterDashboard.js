@@ -20,12 +20,6 @@ const HosterDashboard = () => {
     fetchJobs();
   }, []);
 
-  useEffect(() => {
-    if (jobs.length > 0) {
-      fetchAllApplicantsData();
-    }
-  }, [jobs]);
-
   const fetchJobs = async () => {
     const userId = Cookies.get("userId");
     const token = Cookies.get("jwtToken");
@@ -49,19 +43,26 @@ const HosterDashboard = () => {
         throw new Error(result.message || "Failed to fetch jobs");
       }
 
-      setJobs(result.success && result.jobs ? result.jobs : []);
+      const jobsData = result.success && result.jobs ? result.jobs : [];
+      setJobs(jobsData);
       setStats(result.statistics);
+
+      // Only fetch applicants data if there are jobs
+      if (jobsData.length > 0) {
+        await fetchAllApplicantsData(jobsData, token);
+      }
+      setLoading(false); // Set loading to false regardless of jobs existence
     } catch (error) {
       setError(error.message);
+      setLoading(false);
     }
   };
 
-  const fetchAllApplicantsData = async () => {
-    const token = Cookies.get("jwtToken");
+  const fetchAllApplicantsData = async (jobsData, token) => {
     try {
       const data = {};
       await Promise.all(
-        jobs.map(async (job) => {
+        jobsData.map(async (job) => {
           const response = await fetch(
             `https://jobquick.onrender.com/applicants/graph/${job._id}`,
             {
@@ -75,55 +76,52 @@ const HosterDashboard = () => {
       setApplicantsData(data);
     } catch (error) {
       console.error("Error fetching applicants data:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
-  const renderDashboardContent = () => {
-    if (loading) {
-      return (
-        <div className="flex items-center justify-center h-screen">
-          <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-        </div>
-      );
-    }
-
-    if (error) {
-      return (
-        <div className="flex items-center justify-center h-screen">
-          <p className="text-red-500">{error}</p>
-        </div>
-      );
-    }
-
   const lineGraphs = () => {
-    if (loading) return null;
-    if (error) return null;
     if (!jobs.length) return null;
-
     return (
-      <>
-        <div className="bg-white rounded-xl shadow-sm p-2 lg:mt-8">
+      <div className="bg-white rounded-xl shadow-sm p-2 lg:mt-8">
         <LineChart jobs={jobs} applicantsData={applicantsData} />
-        </div>
-      </>
+      </div>
     );
   };
 
   const pieGraphs = () => {
-    if (loading) return null;
-    if (error) return null;
     if (!jobs.length) return null;
-
     return (
-      <>
-        <div className="bg-white rounded-xl shadow-sm p-4 mb-4">
+      <div className="bg-white rounded-xl shadow-sm p-4 mb-4">
         <PieChart jobs={jobs} applicantsData={applicantsData} />
-        </div>
-      </>
+      </div>
     );
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col lg:flex-row bg-gray-50">
+        <div className="w-[10px] lg:w-1/4 h-screen fixed top-0 left-0">
+          <HostSidebar />
+        </div>
+        <div className="w-full lg:ml-72 xl:ml-76 flex items-center justify-center">
+          <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col lg:flex-row bg-gray-50">
+        <div className="w-[10px] lg:w-1/4 h-screen fixed top-0 left-0">
+          <HostSidebar />
+        </div>
+        <div className="w-full lg:ml-72 xl:ml-76 flex items-center justify-center">
+          <p className="text-red-500">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-gray-50">
@@ -132,36 +130,26 @@ const HosterDashboard = () => {
       </div>
 
       <div className="w-full lg:ml-72 xl:ml-76 p-3 sm:p-4 lg:p-2 mt-2 xl:p-4 overflow-y-auto">
-        <div className="max-w-7xl mx-auto space-y-4 sm:space-y-4">
+        <div className="max-w-7xl xl:max-w-[130rem] mx-auto space-y-4 sm:space-y-4">
           <div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 lg:mt-0">
               <div>
                 <div className="mb-4">
                   <Statistics stats={stats} />
                 </div>
-
-                <>{lineGraphs()}</>
+                {lineGraphs()}
               </div>
 
               <div>
-                <>{pieGraphs()}</>
-
+                {pieGraphs()}
                 <div className="grid grid-cols-1 gap-6">
                   <div className="bg-white rounded-xl shadow-sm p-4">
                     <h2 className="text-xl font-semibold text-gray-800 mb-4">
                       Posted Jobs
                     </h2>
 
-                    {loading ? (
-                      <div className="flex items-center justify-center h-48">
-                        <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
-                      </div>
-                    ) : error ? (
-                      <div className="flex items-center justify-center h-48">
-                        <p className="text-red-500">{error}</p>
-                      </div>
-                    ) : jobs.length === 0 ? (
-                      <div className="flex flex-col items-center justify-center h-48 gap-3">
+                    {jobs.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center h-[138px] gap-3">
                         <p className="text-gray-500">No jobs posted yet</p>
                         <Link to="/jobpost">
                           <button className="text-blue-600 hover:text-blue-700 font-medium text-xl">
@@ -176,9 +164,7 @@ const HosterDashboard = () => {
                             ? "h-auto lg:h-[345px] overflow-y-scroll -ms-overflow-style-none"
                             : "h-auto"
                         }`}
-                        style={
-                          jobs.length > 3 ? { scrollbarWidth: "none" } : {}
-                        }
+                        style={jobs.length > 3 ? { scrollbarWidth: "none" } : {}}
                       >
                         {jobs.map((job) => (
                           <Link
@@ -210,24 +196,13 @@ const HosterDashboard = () => {
               </div>
             </div>
           </div>
-
+          <div className="xl:max-w-[130rem]">
           <JobApplications />
+          </div>
         </div>
       </div>
     </div>
   );
-};
-
-return (
-  <div className="min-h-screen flex flex-col lg:flex-row bg-gray-50">
-    <div className="w-[10px] lg:w-1/4 h-screen fixed top-0 left-0">
-      <HostSidebar />
-    </div>
-    <div className="w-full">
-      {renderDashboardContent()}
-    </div>
-  </div>
-);
 };
 
 export default HosterDashboard;

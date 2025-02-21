@@ -104,14 +104,14 @@ const HosterDetail = () => {
       <div className="w-1/4 h-screen fixed top-0 left-0">
       <HostSidebar/>
       </div>
-      <div className="p-2 sm:w-3/4 ml-auto sm:p-10 h-auto sm:h-[690px] overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
-    <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-4 sm:p-8">
+      <div className="p-2 sm:w-3/4 ml-auto sm:p-10 h-auto overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
+    <div className="max-w-4xl xl:max-w-[100rem] xl:p-20 mx-auto bg-white rounded-lg shadow-md p-4 sm:p-8">
       <h2 className="mt-2 text-4xl font-bold text-black mb-6 text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
         Employer Details
       </h2>
       <form className="space-y-6 p-4" onSubmit={handleSubmit}>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm  font-medium text-gray-700 mb-2">
             Upload Profile Image
           </label>
           <input
@@ -119,12 +119,12 @@ const HosterDetail = () => {
             name="image"
             accept="image/*"
             onChange={handleChange}
-            className="block w-full border border-gray-300 rounded-lg shadow-sm py-1 px-3 focus:ring-blue-500 focus:border-blue-500 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-gradient-to-r from-pink-500 to-blue-500 file:text-white hover:file:opacity-90"
+            className="block w-full border  border-gray-300 rounded-lg shadow-sm py-1 px-3 focus:ring-blue-500 focus:border-blue-500 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:font-semibold file:bg-gradient-to-r from-pink-500 to-blue-500 file:text-white hover:file:opacity-90"
           />
         </div>
 
         <div>
-          <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="fullName" className="block text-sm  font-medium text-gray-700 mb-2">
             Full Name
           </label>
           <input
@@ -133,21 +133,21 @@ const HosterDetail = () => {
             name="fullName"
             value={formData.fullName}
             onChange={handleChange}
-            className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="block w-full border  border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             placeholder="Enter your full name"
           />
         </div>
 
         <div className="space-y-4 sm:space-y-0 sm:flex sm:gap-4">
           <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm  font-medium text-gray-700 mb-2">
               Gender
             </label>
             <select
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full border  border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             >
               <option value="" disabled>Select your gender</option>
               <option value="Male">Male</option>
@@ -157,7 +157,7 @@ const HosterDetail = () => {
           </div>
 
           <div className="flex-1">
-            <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="phoneNumber" className="block text-sm  font-medium text-gray-700 mb-2">
               Phone Number
             </label>
             <input
@@ -167,14 +167,14 @@ const HosterDetail = () => {
               value={formData.phoneNumber}
               onChange={handleChange}
               placeholder="Enter your phone number"
-              className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full border  border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
         </div>
 
         <div className="space-y-4 sm:space-y-0 sm:flex sm:gap-4">
           <div className="flex-1">
-            <label htmlFor="companyURL" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="companyURL" className="block text-sm  font-medium text-gray-700 mb-2">
               Company URL
             </label>
             <input
@@ -183,12 +183,12 @@ const HosterDetail = () => {
               name="companyURL"
               value={formData.companyURL}
               onChange={handleChange}
-              className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full border  border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               placeholder="Enter your company URL"
             />
           </div>
           <div className="flex-1">
-            <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="city" className="block text-sm  font-medium text-gray-700 mb-2">
               City
             </label>
             <input
@@ -197,7 +197,7 @@ const HosterDetail = () => {
               name="city"
               value={formData.city}
               onChange={handleChange}
-              className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full border  border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               placeholder="Enter your city"
             />
           </div>
@@ -205,7 +205,7 @@ const HosterDetail = () => {
 
         <div className="space-y-4 sm:space-y-0 sm:flex sm:gap-4">
           <div className="flex-1">
-            <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="address" className="block text-sm  font-medium text-gray-700 mb-2">
               Address
             </label>
             <input
@@ -214,12 +214,12 @@ const HosterDetail = () => {
               name="address"
               value={formData.address}
               onChange={handleChange}
-              className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full border  border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               placeholder="Enter your address"
             />
           </div>
           <div className="flex-1">
-            <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="state" className="block text-sm  font-medium text-gray-700 mb-2">
               State
             </label>
             <input
@@ -228,7 +228,7 @@ const HosterDetail = () => {
               name="state"
               value={formData.state}
               onChange={handleChange}
-              className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full border  border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               placeholder="Enter your State"
             />
           </div>
@@ -236,7 +236,7 @@ const HosterDetail = () => {
 
         <div className="space-y-4 sm:space-y-0 sm:flex sm:gap-4">
           <div className="flex-1">
-            <label htmlFor="pincode" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="pincode" className="block text-sm  font-medium text-gray-700 mb-2">
               PinCode
             </label>
             <input
@@ -245,12 +245,12 @@ const HosterDetail = () => {
               name="pincode"
               value={formData.pincode}
               onChange={handleChange}
-              className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full border  border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               placeholder="Enter your pincode"
             />
           </div>
           <div className="flex-1">
-            <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="country" className="block text-sm  font-medium text-gray-700 mb-2">
               Country
             </label>
             <input
@@ -259,7 +259,7 @@ const HosterDetail = () => {
               name="country"
               value={formData.country}
               onChange={handleChange}
-              className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="block w-full border  border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               placeholder="Enter your Country"
             />
           </div>

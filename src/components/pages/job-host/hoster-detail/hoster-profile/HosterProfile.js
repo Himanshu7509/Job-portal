@@ -105,7 +105,7 @@ const HosterProfile = () => {
           <>
             <div className="w-full  lg:ml-72 xl:ml-80 p-3 sm:p-4 lg:p-6 xl:p-4 overflow-y-auto">
               <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 rounded-lg">
+                <div className="max-w-5xl xl:max-w-[130rem] mx-auto px-4 sm:px-6 lg:px-8 py-8 rounded-lg">
                   <h1 className="text-center text-3xl sm:text-4xl lg:text-left font-bold mb-12 text-gray-700 border-b pb-4">
                     Profile
                   </h1>

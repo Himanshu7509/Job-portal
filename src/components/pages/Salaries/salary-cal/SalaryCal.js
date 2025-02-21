@@ -36,7 +36,7 @@ const SalaryCal = () => {
         <div className="lg:w-1/2 w-full">
           <div className="max-w-lg w-full bg-white rounded-xl p-8 mx-auto lg:mx-0">
             <h1 className="text-3xl font-bold text-center bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent mb-6">
-              Salary Calculator
+              Salary Hike Calculator
             </h1>
             <div className="space-y-6">
               <div>
