@@ -211,12 +211,12 @@ const ResumeBuilder = () => {
   };
 
   return (
-    <div className="max-w-8xl mx-auto p-6 bg-white rounded-lg">
+    <div className="max-w-8xl mx-auto lg:p-6 p-2 bg-white rounded-lg">
       <h1 className="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">Resume Builder</h1>
 
       <div className="space-y-6">
         <div className="flex flex-wrap justify-center">
-          <div className="lg:w-1/2 xl:w-1/2 md:w-1/2 sm:w-full xs:w-full bg-white p-6 shadow-md rounded-lg">
+          <div className="lg:w-1/2 xl:w-1/2 md:w-1/2 sm:w-full xs:w-full bg-white lg:p-6 p-4 shadow-md rounded-lg">
             <h2 className="text-2xl font-bold mb-4 text-blue-500">Personal Information</h2>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="fullName">
@@ -287,7 +287,7 @@ const ResumeBuilder = () => {
 
         {/* Education Section */}
         <div className="flex flex-wrap justify-center">
-          <div className="lg:w-1/2 xl:w-1/2 md:w-1/2 sm:w-full xs:w-full bg-white p-6 shadow-md rounded-lg">
+          <div className="lg:w-1/2 xl:w-1/2 md:w-1/2 sm:w-full xs:w-full bg-white lg:p-6 p-4 shadow-md rounded-lg">
             <h2 className="text-2xl font-bold mb-4 text-blue-500">Education</h2>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="school">
@@ -364,7 +364,7 @@ const ResumeBuilder = () => {
 
         {/* Work Experience Section */}
         <div className="flex flex-wrap justify-center">
-          <div className="lg:w-1/2 xl:w-1/2 md:w-1/2 sm:w-full xs:w-full bg-white p-6 shadow-md rounded-lg">
+          <div className="lg:w-1/2 xl:w-1/2 md:w-1/2 sm:w-full xs:w-full bg-white lg:p-6 p-4 shadow-md rounded-lg">
             <h2 className="text-2xl font-bold mb-4 text-blue-500">Work Experience</h2>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="company">
@@ -451,7 +451,7 @@ const ResumeBuilder = () => {
 
         {/* Skills Section */}
         <div className="flex flex-wrap justify-center">
-          <div className="lg:w-1/2 xl:w-1/2 md:w-1/2 sm:w-full xs:w-full bg-white p-6 shadow-md rounded-lg">
+          <div className="lg:w-1/2 xl:w-1/2 md:w-1/2 sm:w-full xs:w-full bg-white lg:p-6 p-4 shadow-md rounded-lg">
             <h2 className="text-2xl font-bold mb-4 text-blue-500">Skills</h2>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="skill">
@@ -491,7 +491,7 @@ const ResumeBuilder = () => {
         <div className="w-full flex justify-center">
         <button
           onClick={generatePDF}
-          className="bg-gradient-to-r from-pink-500 to-blue-500 text-white p-4 font-bold text-2xl rounded-lg w-1/2"
+          className="bg-gradient-to-r from-pink-500 to-blue-500 text-white lg:p-4 p-2 font-bold lg:text-2xl text-lg rounded-lg lg:w-1/2 w-full"
         >
           Generate PDF
         </button>

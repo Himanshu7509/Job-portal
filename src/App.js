@@ -23,6 +23,7 @@ import ProfilePage from './components/pages/users/profilePage/ProfilePage';
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import MyJob from './components/pages/job-host/hoster-dashboard/myJob/MyJob';
 import JobDetails from './components/pages/categories/filtering/jobDetails/JobDetails';
+
 import ViewApplicant from './components/pages/job-host/hoster-dashboard/view-Applicant/ViewApplicant';
 import Applicant from './components/pages/job-host/hoster-dashboard/view-Applicant/Applicant-Details/Applicant';
 
@@ -58,6 +59,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          
           <Route
             path='/atschk'
             element={
