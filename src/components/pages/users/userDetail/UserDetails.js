@@ -85,14 +85,6 @@ const UserDetails = () => {
     fetchUserDetails();
   }, [SeekId, SeekToken, userDetailApi]);
 
-  if (loading) {
-    return (
-      <p className="text-center mt-5 text-5xl text-pink-500 font-semibold">
-       
-      </p>
-    );
-  }
-
   const handleSeekData = (e) => {
     e.preventDefault();
     const update = {
@@ -154,7 +146,7 @@ const UserDetails = () => {
   const renderuserDetailForm = () => (
     <>
       <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
+        <h2 className="md:text-3xl text-2xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
           User Details
         </h2>
         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -327,7 +319,7 @@ const UserDetails = () => {
   const renderuserAddressForm = () => (
     <>
       <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
+        <h2 className="md:text-3xl text-2xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
           User Location
         </h2>
         <div>
@@ -424,7 +416,7 @@ const UserDetails = () => {
   const renderuserEducationForm = () => (
     <>
       <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
+        <h2 className="md:text-3xl text-2xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
           User Education
         </h2>
         <div>
@@ -519,7 +511,7 @@ const UserDetails = () => {
   const renderuserExperienceForm = () => (
     <>
       <div className="space-y-6">
-        <h2 className="text-3xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
+        <h2 className="md:text-3xl text-2xl font-bold text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-6">
           User Work Experience and Skills
         </h2>
 
@@ -620,59 +612,70 @@ const UserDetails = () => {
   return (
     <>
       <Header />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-4 py-4 flex flex-col lg:flex-row lg:items-center lg:space-x-10 space-y-6 lg:space-y-0">
-        <div className="w-full lg:w-1/2 flex justify-center items-center">
-          <Swiper
-            modules={[Autoplay]}
-            spaceBetween={20}
-            slidesPerView={1}
-            loop={true}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
-            breakpoints={{
-              640: { slidesPerView: 1 },
-              768: { slidesPerView: 1 },
-              1024: { slidesPerView: 1 },
-            }}
-            className="w-full sm:w-4/5"
-          >
-            <SwiperSlide>
-              <img
-                src={HeroSl}
-                alt="Freelancer"
-                className="rounded-lg shadow-lg object-cover"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src={HeroS2}
-                alt="Freelancer"
-                className="rounded-lg shadow-lg object-cover"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img
-                src={HeroS3}
-                alt="Freelancer"
-                className="rounded-lg shadow-lg object-cover"
-              />
-            </SwiperSlide>
-          </Swiper>
-        </div>
-
-        <div className="w-full lg:w-1/2 flex justify-center items-center">
-          <div className="bg-white shadow-lg rounded-lg w-full max-w-lg sm:p-6 p-4">
-            <form onSubmit={handleSeekData}>
-              {step === 1 && renderuserDetailForm()}
-              {/* {step === 2 && renderuserAboutForm()} */}
-              {step === 2 && renderuserAddressForm()}
-              {step === 3 && renderuserEducationForm()}
-              {step === 4 && renderuserExperienceForm()}
-            </form>
-          </div>
-        </div>
+      <div className="min-h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-4 py-4 flex flex-col lg:flex-row lg:items-center lg:space-x-10 space-y-6 lg:space-y-0">
+        {loading ? (
+          <>
+            <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
+              <div className="text-center">
+                <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-white" />
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="w-full lg:w-1/2 lg:flex hidden justify-center items-center">
+              <Swiper
+                modules={[Autoplay]}
+                spaceBetween={20}
+                slidesPerView={1}
+                loop={true}
+                autoplay={{
+                  delay: 3000,
+                  disableOnInteraction: false,
+                }}
+                breakpoints={{
+                  640: { slidesPerView: 1 },
+                  768: { slidesPerView: 1 },
+                  1024: { slidesPerView: 1 },
+                }}
+                className="w-full sm:w-4/5"
+              >
+                <SwiperSlide>
+                  <img
+                    src={HeroSl}
+                    alt="Freelancer"
+                    className="rounded-lg shadow-lg object-cover"
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  <img
+                    src={HeroS2}
+                    alt="Freelancer"
+                    className="rounded-lg shadow-lg object-cover"
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  <img
+                    src={HeroS3}
+                    alt="Freelancer"
+                    className="rounded-lg shadow-lg object-cover"
+                  />
+                </SwiperSlide>
+              </Swiper>
+            </div>
+            <div className="w-full lg:w-1/2 flex justify-center items-center">
+              <div className="bg-white shadow-lg rounded-lg w-full max-w-lg sm:p-6 p-4">
+                <form onSubmit={handleSeekData}>
+                  {step === 1 && renderuserDetailForm()}
+                  {/* {step === 2 && renderuserAboutForm()} */}
+                  {step === 2 && renderuserAddressForm()}
+                  {step === 3 && renderuserEducationForm()}
+                  {step === 4 && renderuserExperienceForm()}
+                </form>
+              </div>
+            </div>
+          </>
+        )}
       </div>
       <Footer />
     </>
