@@ -104,12 +104,12 @@ const HosterDetail = () => {
       <div className="w-1/4 h-screen fixed top-0 left-0">
       <HostSidebar/>
       </div>
-      <div className="p-2 sm:w-3/4 ml-auto sm:p-10 h-auto overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
-    <div className="max-w-4xl xl:max-w-[100rem] xl:p-20 mx-auto bg-white rounded-lg shadow-md p-4 sm:p-8">
-      <h2 className="mt-2 text-4xl font-bold text-black mb-6 text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
+      <div className="p-2 w-full lg:w-3/4 ml-auto sm:p-10 h-auto overflow-y-scroll -ms-overflow-style-none" style={{ scrollbarWidth: 'none' }}>
+    <div className="max-w-4xl xl:max-w-[100rem] xl:p-8 mx-auto bg-white rounded-lg shadow-md p-4 sm:p-8">
+      <h2 className="md:text-4xl text-3xl mt-4 lg:mt-0 font-bold text-black mb-3 text-center text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
         Employer Details
       </h2>
-      <form className="space-y-6 p-4" onSubmit={handleSubmit}>
+      <form className="space-y-5 p-4" onSubmit={handleSubmit}>
         <div>
           <label className="block text-sm  font-medium text-gray-700 mb-2">
             Upload Profile Image

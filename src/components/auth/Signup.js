@@ -8,15 +8,44 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [validationErrors, setValidationErrors] = useState({
+    email: "",
+    password: ""
+  });
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
   const signupApi = "https://jobquick.onrender.com/seekuser/signup";
 
+  const validateForm = () => {
+    let isValid = true;
+    const newValidationErrors = {
+      email: "",
+      password: ""
+    };
+
+    // Email validation
+    if (!email.match(/\.(com|in)$/)) {
+      newValidationErrors.email = "Email must end with .com or .in";
+      isValid = false;
+    }
+
+    // Password validation
+    if (password.length < 5) {
+      newValidationErrors.password = "Password must be at least 5 characters long";
+      isValid = false;
+    }
+
+    setValidationErrors(newValidationErrors);
+    return isValid;
+  };
+
   const handleSignup = (e) => {
     e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
+    
+    if (!validateForm()) {
+      return;
+    }
 
     const person = {
       email: email,
@@ -85,6 +114,9 @@ const Signup = () => {
                 placeholder="Enter your email"
                 className="w-full px-4 py-3 mt-1 text-gray-700 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
               />
+              {validationErrors.email && (
+                <p className="mt-1 text-sm text-red-600">{validationErrors.email}</p>
+              )}
             </div>
 
             <div>
@@ -113,6 +145,9 @@ const Signup = () => {
                   {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
                 </button>
               </div>
+              {validationErrors.password && (
+                <p className="mt-1 text-sm text-red-600">{validationErrors.password}</p>
+              )}
             </div>
 
             <button

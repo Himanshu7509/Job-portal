@@ -9,16 +9,36 @@ const HosterSignup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [validationErrors, setValidationErrors] = useState([]);
   const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
   const signupApi = "https://jobquick.onrender.com/hostuser/signup";
 
+  const validateForm = () => {
+    const errors = [];
+    
+    // Password validation
+    if (password.length < 5) {
+      errors.push("Password must be at least 5 characters long");
+    }
+    
+    // Email validation
+    if (!email.toLowerCase().endsWith('.com') && !email.toLowerCase().endsWith('.in')) {
+      errors.push("Email must end with .com or .in");
+    }
+
+    setValidationErrors(errors);
+    return errors.length === 0;
+  };
+
   const handleSignup = (e) => {
     e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
+    
+    if (!validateForm()) {
+      return;
+    }
 
     const person = {
       email: email,
@@ -42,6 +62,7 @@ const HosterSignup = () => {
         console.log("Signup Response:", data);
         setSuccess("Signup successful!");
         setError(null);
+        setValidationErrors([]);
         navigate("/host-login");
       })
       .catch((error) => {
@@ -112,6 +133,17 @@ const HosterSignup = () => {
             >
               Sign Up
             </button>
+            
+            {validationErrors.length > 0 && (
+              <div className="space-y-2">
+                {validationErrors.map((error, index) => (
+                  <div key={index} className="p-3 text-sm text-center text-red-600 bg-red-100 rounded">
+                    {error}
+                  </div>
+                ))}
+              </div>
+            )}
+            
             {error && (
               <div className="p-3 text-sm text-center text-red-600 bg-red-100 rounded">
                 {error}
