@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import HostSidebar from "../../hoster-dashboard/sidebar/HostSidebar";
 import { Link, useNavigate } from "react-router-dom";
-import ProfileImg from "../../../../../assets/profile.png";
+import ProfileImg from "../../../../../assets/profileImg.webp";
 import { FaTimes, FaCheck } from "react-icons/fa";
 
 const HosterProfile = () => {
@@ -115,7 +115,7 @@ const HosterProfile = () => {
                       <div className="flex flex-col sm:flex-row items-center gap-6 w-full lg:w-auto">
                         <div>
                           <img
-                            src="https://static.vecteezy.com/system/resources/thumbnails/020/911/740/small_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png"
+                            src={ProfileImg}
                             alt="Profile"
                             className="rounded-full w-32 h-32 sm:w-36 sm:h-36 border-4 border-white shadow-xl"
                           />

@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../../../common/header/Header";
 import Footer from "../../../common/footer/Footer";
-import ProfileImg from "../../../../assets/profile.png";
+import ProfileImg from "../../../../assets/profileImg.webp";
 import ShowJobs from "./showAppliedJobs/ShowJobs";
 import { FaTimes, FaCheck } from "react-icons/fa";
 
@@ -117,7 +117,7 @@ const ProfilePage = () => {
                       <div className="flex flex-col sm:flex-row items-center gap-6 w-full lg:w-auto">
                         <div className="relative">
                           <img
-                            src="https://static.vecteezy.com/system/resources/thumbnails/020/911/740/small_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png"
+                            src={ProfileImg}
                             alt="Profile"
                             className="rounded-full w-32 h-32 sm:w-40 sm:h-40 border-4 border-white shadow-xl hover:shadow-2xl transition-shadow duration-300"
                           />

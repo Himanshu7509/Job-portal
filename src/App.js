@@ -30,7 +30,7 @@ import Applicant from './components/pages/job-host/hoster-dashboard/view-Applica
 const App = () => {
   return (
     <div>
-      <BrowserRouter>
+     
         <Routes>
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
@@ -163,7 +163,7 @@ const App = () => {
                 }
                 />
         </Routes>
-      </BrowserRouter>
+      
     </div>
   );
 };

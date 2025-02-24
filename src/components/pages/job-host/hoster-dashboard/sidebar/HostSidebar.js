@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Cookies from "js-cookie";
 import { FaEdit } from "react-icons/fa";
+import profileImg from '../../../../../assets/profileImg.webp';
 
 const HostSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -79,7 +80,7 @@ const HostSidebar = () => {
           <div className="grid">
             <div className="col-start-1 row-start-1">
               <img
-                src="https://static.vecteezy.com/system/resources/thumbnails/020/911/740/small_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png"
+                src={profileImg}
                 alt="Profile"
                 className="rounded-full w-32 h-32 sm:w-36 sm:h-36 border-4 border-white shadow-xl"
               />
