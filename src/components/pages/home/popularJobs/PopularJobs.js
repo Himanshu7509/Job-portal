@@ -74,7 +74,7 @@ const JobGrid = () => {
         <div className="max-w-7xl mx-auto mb-10">
          
 
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-center sm:text-left bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-transparent bg-clip-text">
+          <h2 className="text-2xl lg:text-4xl font-bold mb-4 text-center sm:text-left bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-transparent bg-clip-text">
             Discover Your Next Career Move
           </h2>
           <p className="text-gray-600 text-center sm:text-left text-lg">

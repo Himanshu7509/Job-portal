@@ -16,9 +16,9 @@ const Home = () => {
     <div className="w-full">
       <Header />
       <HeroSection />
-      <RecentJobListing />
-      <BrowseCategories />
       <PopularJobs />
+      <BrowseCategories />
+      <RecentJobListing />
       <BlogSection />
       <Testimonials />
       <JobExploreSec />

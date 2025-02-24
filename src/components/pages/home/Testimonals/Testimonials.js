@@ -81,7 +81,7 @@ const Testimonials = () => {
 
         <div className="flex justify-between items-center">
           <div>
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">
+            <h2 className="lg:text-3xl text-2xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">
               What Our User Says
             </h2>
             <p className="text-gray-600 mt-2">

@@ -98,7 +98,7 @@ const JobSection = () => {
         {/* Section Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">
+            <h2 className="lg:text-3xl text-2xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">
             Recent Job Listings
             </h2>
             <p className="text-gray-600 mt-2">
@@ -106,7 +106,7 @@ const JobSection = () => {
             </p>
           </div>
           <Link to="/alljobs">
-          <div className="text-black font-semibold hover:underline flex items-center">
+          <div className="text-black font-semibold hover:underline md:flex hidden items-center">
             Browse All Jobs &rarr;
           </div>
           </Link>
