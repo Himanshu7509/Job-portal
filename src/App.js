@@ -23,7 +23,6 @@ import ProfilePage from './components/pages/users/profilePage/ProfilePage';
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import MyJob from './components/pages/job-host/hoster-dashboard/myJob/MyJob';
 import JobDetails from './components/pages/categories/filtering/jobDetails/JobDetails';
-
 import ViewApplicant from './components/pages/job-host/hoster-dashboard/view-Applicant/ViewApplicant';
 import Applicant from './components/pages/job-host/hoster-dashboard/view-Applicant/Applicant-Details/Applicant';
 
@@ -38,7 +37,6 @@ const App = () => {
           <Route path='/host-signup' element={<HosterSignup />} />
           <Route path='/' element={<Home />} />
           <Route path='/blog' element={<Blog />} />
-          <Route path='/salary' element={<Salaries />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/*' element={<NotFound />} />
 
@@ -73,6 +71,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <MockTest />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/salary'
+            element={
+              <ProtectedRoute>
+                <Salaries />
               </ProtectedRoute>
             }
           />

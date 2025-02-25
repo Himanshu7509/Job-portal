@@ -26,7 +26,7 @@ const HeroSection = () => {
 
   return (
     <div className="bg-white py-16">
-      <div className="max-w-7xl mx-auto px-6 lg:flex lg:items-center lg:space-x-10">
+      <div className="max-w-7xl mx-auto px-6 lg:flex justify-center md:items-center lg:space-x-10">
         {/* Left Content */}
         <div className="lg:w-1/2 text-center lg:text-left">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">
@@ -62,7 +62,7 @@ const HeroSection = () => {
         </div>
 
         {/* Right Image */}
-        <div className="lg:w-1/2 mt-10 lg:mt-0 flex justify-center">
+        <div className=" lg:w-1/2 mt-10 lg:mt-0 flex justify-center">
           <Swiper
             modules={[Autoplay]}
             spaceBetween={20}

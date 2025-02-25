@@ -8,7 +8,7 @@ import { GrResources } from "react-icons/gr";
 import { FaProjectDiagram } from "react-icons/fa";
 import { FaChartLine } from "react-icons/fa6";
 
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const categories = [
   {
