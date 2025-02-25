@@ -13,6 +13,13 @@ const JobFilters = ({
   handleSubcategoryChange,
   onApplyFilters,
 }) => {
+  // Function to handle Enter key press
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      onApplyFilters();
+    }
+  };
+
   return (
     <div className="sticky rounded-lg p-4 bg-white shadow-lg w-full max-w-md mx-auto sm:w-90 z-50">
       <div className="mb-4 lg:mt-6 mt-10">
@@ -20,15 +27,23 @@ const JobFilters = ({
           Search by Job Title or Company
         </label>
         <div className="relative mt-2">
-          <div className="flex items-center border border-gray-300 rounded-md overflow-hidden px-3">
-            <FaSearch className="text-gray-500 mr-2" />
+          <div className="flex items-center border border-gray-300 rounded-md overflow-hidden">
+            <FaSearch className="text-gray-500 ml-3" />
             <input
               type="text"
               placeholder="Search by Job Title or Company Name"
               className="w-full p-3 text-sm outline-none"
               value={searchInput}
               onChange={(e) => handleSearch(e.target.value)}
+              onKeyPress={handleKeyPress}
             />
+            <button
+              onClick={onApplyFilters}
+              className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-3 h-full"
+              type="button"
+            >
+              Search
+            </button>
           </div>
         </div>
       </div>
