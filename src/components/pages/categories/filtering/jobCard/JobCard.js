@@ -69,12 +69,14 @@ const JobCard = ({ job }) => {
       </div>
 
       <Link to={`/job-details/${job._id}`}>
-        <button className="flex items-center mt-4 bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
+        <div className="w-full flex justify-end">
+        <button className="flex items-center w-full justify-center mt-4 bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent border border-blue-500 hover:font-semibold px-4 py-2 rounded cursor-pointer">
           View Job Details
           <span className="text-blue-500 ml-2">
             <FaArrowRight />
           </span>
         </button>
+        </div>
       </Link>
     </div>
   );

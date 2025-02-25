@@ -13,33 +13,32 @@ const JobFilters = ({
   handleSubcategoryChange,
   onApplyFilters,
 }) => {
-  // Function to handle Enter key press
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" || e.keyCode === 13) {
       onApplyFilters();
     }
   };
 
   return (
-    <div className="sticky rounded-lg p-4 bg-white shadow-lg w-full max-w-md mx-auto sm:w-90 z-50">
+    <div className="sticky rounded-lg p-4 lg:border-2  lg:border-gray-200 bg-white shadow-lg w-full max-w-md mx-auto sm:w-90 z-50">
       <div className="mb-4 lg:mt-6 mt-10">
-        <label className="text-md sm:text-xl font-bold text-center block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
-          Search by Job Title or Company
+        <label className="text-lg sm:text-2xl font-bold block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text mb-4">
+          Search by Title or Company
         </label>
         <div className="relative mt-2">
-          <div className="flex items-center border border-gray-300 rounded-md overflow-hidden">
+          <div className="flex items-center border border-gray-300 rounded-lg shadow-md overflow-hidden focus-within:border-blue-500 transition-all">
             <FaSearch className="text-gray-500 ml-3" />
             <input
               type="text"
               placeholder="Search by Job Title or Company Name"
               className="w-full p-3 text-sm outline-none"
               value={searchInput}
+              onKeyUp={handleKeyPress}
               onChange={(e) => handleSearch(e.target.value)}
-              onKeyPress={handleKeyPress}
             />
             <button
               onClick={onApplyFilters}
-              className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-4 py-3 h-full"
+              className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-5 py-3 h-full transition-transform transform hover:scale-105"
               type="button"
             >
               Search
@@ -66,7 +65,6 @@ const JobFilters = ({
         </select>
       </div>
 
-      {/* Subcategories */}
       {selectedCategory?.subcategories?.length > 0 && (
         <div className="mb-6">
           <label className="text-xl sm:text-2xl font-bold block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
@@ -87,12 +85,11 @@ const JobFilters = ({
         </div>
       )}
 
-      {/* Experience Level */}
       <div className="mb-6">
         <label className="text-xl sm:text-2xl font-bold block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
           Experience Level
         </label>
-        <div className="mt-2 flex flex-col space-y-2">
+        <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
           {["Fresher", "1 to 3 years", "3 to 5 years", "More than 5 years"].map(
             (level) => (
               <label key={level} className="flex items-center space-x-2">
@@ -110,12 +107,11 @@ const JobFilters = ({
         </div>
       </div>
 
-      {/* Job Type */}
       <div className="mb-6">
         <label className="text-xl sm:text-2xl font-bold block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
           Job Type
         </label>
-        <div className="mt-2 flex flex-col space-y-2">
+        <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
           {["Full-Time", "Part-Time"].map((type) => (
             <label key={type} className="flex items-center space-x-2">
               <input
@@ -131,12 +127,11 @@ const JobFilters = ({
         </div>
       </div>
 
-      {/* Work Type */}
       <div className="mb-6">
         <label className="text-xl sm:text-2xl font-bold block text-transparent bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text">
           Work Type
         </label>
-        <div className="mt-2 flex flex-col space-y-2">
+        <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
           {["Remote", "OnSite", "Hybrid"].map((work) => (
             <label key={work} className="flex items-center space-x-2">
               <input
@@ -152,7 +147,6 @@ const JobFilters = ({
         </div>
       </div>
 
-      {/* Apply Button */}
       <button
         onClick={onApplyFilters}
         disabled={isLoading}
