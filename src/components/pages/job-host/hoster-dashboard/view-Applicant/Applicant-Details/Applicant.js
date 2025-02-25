@@ -26,7 +26,7 @@ const Applicant = () => {
 
       try {
         const response = await fetch(
-          `https://jobquick.onrender.com/applicants/${id}`,
+          `https://jobquick.onrender.com/applicants/details/${id}`,
           {
             headers: {
               "Content-Type": "application/json",

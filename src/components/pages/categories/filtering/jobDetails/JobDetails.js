@@ -24,36 +24,23 @@ const JobDetails = () => {
   const jobDetailsAPI = `https://jobquick.onrender.com/job/${id}`;
   const jobApplyAPI = `https://jobquick.onrender.com/applicants`;
   const userProfileApi = `https://jobquick.onrender.com/seekuser/${userId}`;
-  const checkApplicationAPI = `https://jobquick.onrender.com/applicants/check/${id}/${userId}`;
-
-  // Separate function to check application status
-  const checkApplicationStatus = async () => {
-    try {
-      const response = await axios.get(checkApplicationAPI, {
-        headers: {
-          Authorization: `Bearer ${jobToken}`,
-        },
-      });
-
-      if (response.data && response.data.hasApplied) {
-        setHasApplied(true);
-        return true;
-      }
-      return false;
-    } catch (error) {
-      console.error("Error checking application status:", error);
-      return false;
-    }
-  };
+  const checkApplyApi = `https://jobquick.onrender.com/applicants/check?jobId=${id}&applicantId=${userId}`;
 
   useEffect(() => {
     const fetchAllData = async () => {
       setIsLoading(true);
       try {
-        // First check if user has already applied
-        await checkApplicationStatus();
-
-        // Then fetch job details
+        // Check if user has already applied
+        const appliedResponse = await axios.get(checkApplyApi, {
+          headers: {
+            Authorization: `Bearer ${jobToken}`,
+          },
+        });
+        
+        if (appliedResponse.data && appliedResponse.data.applied) {
+          setHasApplied(true);
+        }
+        
         const response = await axios.get(jobDetailsAPI, {
           headers: {
             Authorization: `Bearer ${jobToken}`,
@@ -72,7 +59,7 @@ const JobDetails = () => {
     };
 
     fetchAllData();
-  }, [id, jobToken]);
+  }, [id, jobToken, checkApplyApi]);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -137,14 +124,10 @@ const JobDetails = () => {
       if (response.data) {
         setHasApplied(true);
         setShowSuccessModal(true);
-
-        // Store the application status in localStorage
-        localStorage.setItem(`job-${id}-applied`, "true");
       }
     } catch (error) {
       if (error.response?.status === 400) {
         setHasApplied(true);
-        localStorage.setItem(`job-${id}-applied`, "true");
       } else {
         console.error("Error applying for job:", error);
       }
@@ -152,14 +135,6 @@ const JobDetails = () => {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    const hasAppliedLocally =
-      localStorage.getItem(`job-${id}-applied`) === "true";
-    if (hasAppliedLocally) {
-      setHasApplied(true);
-    }
-  }, [id]);
 
   if (error) {
     return (
